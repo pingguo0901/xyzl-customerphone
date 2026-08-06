@@ -1,10 +1,11 @@
 {
   "versionCode": 1,
   "versionName": "1.0.0",
-  "buildDate": "2026-08-07",
+  "apkUrl": "https://xyzl-customerphone.vercel.app/xyzl-customer.apk",
   "changelog": "- 🎉 全新 KMP Compose Multiplatform 重构\n- 📱 适配 Android / iOS / iPad / Tab\n- 🏠 首页：广告位、快捷按钮、行程卡片、地图\n- 💬 底部导航：聊天、探索、首页、行程、我",
+  "buildDate": "2026-08-07",
   "minSdkVersion": "Android 7.0 (SDK 24)",
-  "apkSize": "约 10 MB",
+  "apkSize": "16 MB",
   "systemRequirements": {
     "os": "Android 7.0 及以上 / iOS 15.0 及以上",
     "arch": "arm64-v8a / armeabi-v7a（Android）",

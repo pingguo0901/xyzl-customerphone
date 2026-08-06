@@ -17,3 +17,5 @@ captures/
 .env.local
 node_modules/
 .DS_Store
+.vercel
+.env*
