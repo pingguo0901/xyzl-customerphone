@@ -1,0 +1,12 @@
+composeApp
+gradle
+build.gradle.kts
+settings.gradle.kts
+gradle.properties
+gradlew
+gradlew.bat
+.git
+.gitignore
+.vercel
+*.kt
+.env.local

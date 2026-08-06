@@ -1,21 +1,46 @@
 package com.stellarelite.xingyuzhenlv
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import com.stellarelite.xingyuzhenlv.i18n.Language
+import com.stellarelite.xingyuzhenlv.i18n.LanguageManager
+import com.stellarelite.xingyuzhenlv.i18n.detectSystemLanguage
 import com.stellarelite.xingyuzhenlv.ui.navigation.MainScreen
+import com.stellarelite.xingyuzhenlv.ui.screens.SplashScreen
 import com.stellarelite.xingyuzhenlv.ui.theme.XingyuZhenLvTheme
 
 @Composable
 fun App() {
+    var showSplash by remember { mutableStateOf(true) }
+
+    // 检测系统语言
+    val sysLang = detectSystemLanguage()
+    LaunchedEffect(Unit) {
+        LanguageManager.setSystemLocale(sysLang)
+    }
+
     XingyuZhenLvTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            MainScreen()
+            AnimatedContent(
+                targetState = showSplash,
+                transitionSpec = {
+                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                }
+            ) { isSplash ->
+                if (isSplash) {
+                    SplashScreen(onFinished = { showSplash = false })
+                } else {
+                    MainScreen()
+                }
+            }
         }
     }
 }

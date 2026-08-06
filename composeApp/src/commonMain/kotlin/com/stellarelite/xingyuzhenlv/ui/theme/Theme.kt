@@ -5,7 +5,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+
+enum class ThemeMode { SYSTEM, LIGHT, DARK }
+
+object ThemeManager {
+    val currentMode: MutableState<ThemeMode> = mutableStateOf(ThemeMode.SYSTEM)
+
+    fun setMode(mode: ThemeMode) {
+        currentMode.value = mode
+    }
+}
 
 private val LightColors = lightColorScheme(
     primary = Color(0xFF1A73E8),
@@ -37,11 +50,16 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun XingyuZhenLvTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val isDark = when (ThemeManager.currentMode.value) {
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+    }
+
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = if (isDark) DarkColors else LightColors,
         content = content
     )
 }

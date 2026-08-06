@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,8 +53,8 @@ fun BottomNavBar(
                 icon = {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = if (selected) screen.selectedIcon else screen.unselectedIcon,
-                            contentDescription = screen.title,
+                            imageVector = if (selected) screen.selectedIcon() else screen.unselectedIcon(),
+                            contentDescription = screen.title(),
                             modifier = if (screen == Screen.Home) Modifier.size(32.dp) else Modifier.size(24.dp),
                             tint = if (screen == Screen.Home) MaterialTheme.colorScheme.primary
                                    else if (selected) MaterialTheme.colorScheme.onSurface
@@ -65,7 +64,7 @@ fun BottomNavBar(
                 },
                 label = {
                     Text(
-                        text = screen.title,
+                        text = screen.title(),
                         fontSize = if (screen == Screen.Home) 13.sp else 11.sp,
                         fontWeight = if (screen == Screen.Home) FontWeight.Bold else FontWeight.Normal,
                         color = if (screen == Screen.Home) MaterialTheme.colorScheme.primary
