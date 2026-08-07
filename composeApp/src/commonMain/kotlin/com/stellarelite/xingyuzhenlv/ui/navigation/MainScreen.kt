@@ -21,6 +21,9 @@ fun MainScreen() {
     var showMalaysiaGuide by remember { mutableStateOf(false) }
     var showNotification by remember { mutableStateOf(false) }
     var showTripDetail by remember { mutableStateOf<TripRecord?>(null) }
+    var showLanguage by remember { mutableStateOf(false) }
+    var showTheme by remember { mutableStateOf(false) }
+    var showVersion by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -70,6 +73,21 @@ fun MainScreen() {
         return
     }
 
+    if (showLanguage) {
+        LanguageScreen(onBack = { showLanguage = false })
+        return
+    }
+
+    if (showTheme) {
+        ThemeScreen(onBack = { showTheme = false })
+        return
+    }
+
+    if (showVersion) {
+        VersionScreen(onBack = { showVersion = false })
+        return
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -84,7 +102,12 @@ fun MainScreen() {
                 Screen.Explore -> ExploreScreen()
                 Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true })
                 Screen.Trips -> TripsScreen(onViewDetail = { showTripDetail = it })
-                Screen.Profile -> ProfileScreen(onLoginClick = { authScreen = AuthScreen.Entry })
+                Screen.Profile -> ProfileScreen(
+                    onLoginClick = { authScreen = AuthScreen.Entry },
+                    onLanguageClick = { showLanguage = true },
+                    onThemeClick = { showTheme = true },
+                    onVersionClick = { showVersion = true }
+                )
             }
         }
     }

@@ -27,7 +27,12 @@ import com.stellarelite.xingyuzhenlv.ui.theme.ThemeManager
 import com.stellarelite.xingyuzhenlv.ui.theme.ThemeMode
 
 @Composable
-fun ProfileScreen(onLoginClick: () -> Unit = {}) {
+fun ProfileScreen(
+    onLoginClick: () -> Unit = {},
+    onLanguageClick: () -> Unit = {},
+    onThemeClick: () -> Unit = {},
+    onVersionClick: () -> Unit = {}
+) {
     val scrollState = rememberScrollState()
     val currentVersion = "1.0.23"
 
@@ -78,47 +83,13 @@ fun ProfileScreen(onLoginClick: () -> Unit = {}) {
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
         // 语言
-        ProfileMenuExpand(Icons.Filled.Translate, "语言", currentLang.displayName) {
-            Language.entries.forEach { lang ->
-                Row(
-                    modifier = Modifier.fillMaxWidth().clickable { LanguageManager.setLang(lang) }.padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        if (lang == Language.SYSTEM) t("language_system") else lang.displayName,
-                        fontSize = 14.sp,
-                        fontWeight = if (currentLang == lang) FontWeight.Bold else FontWeight.Normal
-                    )
-                    if (currentLang == lang) {
-                        Icon(Icons.Filled.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                    }
-                }
-            }
-        }
+        ProfileMenuItem(Icons.Filled.Translate, "语言", "切换应用语言", onClick = onLanguageClick)
 
         // 主题
-        ProfileMenuExpand(Icons.Filled.Palette, "主题", when (currentTheme) {
-            ThemeMode.SYSTEM -> t("theme_system")
-            ThemeMode.LIGHT -> t("theme_light")
-            ThemeMode.DARK -> t("theme_dark")
-        }) {
-            listOf(ThemeMode.SYSTEM to t("theme_system"), ThemeMode.LIGHT to t("theme_light"), ThemeMode.DARK to t("theme_dark")).forEach { (mode, label) ->
-                Row(
-                    modifier = Modifier.fillMaxWidth().clickable { ThemeManager.setMode(mode) }.padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(label, fontSize = 14.sp, fontWeight = if (currentTheme == mode) FontWeight.Bold else FontWeight.Normal)
-                    if (currentTheme == mode) {
-                        Icon(Icons.Filled.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                    }
-                }
-            }
-        }
+        ProfileMenuItem(Icons.Filled.Palette, "主题", "切换外观主题", onClick = onThemeClick)
 
         // 版本
-        ProfileMenuItem(Icons.Filled.Info, "版本", currentVersion, showArrow = false)
+        ProfileMenuItem(Icons.Filled.Info, "版本", currentVersion, showArrow = true, onClick = onVersionClick)
         // 关于我们
         ProfileMenuItem(Icons.Filled.Groups, "关于我们", "星域臻旅团队")
     }
@@ -126,11 +97,11 @@ fun ProfileScreen(onLoginClick: () -> Unit = {}) {
 
 @Composable
 private fun ProfileMenuItem(
-    icon: ImageVector, title: String, subtitle: String, showArrow: Boolean = true
+    icon: ImageVector, title: String, subtitle: String, showArrow: Boolean = true, onClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
-            .clickable { }.padding(horizontal = 12.dp, vertical = 14.dp),
+            .clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
