@@ -46,7 +46,7 @@ fun BottomNavBar(
     onScreenSelected: (Screen) -> Unit
 ) {
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 8.dp,
         modifier = Modifier.height(160.dp)
     ) {

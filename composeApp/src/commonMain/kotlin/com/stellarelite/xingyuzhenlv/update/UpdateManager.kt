@@ -3,6 +3,7 @@ package com.stellarelite.xingyuzhenlv.update
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.Composable
 import kotlinx.coroutines.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -16,7 +17,7 @@ data class ServerVersion(
 )
 
 object UpdateManager {
-    const val CURRENT_VERSION_CODE = 8  // 跟着 build.gradle.kts 同步更新
+    const val CURRENT_VERSION_CODE = 9  // 跟着 build.gradle.kts 同步更新
     private const val VERSION_URL = "https://raw.githubusercontent.com/pingguo0901/xyzl-customerphone/main/version.json"
 
     var updateAvailable by mutableStateOf(false)
@@ -49,3 +50,6 @@ object UpdateManager {
 
 expect suspend fun fetchUrl(url: String): String
 expect fun downloadApk(url: String)
+
+@Composable
+expect fun SetStatusBarColor(color: androidx.compose.ui.graphics.Color)

@@ -17,6 +17,8 @@ import com.stellarelite.xingyuzhenlv.ui.navigation.MainScreen
 import com.stellarelite.xingyuzhenlv.ui.screens.SplashScreen
 import com.stellarelite.xingyuzhenlv.ui.theme.XingyuZhenLvTheme
 import com.stellarelite.xingyuzhenlv.update.UpdateManager
+import com.stellarelite.xingyuzhenlv.update.SetStatusBarColor
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun App() {
@@ -28,6 +30,9 @@ fun App() {
     }
 
     XingyuZhenLvTheme {
+        val bgColor = MaterialTheme.colorScheme.background
+        SetStatusBarColor(color = bgColor)
+
         Surface(
             modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars),
             color = MaterialTheme.colorScheme.background

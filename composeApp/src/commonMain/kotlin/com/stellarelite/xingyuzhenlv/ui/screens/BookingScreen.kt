@@ -21,6 +21,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
+import org.jetbrains.compose.resources.painterResource
+import xingyuzhenlv.composeapp.generated.resources.Res
+import xingyuzhenlv.composeapp.generated.resources.splash_logo
 
 // 西马11州 + 新加坡
 val malaysiaStates = listOf(
@@ -125,12 +128,20 @@ fun BookingScreen(onBack: () -> Unit = {}) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 标题
-        Text(
-            text = t("booking_title"),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
+        // 返回按钮
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = t("booking_cancel"))
+            }
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = t("booking_title"),
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        // 标题（保留旧标题以防其他引用）
 
         // ========== 联系WhatsApp卡片 ==========
         Card(
