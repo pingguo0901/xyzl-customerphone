@@ -24,6 +24,7 @@ fun MainScreen() {
     var showLanguage by remember { mutableStateOf(false) }
     var showTheme by remember { mutableStateOf(false) }
     var showVersion by remember { mutableStateOf(false) }
+    var showCurrency by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -88,6 +89,11 @@ fun MainScreen() {
         return
     }
 
+    if (showCurrency) {
+        CurrencyScreen(onBack = { showCurrency = false })
+        return
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -104,6 +110,7 @@ fun MainScreen() {
                 Screen.Trips -> TripsScreen(onViewDetail = { showTripDetail = it })
                 Screen.Profile -> ProfileScreen(
                     onLoginClick = { authScreen = AuthScreen.Entry },
+                    onCurrencyClick = { showCurrency = true },
                     onLanguageClick = { showLanguage = true },
                     onThemeClick = { showTheme = true },
                     onVersionClick = { showVersion = true }

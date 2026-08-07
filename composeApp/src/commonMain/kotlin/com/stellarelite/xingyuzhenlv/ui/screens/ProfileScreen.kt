@@ -29,6 +29,7 @@ import com.stellarelite.xingyuzhenlv.ui.theme.ThemeMode
 @Composable
 fun ProfileScreen(
     onLoginClick: () -> Unit = {},
+    onCurrencyClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     onThemeClick: () -> Unit = {},
     onVersionClick: () -> Unit = {}
@@ -79,6 +80,9 @@ fun ProfileScreen(
         ProfileMenuItem(Icons.Filled.Security, "隐私与安全", "密码、账号保护")
         // 通知设置
         ProfileMenuItem(Icons.Filled.NotificationsActive, "通知设置", "消息与推送管理")
+
+        // 货币
+        ProfileMenuItem(Icons.Filled.CurrencyExchange, "货币", "切换默认显示货币", onClick = onCurrencyClick)
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
