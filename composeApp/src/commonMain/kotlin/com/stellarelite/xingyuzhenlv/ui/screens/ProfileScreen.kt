@@ -29,6 +29,7 @@ import com.stellarelite.xingyuzhenlv.ui.theme.ThemeMode
 @Composable
 fun ProfileScreen(
     onLoginClick: () -> Unit = {},
+    onWalletClick: () -> Unit = {},
     onCurrencyClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     onThemeClick: () -> Unit = {},
@@ -68,7 +69,7 @@ fun ProfileScreen(
         }
 
         // 我的钱包
-        ProfileMenuItem(Icons.Filled.Wallet, "我的钱包", "查看余额与交易")
+        ProfileMenuItem(Icons.Filled.Wallet, "我的钱包", "查看余额与交易", onClick = onWalletClick)
         // 我的会员
         ProfileMenuItem(Icons.Filled.CardMembership, "我的会员", "会员等级与权益")
         // 个人信息
