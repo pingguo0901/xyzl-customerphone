@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -229,6 +230,8 @@ fun BookingScreen(onBack: () -> Unit = {}) {
     var charterMultiDay by remember { mutableStateOf(false) }
     var charterStartDate by remember { mutableStateOf("") }
     var charterEndDate by remember { mutableStateOf("") }
+    var showCharterStartDatePicker by remember { mutableStateOf(false) }
+    var showCharterEndDatePicker by remember { mutableStateOf(false) }
 
     // 预估价格
     var showPrice by remember { mutableStateOf(false) }
@@ -392,22 +395,38 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    OutlinedTextField(
-                        value = dateText,
-                        onValueChange = {},
-                        label = { Text(t("booking_date")) },
-                        readOnly = true,
-                        modifier = Modifier.weight(1f).clickable { showDatePicker = true },
-                        trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null) }
-                    )
-                    OutlinedTextField(
-                        value = timeText,
-                        onValueChange = {},
-                        label = { Text(t("booking_time")) },
-                        readOnly = true,
-                        modifier = Modifier.weight(1f).clickable { showTimePicker = true },
-                        trailingIcon = { Icon(Icons.Outlined.Schedule, null) }
-                    )
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showDatePicker = true }) {
+                        OutlinedTextField(
+                            value = dateText,
+                            onValueChange = {},
+                            label = { Text(t("booking_date")) },
+                            readOnly = true,
+                            enabled = false,
+                            modifier = Modifier.fillMaxWidth(),
+                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                            )
+                        )
+                    }
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showTimePicker = true }) {
+                        OutlinedTextField(
+                            value = timeText,
+                            onValueChange = {},
+                            label = { Text(t("booking_time")) },
+                            readOnly = true,
+                            enabled = false,
+                            modifier = Modifier.fillMaxWidth(),
+                            trailingIcon = { Icon(Icons.Outlined.Schedule, null, tint = MaterialTheme.colorScheme.primary) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -463,6 +482,46 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                     TextButton(onClick = { showTimePicker = false }) { Text(t("booking_cancel")) }
                 }
             )
+        }
+
+        // 包车开始日期选择器
+        if (showCharterStartDatePicker) {
+            val datePickerState = rememberDatePickerState()
+            DatePickerDialog(
+                onDismissRequest = { showCharterStartDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val cal = java.util.Calendar.getInstance().apply { timeInMillis = millis }
+                            charterStartDate = "${cal.get(java.util.Calendar.YEAR)}-${(cal.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')}-${cal.get(java.util.Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}"
+                        }
+                        showCharterStartDatePicker = false
+                    }) { Text(t("booking_confirm")) }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showCharterStartDatePicker = false }) { Text(t("booking_cancel")) }
+                }
+            ) { DatePicker(state = datePickerState) }
+        }
+
+        // 包车结束日期选择器
+        if (showCharterEndDatePicker) {
+            val datePickerState = rememberDatePickerState()
+            DatePickerDialog(
+                onDismissRequest = { showCharterEndDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val cal = java.util.Calendar.getInstance().apply { timeInMillis = millis }
+                            charterEndDate = "${cal.get(java.util.Calendar.YEAR)}-${(cal.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')}-${cal.get(java.util.Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}"
+                        }
+                        showCharterEndDatePicker = false
+                    }) { Text(t("booking_confirm")) }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showCharterEndDatePicker = false }) { Text(t("booking_cancel")) }
+                }
+            ) { DatePicker(state = datePickerState) }
         }
 
         // ========== 行程详情卡片 ==========
@@ -759,18 +818,38 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                         AnimatedVisibility(visible = charterMultiDay) {
                             Column {
                                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                    OutlinedTextField(
-                                        value = charterStartDate,
-                                        onValueChange = { charterStartDate = it },
-                                        label = { Text(t("booking_start_date")) },
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                    OutlinedTextField(
-                                        value = charterEndDate,
-                                        onValueChange = { charterEndDate = it },
-                                        label = { Text(t("booking_end_date")) },
-                                        modifier = Modifier.weight(1f)
-                                    )
+                                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showCharterStartDatePicker = true }) {
+                                        OutlinedTextField(
+                                            value = charterStartDate,
+                                            onValueChange = {},
+                                            label = { Text(t("booking_start_date")) },
+                                            readOnly = true,
+                                            enabled = false,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                                            )
+                                        )
+                                    }
+                                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showCharterEndDatePicker = true }) {
+                                        OutlinedTextField(
+                                            value = charterEndDate,
+                                            onValueChange = {},
+                                            label = { Text(t("booking_end_date")) },
+                                            readOnly = true,
+                                            enabled = false,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
