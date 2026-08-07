@@ -124,3 +124,45 @@ fun MalaysiaGuideScreen(onBack: () -> Unit = {}) {
         Spacer(Modifier.height(80.dp))
     }
 }
+
+@Composable
+private fun GuideSection(title: String, subtitle: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(title, fontSize = 17.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Text(subtitle, fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+            Spacer(Modifier.height(12.dp))
+            content()
+        }
+    }
+}
+
+@Composable
+private fun GuideSubSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Column {
+        Text(title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+        Spacer(Modifier.height(6.dp))
+        content()
+        Spacer(Modifier.height(8.dp))
+    }
+}
+
+@Composable
+private fun GuideBullet(text: String) {
+    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+        Text("• ", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
+        Text(text, fontSize = 13.sp, lineHeight = 19.sp, color = MaterialTheme.colorScheme.onSurface)
+    }
+}
+
+@Composable
+private fun GuideBulletColor(text: String, color: Color) {
+    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+        Text("• ", fontSize = 14.sp, color = color)
+        Text(text, fontSize = 13.sp, lineHeight = 19.sp, color = color)
+    }
+}
