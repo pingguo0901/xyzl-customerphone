@@ -32,12 +32,12 @@ fun validatePassword(pw: String): Boolean {
 fun passwordHint(pw: String): String {
     val checks = listOf(
         "8-15字" to (pw.length in 8..15),
-        "1大写" to pw.any { it.isUpperCase() },
-        "1小写" to pw.any { it.isLowerCase() },
-        "1数字" to pw.any { it.isDigit() },
-        "1符号" to pw.any { "!@#$%^&*()_+-=[]{}|;:',.<>?/`~".contains(it) }
+        "最少1大写" to pw.any { it.isUpperCase() },
+        "最少1小写" to pw.any { it.isLowerCase() },
+        "最少1数字" to pw.any { it.isDigit() },
+        "最少1符号" to pw.any { "!@#$%^&*()_+-=[]{}|;:',.<>?/`~".contains(it) }
     )
-    return "密码要求：" + checks.joinToString("  ") { "${if (it.second) "✅" else "❌"}${it.first}" }
+    return "条件：" + checks.joinToString("  ") { "${if (it.second) "✅" else "❌"}${it.first}" }
 }
 
 @Composable
@@ -110,10 +110,8 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
 
         OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("密码") }, modifier = Modifier.fillMaxWidth(), visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), leadingIcon = { Icon(Icons.Filled.Lock, null) }, trailingIcon = { IconButton(onClick = { showPassword = !showPassword }) { Icon(if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, null) } })
 
-        if (password.isNotEmpty()) {
-            Spacer(Modifier.height(4.dp))
-            Text(passwordHint(password), fontSize = 11.sp, color = if (validatePassword(password)) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline)
-        }
+        Spacer(Modifier.height(4.dp))
+        Text(passwordHint(password), fontSize = 11.sp, color = if (password.isEmpty()) MaterialTheme.colorScheme.outline else if (validatePassword(password)) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline)
 
         Spacer(Modifier.height(12.dp))
 
@@ -214,10 +212,8 @@ fun ForgotPasswordScreen(onBack: () -> Unit = {}, onResetSuccess: () -> Unit = {
             OutlinedTextField(value = code, onValueChange = { if (it.length <= 6) code = it }, label = { Text("验证码") }, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), leadingIcon = { Icon(Icons.Filled.Pin, null) })
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(value = newPassword, onValueChange = { newPassword = it }, label = { Text("新密码") }, modifier = Modifier.fillMaxWidth(), visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), leadingIcon = { Icon(Icons.Filled.Lock, null) }, trailingIcon = { IconButton(onClick = { showPassword = !showPassword }) { Icon(if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility, null) } })
-            if (newPassword.isNotEmpty()) {
-                Spacer(Modifier.height(4.dp))
-                Text(passwordHint(newPassword), fontSize = 11.sp, color = if (validatePassword(newPassword)) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline)
-            }
+            Spacer(Modifier.height(4.dp))
+            Text(passwordHint(newPassword), fontSize = 11.sp, color = if (newPassword.isEmpty()) MaterialTheme.colorScheme.outline else if (validatePassword(newPassword)) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline)
             Spacer(Modifier.height(24.dp))
             Button(onClick = { onResetSuccess() }, modifier = Modifier.fillMaxWidth().height(52.dp), shape = RoundedCornerShape(14.dp), enabled = code.isNotBlank() && validatePassword(newPassword)) {
                 Text("重置密码", fontSize = 16.sp, fontWeight = FontWeight.Medium)
