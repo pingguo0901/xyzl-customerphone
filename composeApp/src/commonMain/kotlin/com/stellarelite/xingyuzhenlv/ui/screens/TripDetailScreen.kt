@@ -26,7 +26,8 @@ data class TripDetail(
     val whatsapp: String = "", val wechat: String = "",
     val driverName: String = "", val driverPhone: String = "", val licensePlate: String = "",
     val conciergeName: String = "", val conciergePhone: String = "",
-    val price: String = ""
+    val price: String = "",
+    val myrAmount: Double = 0.0
 )
 
 @Composable
@@ -124,7 +125,7 @@ fun TripDetailScreen(trip: TripDetail, onBack: () -> Unit = {}) {
             Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("💰 价格", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.height(8.dp))
-                Text(trip.price, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Text(CurrencyManager.formatPrice(trip.myrAmount), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             }
         }
 

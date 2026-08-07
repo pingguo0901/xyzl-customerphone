@@ -22,7 +22,8 @@ data class WalletTransaction(
     val amount: String,
     val isIncome: Boolean,
     val description: String,
-    val time: String
+    val time: String,
+    val myrAmount: Double = 0.0
 )
 
 @Composable
@@ -30,16 +31,16 @@ fun WalletScreen(onBack: () -> Unit = {}) {
     val scrollState = rememberScrollState()
     var showTopUp by remember { mutableStateOf(false) }
     var topUpAmount by remember { mutableStateOf("") }
-    val balance = remember { "RM 1,280.50" }
+    val showBalance = CurrencyManager.formatPrice(1280.5)
 
     val transactions = remember {
         listOf(
-            WalletTransaction("W001", "消费", "RM 168.00", false, "行程支付 KL→KLIA", "2026-08-07 14:30"),
-            WalletTransaction("W002", "充值", "RM 500.00", true, "银行卡充值", "2026-08-06 10:15"),
-            WalletTransaction("W003", "消费", "RM 250.00", false, "行程支付 新山→新加坡", "2026-08-05 09:00"),
-            WalletTransaction("W004", "退款", "RM 80.00", true, "行程取消退款", "2026-08-03 16:00"),
-            WalletTransaction("W005", "消费", "RM 200.00", false, "行程支付 KL→云顶", "2026-07-28 11:30"),
-            WalletTransaction("W006", "充值", "RM 1000.00", true, "支付宝充值", "2026-07-25 08:00"),
+            WalletTransaction("W001", "消费", "", false, "行程支付 KL→KLIA", "2026-08-07 14:30", 168.0),
+            WalletTransaction("W002", "充值", "", true, "银行卡充值", "2026-08-06 10:15", 500.0),
+            WalletTransaction("W003", "消费", "", false, "行程支付 新山→新加坡", "2026-08-05 09:00", 250.0),
+            WalletTransaction("W004", "退款", "", true, "行程取消退款", "2026-08-03 16:00", 80.0),
+            WalletTransaction("W005", "消费", "", false, "行程支付 KL→云顶", "2026-07-28 11:30", 200.0),
+            WalletTransaction("W006", "充值", "", true, "支付宝充值", "2026-07-25 08:00", 1000.0),
         )
     }
 
@@ -61,7 +62,7 @@ fun WalletScreen(onBack: () -> Unit = {}) {
             Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("当前余额", fontSize = 13.sp, color = Color.White.copy(alpha = 0.7f))
                 Spacer(Modifier.height(8.dp))
-                Text(balance, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(showBalance, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 Spacer(Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text("MYR · 星域臻旅钱包", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
@@ -159,7 +160,7 @@ private fun TransactionItem(tx: WalletTransaction) {
             }
 
             Text(
-                tx.amount,
+                CurrencyManager.formatPrice(tx.myrAmount),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (tx.isIncome) Color(0xFF4CAF50) else MaterialTheme.colorScheme.onSurface

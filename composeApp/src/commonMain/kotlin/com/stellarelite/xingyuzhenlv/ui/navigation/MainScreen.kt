@@ -70,7 +70,7 @@ fun MainScreen() {
             trip = TripDetail(
                 id = t.id, status = t.status, statusColor = t.statusColor,
                 date = t.date, time = t.time, origin = t.origin, destination = t.destination,
-                price = t.price
+                myrAmount = t.myrAmount
             ),
             onBack = { showTripDetail = null }
         )

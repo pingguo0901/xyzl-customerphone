@@ -29,6 +29,7 @@ data class TripRecord(
     val origin: String,
     val destination: String,
     val price: String,
+    val myrAmount: Double = 0.0,
     val tab: TripTab
 )
 
@@ -39,13 +40,13 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
 
     val trips = remember {
         listOf(
-            TripRecord("T001", "司机已出发", Color(0xFF4CAF50), "2026-08-08", "14:30", "吉隆坡双威酒店", "KLIA 吉隆坡国际机场", "RM 168", TripTab.BOOKED),
-            TripRecord("T002", "已确认", Color(0xFF2196F3), "2026-08-10", "09:00", "新山关卡", "新加坡乌节路", "RM 250", TripTab.BOOKED),
-            TripRecord("T003", "已完成", Color(0xFF9E9E9E), "2026-08-01", "11:00", "槟城机场", "乔治市酒店", "RM 80", TripTab.HISTORY),
-            TripRecord("T004", "已完成", Color(0xFF9E9E9E), "2026-07-28", "16:30", "KL Sentral", "云顶高原", "RM 200", TripTab.HISTORY),
-            TripRecord("T005", "已完成", Color(0xFF9E9E9E), "2026-07-20", "08:00", "马六甲市中心", "KLIA2", "RM 150", TripTab.HISTORY),
-            TripRecord("T006", "已取消", Color(0xFFF44336), "2026-07-15", "12:00", "新山 KSL", "新加坡樟宜机场", "RM 220", TripTab.CANCELLED),
-            TripRecord("T007", "已取消", Color(0xFFF44336), "2026-07-10", "06:00", "吉隆坡市中心", "槟城", "RM 350", TripTab.CANCELLED),
+            TripRecord("T001", "司机已出发", Color(0xFF4CAF50), "2026-08-08", "14:30", "吉隆坡双威酒店", "KLIA 吉隆坡国际机场", "", 168.0, TripTab.BOOKED),
+            TripRecord("T002", "已确认", Color(0xFF2196F3), "2026-08-10", "09:00", "新山关卡", "新加坡乌节路", "", 250.0, TripTab.BOOKED),
+            TripRecord("T003", "已完成", Color(0xFF9E9E9E), "2026-08-01", "11:00", "槟城机场", "乔治市酒店", "", 80.0, TripTab.HISTORY),
+            TripRecord("T004", "已完成", Color(0xFF9E9E9E), "2026-07-28", "16:30", "KL Sentral", "云顶高原", "", 200.0, TripTab.HISTORY),
+            TripRecord("T005", "已完成", Color(0xFF9E9E9E), "2026-07-20", "08:00", "马六甲市中心", "KLIA2", "", 150.0, TripTab.HISTORY),
+            TripRecord("T006", "已取消", Color(0xFFF44336), "2026-07-15", "12:00", "新山 KSL", "新加坡樟宜机场", "", 220.0, TripTab.CANCELLED),
+            TripRecord("T007", "已取消", Color(0xFFF44336), "2026-07-10", "06:00", "吉隆坡市中心", "槟城", "", 350.0, TripTab.CANCELLED),
         )
     }
 
@@ -149,7 +150,7 @@ private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
 
             // 价格 + 查看详情
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(trip.price, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Text(CurrencyManager.formatPrice(trip.myrAmount), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 OutlinedButton(
                     onClick = onViewDetail,
                     shape = RoundedCornerShape(10.dp),
