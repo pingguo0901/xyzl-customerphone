@@ -89,6 +89,8 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
                         visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                         leadingIcon = { Icon(Icons.Filled.Lock, null) }
                     )
+                    Spacer(Modifier.height(4.dp))
+                    Text(passwordHint(newPassword), fontSize = 11.sp, color = if (newPassword.isEmpty()) MaterialTheme.colorScheme.outline else if (validatePassword(newPassword)) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline)
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
                         value = confirmPassword,
@@ -108,7 +110,7 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
                         onClick = { },
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         shape = RoundedCornerShape(12.dp),
-                        enabled = oldPassword.isNotBlank() && newPassword.isNotBlank() && newPassword == confirmPassword
+                        enabled = oldPassword.isNotBlank() && validatePassword(newPassword) && newPassword == confirmPassword
                     ) {
                         Text("确认更改", fontSize = 15.sp, fontWeight = FontWeight.Medium)
                     }
