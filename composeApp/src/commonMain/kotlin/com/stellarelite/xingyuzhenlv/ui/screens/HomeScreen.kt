@@ -21,7 +21,7 @@ import com.stellarelite.xingyuzhenlv.model.Trip
 import com.stellarelite.xingyuzhenlv.model.TripStatus
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onBookTrip: () -> Unit = {}) {
     var activeTrip by remember {
         mutableStateOf(
             Trip(
@@ -47,7 +47,7 @@ fun HomeScreen() {
     ) {
         AdBanner()
         Spacer(modifier = Modifier.height(16.dp))
-        QuickActionsRow()
+        QuickActionsRow(onBookTrip = onBookTrip)
         Spacer(modifier = Modifier.height(20.dp))
         if (activeTrip != null) {
             TripCard(trip = activeTrip!!)
@@ -91,17 +91,17 @@ private fun AdBanner() {
 }
 
 @Composable
-private fun QuickActionsRow() {
+private fun QuickActionsRow(onBookTrip: () -> Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-        QuickActionButton(Icons.Filled.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary)
+        QuickActionButton(Icons.Filled.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary, onClick = onBookTrip)
         QuickActionButton(Icons.Filled.SupportAgent, t("home_contact_support"), Color(0xFF4CAF50))
         QuickActionButton(Icons.Filled.Public, t("home_cross_border"), Color(0xFFFF9800))
     }
 }
 
 @Composable
-private fun QuickActionButton(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable { }.padding(8.dp)) {
+private fun QuickActionButton(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, color: Color, onClick: () -> Unit = {}) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable { onClick() }.padding(8.dp)) {
         Box(Modifier.size(56.dp).clip(CircleShape).background(color.copy(alpha = 0.1f)), contentAlignment = Alignment.Center) {
             Icon(icon, label, tint = color, modifier = Modifier.size(28.dp))
         }

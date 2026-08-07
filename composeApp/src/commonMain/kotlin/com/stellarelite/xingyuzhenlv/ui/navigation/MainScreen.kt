@@ -13,6 +13,12 @@ import com.stellarelite.xingyuzhenlv.ui.screens.*
 @Composable
 fun MainScreen() {
     var currentScreen by remember { mutableStateOf(Screen.Home) }
+    var showBooking by remember { mutableStateOf(false) }
+
+    if (showBooking) {
+        BookingScreen(onBack = { showBooking = false })
+        return
+    }
 
     Scaffold(
         bottomBar = {
@@ -26,7 +32,7 @@ fun MainScreen() {
             when (currentScreen) {
                 Screen.Chat -> ChatScreen()
                 Screen.Explore -> ExploreScreen()
-                Screen.Home -> HomeScreen()
+                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true })
                 Screen.Trips -> TripsScreen()
                 Screen.Profile -> ProfileScreen()
             }
@@ -42,7 +48,7 @@ fun BottomNavBar(
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp,
-        modifier = Modifier.height(200.dp)
+        modifier = Modifier.height(170.dp)
     ) {
         Screen.entries.forEach { screen ->
             val selected = currentScreen == screen

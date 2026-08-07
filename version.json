@@ -1,8 +1,8 @@
 {
-  "versionCode": 5,
-  "versionName": "1.0.4",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.4/xyzl-customer.apk",
-  "changelog": "- 🆕 全新APP图标\n- 🎨 底部导航栏高度优化\n- 🔄 更新检测迁移至GitHub Release",
+  "versionCode": 6,
+  "versionName": "1.0.5",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.5/xyzl-customer.apk",
+  "changelog": "- 🆕 预约行程页面（WhatsApp/微信/人数/地址/车辆/行程类型/估价）\n- 🎨 底部导航栏170dp\n- 🆕 全新APP图标\n- 🎨 SplashScreen新Logo",
   "buildDate": "2026-08-07",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",
