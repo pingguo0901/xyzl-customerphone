@@ -66,7 +66,7 @@ fun MainScreen() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             when (currentScreen) {
-                Screen.Chat -> ChatScreen()
+                Screen.Chat -> ChatScreen(onNotification = { showNotification = true })
                 Screen.Explore -> ExploreScreen()
                 Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true })
                 Screen.Trips -> TripsScreen()
