@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.stellarelite.xingyuzhenlv.i18n.t
+import com.stellarelite.xingyuzhenlv.update.openUrl
 
 @Composable
-fun CrossBorderScreen(onBack: () -> Unit = {}) {
+fun CrossBorderScreen(onBack: () -> Unit = {}, onSingaporeGuide: () -> Unit = {}) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -33,7 +33,6 @@ fun CrossBorderScreen(onBack: () -> Unit = {}) {
             Text("跨境手册", fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
 
-        // ===== 新加坡 =====
         CountryCrossBorderCard(
             flag = "🇸🇬",
             countryName = "新加坡",
@@ -41,10 +40,13 @@ fun CrossBorderScreen(onBack: () -> Unit = {}) {
                 CrossBorderItem("入境卡", "SG Arrival Card", "https://eservices.ica.gov.sg/sgarrivalcard/fvipa"),
                 CrossBorderItem("入境申报", "Customs Declaration", "https://m.customs.gov.sg/CustomsTravellerPortal/Personal-Information"),
                 CrossBorderItem("跨境手册", "Cross-border Guide", "#")
-            )
+            ),
+            onItemClick = { item ->
+                if (item.title == "跨境手册") onSingaporeGuide()
+                else openUrl(item.url)
+            }
         )
 
-        // ===== 马来西亚 =====
         CountryCrossBorderCard(
             flag = "🇲🇾",
             countryName = "马来西亚",
@@ -52,31 +54,27 @@ fun CrossBorderScreen(onBack: () -> Unit = {}) {
                 CrossBorderItem("入境卡", "MDAC", "https://imigresen-online.imi.gov.my/mdac/main?registerMain"),
                 CrossBorderItem("入境申报", "Customs Declaration", "https://www.customs.gov.my"),
                 CrossBorderItem("跨境手册", "Cross-border Guide", "#")
-            )
+            ),
+            onItemClick = { item -> openUrl(item.url) }
         )
 
         Spacer(Modifier.height(80.dp))
     }
 }
 
-data class CrossBorderItem(
-    val title: String,
-    val subtitle: String,
-    val url: String
-)
+data class CrossBorderItem(val title: String, val subtitle: String, val url: String)
 
 @Composable
 private fun CountryCrossBorderCard(
     flag: String,
     countryName: String,
-    items: List<CrossBorderItem>
+    items: List<CrossBorderItem>,
+    onItemClick: (CrossBorderItem) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        )
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -84,11 +82,9 @@ private fun CountryCrossBorderCard(
                 Spacer(Modifier.width(12.dp))
                 Text(countryName, fontSize = 20.sp, fontWeight = FontWeight.Bold)
             }
-
             Spacer(Modifier.height(16.dp))
-
             items.forEach { item ->
-                CrossBorderItemRow(item)
+                CrossBorderItemRow(item, onClick = { onItemClick(item) })
                 if (item != items.last()) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 4.dp),
@@ -101,12 +97,9 @@ private fun CountryCrossBorderCard(
 }
 
 @Composable
-private fun CrossBorderItemRow(item: CrossBorderItem) {
+private fun CrossBorderItemRow(item: CrossBorderItem, onClick: () -> Unit) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { /* TODO: 打开链接 item.url */ }
-            .padding(vertical = 12.dp),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icon = when {
@@ -119,21 +112,12 @@ private fun CrossBorderItemRow(item: CrossBorderItem) {
             item.title.contains("申报") -> Color(0xFFFF9800)
             else -> Color(0xFF2196F3)
         }
-
         Icon(icon, null, tint = iconColor, modifier = Modifier.size(28.dp))
-
         Spacer(Modifier.width(12.dp))
-
         Column(modifier = Modifier.weight(1f)) {
             Text(item.title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
             Text(item.subtitle, fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
         }
-
-        Icon(
-            Icons.Filled.ChevronRight,
-            null,
-            tint = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.size(20.dp)
-        )
+        Icon(Icons.Filled.ChevronRight, null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(20.dp))
     }
 }
