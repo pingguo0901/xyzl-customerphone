@@ -61,7 +61,7 @@ fun ThemeScreen(onBack: () -> Unit = {}) {
                 }
             }
 
-            if (mode != themes.last().first) {
+            if (mode != themes.last().mode) {
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
             }
         }
