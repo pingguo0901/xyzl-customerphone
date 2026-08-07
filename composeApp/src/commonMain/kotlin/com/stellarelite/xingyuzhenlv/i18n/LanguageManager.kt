@@ -1,5 +1,6 @@
 package com.stellarelite.xingyuzhenlv.i18n
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 

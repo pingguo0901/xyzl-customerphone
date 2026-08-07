@@ -19,6 +19,7 @@ import com.stellarelite.xingyuzhenlv.ui.theme.XingyuZhenLvTheme
 import com.stellarelite.xingyuzhenlv.update.UpdateManager
 import com.stellarelite.xingyuzhenlv.update.SetStatusBarColor
 import com.stellarelite.xingyuzhenlv.permission.rememberPermissionRequester
+import com.stellarelite.xingyuzhenlv.ui.screens.CurrencyManager
 import androidx.compose.ui.graphics.Color
 
 @Composable
@@ -38,12 +39,15 @@ fun App() {
 
     XingyuZhenLvTheme {
         val bgColor = MaterialTheme.colorScheme.background
+        val lang = LanguageManager.resolvedLang.value
+        val currency = CurrencyManager.current.value
         SetStatusBarColor(color = bgColor)
 
         Surface(
             modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars),
             color = MaterialTheme.colorScheme.background
         ) {
+            key(lang, currency) {
             AnimatedContent(
                 targetState = showSplash,
                 transitionSpec = {
@@ -63,6 +67,7 @@ fun App() {
 
             // 更新弹窗
             UpdateDialog()
+            }
         }
     }
 }

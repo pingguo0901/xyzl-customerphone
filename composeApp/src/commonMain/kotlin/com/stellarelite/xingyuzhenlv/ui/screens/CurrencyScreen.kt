@@ -26,6 +26,19 @@ enum class Currency(val code: String, val symbol: String, val displayName: Strin
 
 object CurrencyManager {
     var current = mutableStateOf(Currency.SGD)
+    
+    fun formatPrice(myrAmount: Double): String {
+        val rates = mapOf(
+            Currency.MYR to 1.0,
+            Currency.SGD to 0.30,
+            Currency.CNY to 1.55,
+            Currency.USD to 0.22,
+            Currency.EUR to 0.20,
+            Currency.USDT to 0.22
+        )
+        val converted = myrAmount * (rates[current.value] ?: 1.0)
+        return "${current.value.symbol} %.2f".format(converted)
+    }
 }
 
 @Composable
