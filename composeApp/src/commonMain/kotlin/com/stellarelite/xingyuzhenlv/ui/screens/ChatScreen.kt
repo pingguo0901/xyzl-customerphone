@@ -70,7 +70,7 @@ fun ChatScreen(onNotification: () -> Unit = {}) {
             value = searchQuery,
             onValueChange = { searchQuery = it },
             placeholder = { Text("搜索聊天对象...", fontSize = 14.sp) },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(48.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(56.dp),
             shape = RoundedCornerShape(24.dp),
             singleLine = true,
             leadingIcon = { Icon(Icons.Filled.Search, null, modifier = Modifier.size(20.dp)) },
