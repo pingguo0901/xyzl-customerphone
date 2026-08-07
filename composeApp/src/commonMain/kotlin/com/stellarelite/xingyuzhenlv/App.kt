@@ -18,11 +18,18 @@ import com.stellarelite.xingyuzhenlv.ui.screens.SplashScreen
 import com.stellarelite.xingyuzhenlv.ui.theme.XingyuZhenLvTheme
 import com.stellarelite.xingyuzhenlv.update.UpdateManager
 import com.stellarelite.xingyuzhenlv.update.SetStatusBarColor
+import com.stellarelite.xingyuzhenlv.permission.rememberPermissionRequester
 import androidx.compose.ui.graphics.Color
 
 @Composable
 fun App() {
     var showSplash by remember { mutableStateOf(true) }
+    var permissionsRequested by remember { mutableStateOf(false) }
+
+    val requestPermissions = rememberPermissionRequester(
+        onAllGranted = { permissionsRequested = true },
+        onPartialGranted = { permissionsRequested = true }
+    )
 
     val sysLang = detectSystemLanguage()
     LaunchedEffect(Unit) {
@@ -47,6 +54,7 @@ fun App() {
                     SplashScreen(onFinished = {
                         showSplash = false
                         UpdateManager.checkForUpdate()
+                        requestPermissions()
                     })
                 } else {
                     MainScreen()
