@@ -33,7 +33,7 @@ fun MainScreen() {
     // 认证页面
     when (authScreen) {
         AuthScreen.Entry -> { LoginEntryScreen(onLogin = { authScreen = AuthScreen.Login }, onRegister = { authScreen = AuthScreen.Register }, onBack = { authScreen = null }); return }
-        AuthScreen.Login -> { LoginScreen(onBack = { authScreen = AuthScreen.Entry }, onLoginSuccess = { authScreen = null }, onForgotPassword = { authScreen = AuthScreen.ForgotPassword }); return }
+        AuthScreen.Login -> { LoginScreen(onBack = { authScreen = AuthScreen.Entry }, onLoginSuccess = { authScreen = null }, onForgotPassword = { authScreen = AuthScreen.ForgotPassword }, onRegister = { authScreen = AuthScreen.Register }); return }
         AuthScreen.Register -> { RegisterScreen(onBack = { authScreen = AuthScreen.Entry }, onRegisterSuccess = { authScreen = null }); return }
         AuthScreen.ForgotPassword -> { ForgotPasswordScreen(onBack = { authScreen = AuthScreen.Login }, onResetSuccess = { authScreen = AuthScreen.Login }); return }
         null -> {}
@@ -122,7 +122,7 @@ fun MainScreen() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             when (currentScreen) {
-                Screen.Chat -> ChatScreen(onNotification = { showNotification = true }, onContactSupport = { currentScreen = Screen.Chat })
+                Screen.Chat -> ChatScreen(onNotification = { showNotification = true })
                 Screen.Explore -> ExploreScreen()
                 Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true }, onContactSupport = { currentScreen = Screen.Chat })
                 Screen.Trips -> TripsScreen(onViewDetail = { showTripDetail = it })
