@@ -1,3 +1,4 @@
+import androidx.compose.foundation.background
 package com.stellarelite.xingyuzhenlv.ui.screens
 
 import androidx.compose.foundation.layout.*
