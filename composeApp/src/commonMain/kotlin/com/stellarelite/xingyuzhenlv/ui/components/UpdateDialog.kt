@@ -34,8 +34,7 @@ fun UpdateDialog() {
         },
         dismissButton = {
             TextButton(onClick = {
-                // TODO: 跳转到下载页
-                UpdateManager.updateAvailable = false
+                UpdateManager.startDownload()
             }) {
                 Text(t("update_now"))
             }

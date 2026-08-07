@@ -16,11 +16,12 @@ data class ServerVersion(
 )
 
 object UpdateManager {
-    const val CURRENT_VERSION_CODE = 6  // 跟着 build.gradle.kts 同步更新
+    const val CURRENT_VERSION_CODE = 7  // 跟着 build.gradle.kts 同步更新
     private const val VERSION_URL = "https://raw.githubusercontent.com/pingguo0901/xyzl-customerphone/main/version.json"
 
     var updateAvailable by mutableStateOf(false)
     var serverVersion by mutableStateOf(ServerVersion())
+    var isDownloading by mutableStateOf(false)
 
     fun checkForUpdate() {
         CoroutineScope(Dispatchers.Default).launch {
@@ -36,6 +37,15 @@ object UpdateManager {
             }
         }
     }
+
+    fun startDownload() {
+        if (serverVersion.apkUrl.isNotBlank()) {
+            isDownloading = true
+            updateAvailable = false
+            downloadApk(serverVersion.apkUrl)
+        }
+    }
 }
 
 expect suspend fun fetchUrl(url: String): String
+expect fun downloadApk(url: String)

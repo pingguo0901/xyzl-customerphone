@@ -1,11 +1,16 @@
 package com.stellarelite.xingyuzhenlv.update
 
+import platform.Foundation.NSURL
+import platform.UIKit.UIApplication
+
 actual suspend fun fetchUrl(url: String): String {
-    return try {
-        val nsUrl = platform.Foundation.NSURL(string = url)
-        val data = platform.Foundation.NSData.dataWithContentsOfURL(nsUrl)
-        data?.let { platform.Foundation.NSString.create(it, platform.Foundation.NSUTF8StringEncoding) as? String } ?: ""
-    } catch (_: Exception) {
-        ""
+    return NSURL(string = url)?.let {
+        NSString.stringWithContentsOfURL(it, encoding = NSUTF8StringEncoding, error = null)
+    } ?: throw Exception("Failed to fetch URL")
+}
+
+actual fun downloadApk(url: String) {
+    NSURL(string = url)?.let {
+        UIApplication.sharedApplication.openURL(it)
     }
 }
