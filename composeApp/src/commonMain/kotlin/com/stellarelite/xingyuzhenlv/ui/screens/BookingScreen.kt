@@ -348,12 +348,12 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                 )
                 Spacer(Modifier.height(8.dp))
                 OutlinedButton(
-                    onClick = { /* TODO: 使用已存档手机号 */ },
+                    onClick = { /* TODO: 使用已存档微信号 */ },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(Icons.Outlined.History, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text(t("booking_use_saved_phone"))
+                    Text("使用已存档微信号")
                 }
             }
         }

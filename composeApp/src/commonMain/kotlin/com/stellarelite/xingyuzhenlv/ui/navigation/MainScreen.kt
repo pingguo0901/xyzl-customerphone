@@ -16,6 +16,7 @@ enum class AuthScreen { Entry, Login, Register, ForgotPassword }
 fun MainScreen() {
     var currentScreen by remember { mutableStateOf(Screen.Home) }
     var showBooking by remember { mutableStateOf(false) }
+    var showCrossBorder by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -32,6 +33,11 @@ fun MainScreen() {
         return
     }
 
+    if (showCrossBorder) {
+        CrossBorderScreen(onBack = { showCrossBorder = false })
+        return
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -44,7 +50,7 @@ fun MainScreen() {
             when (currentScreen) {
                 Screen.Chat -> ChatScreen()
                 Screen.Explore -> ExploreScreen()
-                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true })
+                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true })
                 Screen.Trips -> TripsScreen()
                 Screen.Profile -> ProfileScreen(onLoginClick = { authScreen = AuthScreen.Entry })
             }
