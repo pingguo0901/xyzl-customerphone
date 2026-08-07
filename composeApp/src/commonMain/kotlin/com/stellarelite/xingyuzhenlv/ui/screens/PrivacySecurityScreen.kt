@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -19,12 +20,12 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
     val scrollState = rememberScrollState()
-    var facePhoto by remember { mutableStateOf("") }
+    var facePhotoSelected by remember { mutableStateOf(false) }
     var fullName by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf("") }
     var birthCountry by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
-    var passportPhoto by remember { mutableStateOf("") }
+    var passportPhotoSelected by remember { mutableStateOf(false) }
     var oldPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -47,8 +48,8 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
                 Text("身份验证资料", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedTextField(value = facePhoto, onValueChange = { facePhoto = it }, label = { Text("人脸照") }, modifier = Modifier.weight(1f), leadingIcon = { Icon(Icons.Filled.Face, null) })
-                    OutlinedTextField(value = passportPhoto, onValueChange = { passportPhoto = it }, label = { Text("护照照片") }, modifier = Modifier.weight(1f), leadingIcon = { Icon(Icons.Filled.Book, null) })
+                    PhotoPickerButton("人脸照", Icons.Filled.Face, facePhotoSelected, Modifier.weight(1f))
+                    PhotoPickerButton("护照照片", Icons.Filled.Book, passportPhotoSelected, Modifier.weight(1f))
                 }
                 OutlinedTextField(value = fullName, onValueChange = { fullName = it }, label = { Text("姓名") }, modifier = Modifier.fillMaxWidth())
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -121,5 +122,58 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
         }
 
         Spacer(Modifier.height(80.dp))
+    }
+}
+
+@Composable
+private fun PhotoPickerButton(label: String, icon: androidx.compose.ui.graphics.vector.ImageVector, selected: Boolean, modifier: Modifier = Modifier) {
+    var showOptions by remember { mutableStateOf(false) }
+
+    OutlinedButton(
+        onClick = { showOptions = true },
+        modifier = modifier.height(56.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = if (selected) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline
+        )
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                if (selected) Icons.Filled.CheckCircle else icon,
+                null,
+                tint = if (selected) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                if (selected) "已选择" else label,
+                fontSize = 11.sp
+            )
+        }
+    }
+
+    if (showOptions) {
+        AlertDialog(
+            onDismissRequest = { showOptions = false },
+            title = { Text(label, fontWeight = FontWeight.Bold) },
+            text = {
+                Column {
+                    TextButton(onClick = { /* TODO: 打开相机拍照 */; showOptions = false }) {
+                        Icon(Icons.Filled.CameraAlt, null, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text("拍照", fontSize = 15.sp)
+                    }
+                    TextButton(onClick = { /* TODO: 从相册选择 */; showOptions = false }) {
+                        Icon(Icons.Filled.PhotoLibrary, null, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text("从相册选择", fontSize = 15.sp)
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showOptions = false }) { Text("取消") }
+            }
+        )
     }
 }
