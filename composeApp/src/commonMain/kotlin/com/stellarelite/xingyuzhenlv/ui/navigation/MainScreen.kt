@@ -36,7 +36,7 @@ fun MainScreen() {
     }
 
     if (showCrossBorder) {
-        CrossBorderScreen(onBack = { showCrossBorder = false }, onSingaporeGuide = { showSingaporeGuide = true }, onMalaysiaGuide = { showMalaysiaGuide = true })
+        CrossBorderScreen(onBack = { showCrossBorder = false }, onSingaporeGuide = { showCrossBorder = false; showSingaporeGuide = true }, onMalaysiaGuide = { showCrossBorder = false; showMalaysiaGuide = true })
         return
     }
 

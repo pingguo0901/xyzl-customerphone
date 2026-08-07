@@ -13,7 +13,7 @@ object Strings {
         "home_ad_subtitle" to "Ad Space Available",
         "home_book_trip" to "预定行程",
         "home_contact_support" to "联系客服",
-        "home_cross_border" to "跨境手册",
+        "home_cross_border" to "跨境助手",
         "trip_title" to "当前行程",
         "trip_datetime" to "日期时间",
         "trip_origin" to "起点",
