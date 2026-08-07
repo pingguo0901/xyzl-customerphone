@@ -10,10 +10,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.ui.screens.*
 
+enum class AuthScreen { Entry, Login, Register, ForgotPassword }
+
 @Composable
 fun MainScreen() {
     var currentScreen by remember { mutableStateOf(Screen.Home) }
     var showBooking by remember { mutableStateOf(false) }
+    var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
+
+    // 认证页面
+    when (authScreen) {
+        AuthScreen.Entry -> { LoginEntryScreen(onLogin = { authScreen = AuthScreen.Login }, onRegister = { authScreen = AuthScreen.Register }, onBack = { authScreen = null }); return }
+        AuthScreen.Login -> { LoginScreen(onBack = { authScreen = AuthScreen.Entry }, onLoginSuccess = { authScreen = null }, onForgotPassword = { authScreen = AuthScreen.ForgotPassword }); return }
+        AuthScreen.Register -> { RegisterScreen(onBack = { authScreen = AuthScreen.Entry }, onRegisterSuccess = { authScreen = null }); return }
+        AuthScreen.ForgotPassword -> { ForgotPasswordScreen(onBack = { authScreen = AuthScreen.Login }, onResetSuccess = { authScreen = AuthScreen.Login }); return }
+        null -> {}
+    }
 
     if (showBooking) {
         BookingScreen(onBack = { showBooking = false })
@@ -34,7 +46,7 @@ fun MainScreen() {
                 Screen.Explore -> ExploreScreen()
                 Screen.Home -> HomeScreen(onBookTrip = { showBooking = true })
                 Screen.Trips -> TripsScreen()
-                Screen.Profile -> ProfileScreen()
+                Screen.Profile -> ProfileScreen(onLoginClick = { authScreen = AuthScreen.Entry })
             }
         }
     }

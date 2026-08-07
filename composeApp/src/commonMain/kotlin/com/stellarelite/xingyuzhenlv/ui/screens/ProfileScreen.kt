@@ -24,7 +24,7 @@ import com.stellarelite.xingyuzhenlv.ui.theme.ThemeManager
 import com.stellarelite.xingyuzhenlv.ui.theme.ThemeMode
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(onLoginClick: () -> Unit = {}) {
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(top = 40.dp, bottom = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -39,6 +39,20 @@ fun ProfileScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(t("tab_profile"), fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // 登录/注册入口
+        androidx.compose.material3.Button(
+            onClick = onLoginClick,
+            modifier = Modifier.fillMaxWidth().height(44.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text("登录 / 注册", fontSize = 15.sp, fontWeight = FontWeight.Medium)
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
