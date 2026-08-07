@@ -51,7 +51,7 @@ fun CurrencyScreen(onBack: () -> Unit = {}) {
                 modifier = Modifier.fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .then(if (selected) Modifier.background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)) else Modifier)
-                    .clickable { CurrencyManager.current = currency }
+                    .clickable { CurrencyManager.current.value = currency }
                     .padding(horizontal = 16.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
