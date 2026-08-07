@@ -48,7 +48,7 @@ fun BottomNavBar(
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp,
-        modifier = Modifier.height(170.dp)
+        modifier = Modifier.height(160.dp)
     ) {
         Screen.entries.forEach { screen ->
             val selected = currentScreen == screen
