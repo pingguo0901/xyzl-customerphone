@@ -25,7 +25,7 @@ enum class Currency(val code: String, val symbol: String, val displayName: Strin
 }
 
 object CurrencyManager {
-    var current: Currency by mutableStateOf(Currency.SGD)
+    var current = mutableStateOf(Currency.SGD)
 }
 
 @Composable
