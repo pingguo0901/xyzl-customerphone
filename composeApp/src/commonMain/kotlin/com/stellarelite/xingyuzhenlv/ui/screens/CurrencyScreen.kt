@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-enum class Currency(val code: String, val symbol: String, val name: String) {
+enum class Currency(val code: String, val symbol: String, val displayName: String) {
     MYR("MYR", "RM", "马来西亚林吉特"),
     SGD("SGD", "S$", "新加坡元"),
     CNY("CNY", "¥", "人民币"),
@@ -25,7 +25,7 @@ enum class Currency(val code: String, val symbol: String, val name: String) {
 }
 
 object CurrencyManager {
-    var current by mutableStateOf(Currency.SGD)
+    var current: Currency by mutableStateOf(Currency.SGD)
 }
 
 @Composable
@@ -58,7 +58,7 @@ fun CurrencyScreen(onBack: () -> Unit = {}) {
                 Text(currency.symbol, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(14.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(currency.name, fontSize = 16.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal)
+                    Text(currency.displayName, fontSize = 16.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal)
                     Text(currency.code, fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
                 }
                 if (selected) {
