@@ -30,6 +30,8 @@ import com.stellarelite.xingyuzhenlv.ui.theme.ThemeMode
 fun ProfileScreen(
     onLoginClick: () -> Unit = {},
     onWalletClick: () -> Unit = {},
+    onPersonalInfoClick: () -> Unit = {},
+    onPrivacyClick: () -> Unit = {},
     onCurrencyClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     onThemeClick: () -> Unit = {},
@@ -73,12 +75,12 @@ fun ProfileScreen(
         // 我的会员
         ProfileMenuItem(Icons.Filled.CardMembership, "我的会员", "会员等级与权益")
         // 个人信息
-        ProfileMenuItem(Icons.Filled.ManageAccounts, "个人信息", "编辑个人资料")
+        ProfileMenuItem(Icons.Filled.ManageAccounts, "个人信息", "编辑个人资料", onClick = onPersonalInfoClick)
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
         // 隐私与安全
-        ProfileMenuItem(Icons.Filled.Security, "隐私与安全", "密码、账号保护")
+        ProfileMenuItem(Icons.Filled.Security, "隐私与安全", "密码、账号保护", onClick = onPrivacyClick)
         // 通知设置
         ProfileMenuItem(Icons.Filled.NotificationsActive, "通知设置", "消息与推送管理")
 

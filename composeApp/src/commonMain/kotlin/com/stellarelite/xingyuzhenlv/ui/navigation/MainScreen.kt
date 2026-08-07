@@ -26,6 +26,8 @@ fun MainScreen() {
     var showVersion by remember { mutableStateOf(false) }
     var showCurrency by remember { mutableStateOf(false) }
     var showWallet by remember { mutableStateOf(false) }
+    var showPersonalInfo by remember { mutableStateOf(false) }
+    var showPrivacy by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -95,6 +97,16 @@ fun MainScreen() {
         return
     }
 
+    if (showPersonalInfo) {
+        PersonalInfoScreen(onBack = { showPersonalInfo = false })
+        return
+    }
+
+    if (showPrivacy) {
+        PrivacySecurityScreen(onBack = { showPrivacy = false })
+        return
+    }
+
     if (showWallet) {
         WalletScreen(onBack = { showWallet = false })
         return
@@ -117,6 +129,8 @@ fun MainScreen() {
                 Screen.Profile -> ProfileScreen(
                     onLoginClick = { authScreen = AuthScreen.Entry },
                     onWalletClick = { showWallet = true },
+                    onPersonalInfoClick = { showPersonalInfo = true },
+                    onPrivacyClick = { showPrivacy = true },
                     onCurrencyClick = { showCurrency = true },
                     onLanguageClick = { showLanguage = true },
                     onThemeClick = { showTheme = true },
