@@ -1,8 +1,8 @@
 {
-  "versionCode": 4,
-  "versionName": "1.0.3",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.3/xyzl-customer.apk",
-  "changelog": "- 🌐 五语言包：中文/English/Bahasa Melayu/日本語/한국어\n- 🔍 跟随系统语言自动切换\n- 🎨 主题切换：跟随系统/浅色/深色\n- 🚀 启动画面：圆角Logo+渐入动画\n- 🎨 全新星域臻旅APP图标",
+  "versionCode": 5,
+  "versionName": "1.0.4",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.4/xyzl-customer.apk",
+  "changelog": "- 🆕 全新APP图标\n- 🎨 底部导航栏高度优化\n- 🔄 更新检测迁移至GitHub Release",
   "buildDate": "2026-08-07",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",

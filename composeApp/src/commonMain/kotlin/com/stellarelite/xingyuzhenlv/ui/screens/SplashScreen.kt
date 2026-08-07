@@ -1,6 +1,7 @@
 package com.stellarelite.xingyuzhenlv.ui.screens
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,10 +13,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
+import xingyuzhenlv.composeapp.generated.resources.Res
+import xingyuzhenlv.composeapp.generated.resources.splash_logo
 
 @Composable
 fun SplashScreen(onFinished: () -> Unit) {
@@ -50,38 +55,15 @@ fun SplashScreen(onFinished: () -> Unit) {
                 this.scaleY = scale.value
             }
         ) {
-            // Logo - 圆角方形图标
-            Box(
+            // Logo - 新图标
+            Image(
+                painter = painterResource(Res.drawable.splash_logo),
+                contentDescription = "星域臻旅",
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(RoundedCornerShape(24.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF42A5F5),
-                                Color(0xFF1A237E)
-                            )
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(RoundedCornerShape(18.dp))
-                            .background(Color.White.copy(alpha = 0.3f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "星域",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
-                }
-            }
+                    .clip(RoundedCornerShape(24.dp)),
+                contentScale = ContentScale.Crop
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
