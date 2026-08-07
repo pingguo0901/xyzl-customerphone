@@ -21,7 +21,7 @@ import com.stellarelite.xingyuzhenlv.model.Trip
 import com.stellarelite.xingyuzhenlv.model.TripStatus
 
 @Composable
-fun HomeScreen(onBookTrip: () -> Unit = {}, onCrossBorder: () -> Unit = {}) {
+fun HomeScreen(onBookTrip: () -> Unit = {}, onCrossBorder: () -> Unit = {}, onNotification: () -> Unit = {}) {
     var activeTrip by remember {
         mutableStateOf(
             Trip(
@@ -47,7 +47,7 @@ fun HomeScreen(onBookTrip: () -> Unit = {}, onCrossBorder: () -> Unit = {}) {
     ) {
         AdBanner()
         Spacer(modifier = Modifier.height(16.dp))
-        QuickActionsRow(onBookTrip = onBookTrip, onCrossBorder = onCrossBorder)
+        QuickActionsRow(onBookTrip = onBookTrip, onCrossBorder = onCrossBorder, onNotification = onNotification)
         Spacer(modifier = Modifier.height(20.dp))
         if (activeTrip != null) {
             TripCard(trip = activeTrip!!)
@@ -91,11 +91,12 @@ private fun AdBanner() {
 }
 
 @Composable
-private fun QuickActionsRow(onBookTrip: () -> Unit, onCrossBorder: () -> Unit) {
+private fun QuickActionsRow(onBookTrip: () -> Unit, onCrossBorder: () -> Unit, onNotification: () -> Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
         QuickActionButton(Icons.Filled.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary, onClick = onBookTrip)
         QuickActionButton(Icons.Filled.SupportAgent, t("home_contact_support"), Color(0xFF4CAF50))
         QuickActionButton(Icons.Filled.Public, t("home_cross_border"), Color(0xFFFF9800), onClick = onCrossBorder)
+        QuickActionButton(Icons.Filled.Notifications, "通知", Color(0xFF9C27B0), onClick = onNotification)
     }
 }
 

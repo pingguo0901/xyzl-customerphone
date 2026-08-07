@@ -19,6 +19,7 @@ fun MainScreen() {
     var showCrossBorder by remember { mutableStateOf(false) }
     var showSingaporeGuide by remember { mutableStateOf(false) }
     var showMalaysiaGuide by remember { mutableStateOf(false) }
+    var showNotification by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -50,6 +51,11 @@ fun MainScreen() {
         return
     }
 
+    if (showNotification) {
+        NotificationScreen(onBack = { showNotification = false })
+        return
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -62,7 +68,7 @@ fun MainScreen() {
             when (currentScreen) {
                 Screen.Chat -> ChatScreen()
                 Screen.Explore -> ExploreScreen()
-                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true })
+                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true })
                 Screen.Trips -> TripsScreen()
                 Screen.Profile -> ProfileScreen(onLoginClick = { authScreen = AuthScreen.Entry })
             }
