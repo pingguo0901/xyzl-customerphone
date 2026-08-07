@@ -55,9 +55,8 @@ fun BottomNavBar(
                         Icon(
                             imageVector = if (selected) screen.selectedIcon() else screen.unselectedIcon(),
                             contentDescription = screen.title(),
-                            modifier = if (screen == Screen.Home) Modifier.size(32.dp) else Modifier.size(24.dp),
-                            tint = if (screen == Screen.Home) MaterialTheme.colorScheme.primary
-                                   else if (selected) MaterialTheme.colorScheme.onSurface
+                            modifier = Modifier.size(24.dp),
+                            tint = if (selected) MaterialTheme.colorScheme.primary
                                    else MaterialTheme.colorScheme.outline
                         )
                     }
@@ -65,10 +64,9 @@ fun BottomNavBar(
                 label = {
                     Text(
                         text = screen.title(),
-                        fontSize = if (screen == Screen.Home) 13.sp else 11.sp,
-                        fontWeight = if (screen == Screen.Home) FontWeight.Bold else FontWeight.Normal,
-                        color = if (screen == Screen.Home) MaterialTheme.colorScheme.primary
-                                else if (selected) MaterialTheme.colorScheme.onSurface
+                        fontSize = 11.sp,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                        color = if (selected) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.outline
                     )
                 },

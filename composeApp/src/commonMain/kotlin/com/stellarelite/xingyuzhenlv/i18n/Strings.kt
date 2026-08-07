@@ -35,6 +35,11 @@ object Strings {
         "theme_dark" to "深色模式",
         "language_title" to "语言",
         "language_system" to "跟随系统",
+        "view_driver_location" to "查看司机位置",
+        "update_available" to "发现新版本",
+        "update_new_version" to "最新版本",
+        "update_later" to "稍后更新",
+        "update_now" to "立即更新",
     )
 
     private val en = mapOf(
@@ -71,6 +76,11 @@ object Strings {
         "theme_dark" to "Dark Mode",
         "language_title" to "Language",
         "language_system" to "Follow System",
+        "view_driver_location" to "View Driver Location",
+        "update_available" to "New Version Available",
+        "update_new_version" to "Latest Version",
+        "update_later" to "Later",
+        "update_now" to "Update Now",
     )
 
     private val ms = mapOf(
@@ -107,6 +117,11 @@ object Strings {
         "theme_dark" to "Mod Gelap",
         "language_title" to "Bahasa",
         "language_system" to "Ikut Sistem",
+        "view_driver_location" to "Lihat Lokasi Pemandu",
+        "update_available" to "Versi Baru Tersedia",
+        "update_new_version" to "Versi Terkini",
+        "update_later" to "Kemudian",
+        "update_now" to "Kemas Kini",
     )
 
     private val ja = mapOf(
@@ -143,6 +158,11 @@ object Strings {
         "theme_dark" to "ダークモード",
         "language_title" to "言語",
         "language_system" to "システムに従う",
+        "view_driver_location" to "運転手の位置を見る",
+        "update_available" to "新しいバージョンがあります",
+        "update_new_version" to "最新バージョン",
+        "update_later" to "後で",
+        "update_now" to "今すぐ更新",
     )
 
     private val ko = mapOf(
@@ -179,6 +199,11 @@ object Strings {
         "theme_dark" to "다크 모드",
         "language_title" to "언어",
         "language_system" to "시스템 따르기",
+        "view_driver_location" to "기사님 위치 보기",
+        "update_available" to "새 버전 발견",
+        "update_new_version" to "최신 버전",
+        "update_later" to "나중에",
+        "update_now" to "지금 업데이트",
     )
 
     fun get(key: String, lang: Language): String {

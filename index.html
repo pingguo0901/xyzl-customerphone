@@ -11,7 +11,6 @@
             --card: #FFFFFF;
             --text: #202124;
             --sub: #5F6368;
-            --green: #4CAF50;
         }
         @media (prefers-color-scheme: dark) {
             :root {
@@ -33,51 +32,40 @@
             padding: 40px 20px;
         }
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             border-radius: 20px;
-            background: linear-gradient(135deg, #1A73E8, #4A90E2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
+            background: linear-gradient(145deg, #42A5F5, #1A237E);
+            display: flex; align-items: center; justify-content: center;
             margin-bottom: 16px;
             box-shadow: 0 4px 16px rgba(26,115,232,0.3);
         }
+        .logo-ring {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-text { color: #fff; font-size: 14px; font-weight: 700; }
         h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
         .version { color: var(--sub); font-size: 14px; margin-bottom: 32px; }
         .card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 24px;
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 16px;
+            background: var(--card); border-radius: 16px; padding: 24px;
+            width: 100%; max-width: 400px; margin-bottom: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         .card h3 { font-size: 16px; margin-bottom: 12px; color: var(--sub); }
         .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
+            display: flex; justify-content: space-between;
+            padding: 8px 0; font-size: 14px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .info-row:last-child { border-bottom: none; }
         .download-btn {
-            display: block;
-            width: 100%;
-            max-width: 400px;
-            padding: 16px;
-            background: linear-gradient(135deg, #1A73E8, #1557B0);
-            color: white;
-            text-align: center;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            margin: 8px 0;
-            transition: transform 0.15s, box-shadow 0.15s;
+            display: block; width: 100%; max-width: 400px;
+            padding: 16px; background: linear-gradient(135deg, #1A73E8, #1557B0);
+            color: white; text-align: center; border-radius: 12px;
+            font-size: 18px; font-weight: 600; text-decoration: none;
+            margin: 8px 0; transition: transform 0.15s, box-shadow 0.15s;
             box-shadow: 0 4px 12px rgba(26,115,232,0.3);
         }
         .download-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,115,232,0.4); }
@@ -88,30 +76,35 @@
     </style>
 </head>
 <body>
-    <div class="logo">🚀</div>
+    <div class="logo">
+        <div class="logo-ring">
+            <span class="logo-text">星域</span>
+        </div>
+    </div>
     <h1>星域臻旅</h1>
-    <p class="version">v1.0.0 · 2026-08-07</p>
+    <p class="version">v1.0.1 · 2026-08-07</p>
 
     <div class="card">
         <h3>📱 版本信息</h3>
-        <div class="info-row"><span>版本号</span><span>v1.0.0 (1)</span></div>
+        <div class="info-row"><span>版本号</span><span>v1.0.1 (2)</span></div>
         <div class="info-row"><span>大小</span><span>16 MB</span></div>
         <div class="info-row"><span>最低系统</span><span>Android 7.0+</span></div>
         <div class="info-row"><span>权限</span><span>网络、位置</span></div>
         <div class="info-row"><span>平台</span><span>Android / iOS</span></div>
     </div>
 
-    <a class="download-btn" href="/xyzl-customer.apk" download="星域臻旅-v1.0.0.apk">
+    <a class="download-btn" href="/xyzl-customer.apk" download="星域臻旅-v1.0.1.apk">
         ⬇️ 下载 APK
     </a>
 
     <div class="changelog">
         <h3>🔄 更新日志</h3>
         <ul>
-            <li>🎉 全新 KMP Compose Multiplatform 重构</li>
-            <li>📱 适配 Android / iOS / iPad / Tab</li>
-            <li>🏠 首页：广告位 + 快捷按钮 + 行程卡片 + 地图</li>
-            <li>💬 底部导航：聊天、探索、首页、行程、我</li>
+            <li>🌐 五语言包：中文/English/Bahasa Melayu/日本語/한국어</li>
+            <li>🔍 跟随系统语言自动切换</li>
+            <li>🎨 主题切换：跟随系统/浅色/深色</li>
+            <li>🚀 启动画面：圆角Logo+渐入动画</li>
+            <li>🎨 全新星域臻旅APP图标</li>
         </ul>
     </div>
 </body>

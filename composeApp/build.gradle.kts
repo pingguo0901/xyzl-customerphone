@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -30,6 +31,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.kotlinx.serialization.json)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -61,8 +63,8 @@ android {
         applicationId = "com.stellarelite.xingyuzhenlv"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.3"
     }
 
     packaging {

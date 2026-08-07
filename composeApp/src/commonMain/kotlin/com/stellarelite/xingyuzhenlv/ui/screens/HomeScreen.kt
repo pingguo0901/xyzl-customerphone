@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
 import com.stellarelite.xingyuzhenlv.model.Trip
 import com.stellarelite.xingyuzhenlv.model.TripStatus
-import com.stellarelite.xingyuzhenlv.ui.components.MapView
 
 @Composable
 fun HomeScreen() {
@@ -52,8 +51,19 @@ fun HomeScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         if (activeTrip != null) {
             TripCard(trip = activeTrip!!)
-            Spacer(modifier = Modifier.height(16.dp))
-            TripMapSection(trip = activeTrip!!)
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(
+                onClick = { /* TODO: open driver location map */ },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Icon(Icons.Filled.MyLocation, null, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(t("view_driver_location"), fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            }
         } else {
             EmptyTripCard()
         }
@@ -147,14 +157,6 @@ private fun DriverInfoItem(label: String, value: String) {
     Column(modifier = Modifier.padding(vertical = 2.dp)) {
         Text(label, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
         Text(value, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
-    }
-}
-
-@Composable
-private fun TripMapSection(trip: Trip) {
-    Card(Modifier.fillMaxWidth().height(280.dp).padding(horizontal = 16.dp), shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
-        MapView(trip.originLat, trip.originLng, trip.originLat, trip.originLng, trip.driverLat, trip.driverLng)
     }
 }
 
