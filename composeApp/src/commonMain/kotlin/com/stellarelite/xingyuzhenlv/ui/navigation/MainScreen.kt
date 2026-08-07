@@ -20,6 +20,7 @@ fun MainScreen() {
     var showSingaporeGuide by remember { mutableStateOf(false) }
     var showMalaysiaGuide by remember { mutableStateOf(false) }
     var showNotification by remember { mutableStateOf(false) }
+    var showTripDetail by remember { mutableStateOf<TripRecord?>(null) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -56,6 +57,19 @@ fun MainScreen() {
         return
     }
 
+    if (showTripDetail != null) {
+        val t = showTripDetail!!
+        TripDetailScreen(
+            trip = TripDetail(
+                id = t.id, status = t.status, statusColor = t.statusColor,
+                date = t.date, time = t.time, origin = t.origin, destination = t.destination,
+                price = t.price
+            ),
+            onBack = { showTripDetail = null }
+        )
+        return
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
@@ -69,7 +83,7 @@ fun MainScreen() {
                 Screen.Chat -> ChatScreen(onNotification = { showNotification = true })
                 Screen.Explore -> ExploreScreen()
                 Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true })
-                Screen.Trips -> TripsScreen()
+                Screen.Trips -> TripsScreen(onViewDetail = { showTripDetail = it })
                 Screen.Profile -> ProfileScreen(onLoginClick = { authScreen = AuthScreen.Entry })
             }
         }

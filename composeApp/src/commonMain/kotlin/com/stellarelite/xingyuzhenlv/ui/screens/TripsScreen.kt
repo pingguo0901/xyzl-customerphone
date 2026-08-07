@@ -33,7 +33,7 @@ data class TripRecord(
 )
 
 @Composable
-fun TripsScreen() {
+fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
     var selectedTab by remember { mutableStateOf(TripTab.ALL) }
     val scrollState = rememberScrollState()
 
@@ -92,14 +92,14 @@ fun TripsScreen() {
         }
 
         Column(modifier = Modifier.verticalScroll(scrollState).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            filtered.forEach { trip -> TripCard(trip) }
+            filtered.forEach { trip -> TripCard(trip, onViewDetail = { onViewDetail(trip) }) }
             Spacer(Modifier.height(80.dp))
         }
     }
 }
 
 @Composable
-private fun TripCard(trip: TripRecord) {
+private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
@@ -151,7 +151,7 @@ private fun TripCard(trip: TripRecord) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(trip.price, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 OutlinedButton(
-                    onClick = { },
+                    onClick = onViewDetail,
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                 ) {
