@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.update.openUrl
 
 @Composable
-fun CrossBorderScreen(onBack: () -> Unit = {}, onSingaporeGuide: () -> Unit = {}) {
+fun CrossBorderScreen(onBack: () -> Unit = {}, onSingaporeGuide: () -> Unit = {}, onMalaysiaGuide: () -> Unit = {}) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -55,7 +55,10 @@ fun CrossBorderScreen(onBack: () -> Unit = {}, onSingaporeGuide: () -> Unit = {}
                 CrossBorderItem("入境申报", "Customs Declaration", "https://www.customs.gov.my"),
                 CrossBorderItem("跨境手册", "Cross-border Guide", "#")
             ),
-            onItemClick = { item -> openUrl(item.url) }
+            onItemClick = { item ->
+                if (item.title == "跨境手册") onMalaysiaGuide()
+                else openUrl(item.url)
+            }
         )
 
         Spacer(Modifier.height(80.dp))

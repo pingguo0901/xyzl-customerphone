@@ -18,6 +18,7 @@ fun MainScreen() {
     var showBooking by remember { mutableStateOf(false) }
     var showCrossBorder by remember { mutableStateOf(false) }
     var showSingaporeGuide by remember { mutableStateOf(false) }
+    var showMalaysiaGuide by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -35,12 +36,17 @@ fun MainScreen() {
     }
 
     if (showCrossBorder) {
-        CrossBorderScreen(onBack = { showCrossBorder = false }, onSingaporeGuide = { showSingaporeGuide = true })
+        CrossBorderScreen(onBack = { showCrossBorder = false }, onSingaporeGuide = { showSingaporeGuide = true }, onMalaysiaGuide = { showMalaysiaGuide = true })
         return
     }
 
     if (showSingaporeGuide) {
         SingaporeGuideScreen(onBack = { showSingaporeGuide = false })
+        return
+    }
+
+    if (showMalaysiaGuide) {
+        MalaysiaGuideScreen(onBack = { showMalaysiaGuide = false })
         return
     }
 
