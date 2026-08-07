@@ -69,13 +69,125 @@ data class TimeSelection(
     val hour: Int = 12, val minute: Int = 0
 )
 
+data class CountryCode(val code: String, val name: String)
+
+val countryCodes = listOf(
+    CountryCode("+1", "加拿大"), CountryCode("+1", "美国"),
+    CountryCode("+7", "俄罗斯"), CountryCode("+20", "埃及"),
+    CountryCode("+27", "南非"), CountryCode("+30", "希腊"),
+    CountryCode("+31", "荷兰"), CountryCode("+32", "比利时"),
+    CountryCode("+33", "法国"), CountryCode("+34", "西班牙"),
+    CountryCode("+36", "匈牙利"), CountryCode("+39", "意大利"),
+    CountryCode("+40", "罗马尼亚"), CountryCode("+41", "瑞士"),
+    CountryCode("+43", "奥地利"), CountryCode("+44", "英国"),
+    CountryCode("+45", "丹麦"), CountryCode("+46", "瑞典"),
+    CountryCode("+47", "挪威"), CountryCode("+48", "波兰"),
+    CountryCode("+49", "德国"), CountryCode("+51", "秘鲁"),
+    CountryCode("+52", "墨西哥"), CountryCode("+53", "古巴"),
+    CountryCode("+54", "阿根廷"), CountryCode("+55", "巴西"),
+    CountryCode("+56", "智利"), CountryCode("+57", "哥伦比亚"),
+    CountryCode("+58", "委内瑞拉"), CountryCode("+60", "马来西亚"),
+    CountryCode("+61", "澳大利亚"), CountryCode("+62", "印度尼西亚"),
+    CountryCode("+63", "菲律宾"), CountryCode("+64", "新西兰"),
+    CountryCode("+65", "新加坡"), CountryCode("+66", "泰国"),
+    CountryCode("+81", "日本"), CountryCode("+82", "韩国"),
+    CountryCode("+84", "越南"), CountryCode("+86", "中国大陆"),
+    CountryCode("+90", "土耳其"), CountryCode("+91", "印度"),
+    CountryCode("+92", "巴基斯坦"), CountryCode("+93", "阿富汗"),
+    CountryCode("+94", "斯里兰卡"), CountryCode("+95", "缅甸"),
+    CountryCode("+98", "伊朗"), CountryCode("+211", "南苏丹"),
+    CountryCode("+212", "摩洛哥"), CountryCode("+213", "阿尔及利亚"),
+    CountryCode("+216", "突尼斯"), CountryCode("+218", "利比亚"),
+    CountryCode("+220", "冈比亚"), CountryCode("+221", "塞内加尔"),
+    CountryCode("+222", "毛里塔尼亚"), CountryCode("+223", "马里"),
+    CountryCode("+224", "几内亚"), CountryCode("+225", "科特迪瓦"),
+    CountryCode("+226", "布基纳法索"), CountryCode("+227", "尼日尔"),
+    CountryCode("+228", "多哥"), CountryCode("+229", "贝宁"),
+    CountryCode("+230", "毛里求斯"), CountryCode("+231", "利比里亚"),
+    CountryCode("+232", "塞拉利昂"), CountryCode("+233", "加纳"),
+    CountryCode("+234", "尼日利亚"), CountryCode("+235", "乍得"),
+    CountryCode("+236", "中非"), CountryCode("+237", "喀麦隆"),
+    CountryCode("+238", "佛得角"), CountryCode("+239", "圣多美和普林西比"),
+    CountryCode("+240", "赤道几内亚"), CountryCode("+241", "加蓬"),
+    CountryCode("+242", "刚果共和国"), CountryCode("+243", "刚果民主共和国"),
+    CountryCode("+244", "安哥拉"), CountryCode("+245", "几内亚比绍"),
+    CountryCode("+246", "英属印度洋领地"), CountryCode("+247", "阿森松岛"),
+    CountryCode("+248", "塞舌尔"), CountryCode("+249", "苏丹"),
+    CountryCode("+250", "卢旺达"), CountryCode("+251", "埃塞俄比亚"),
+    CountryCode("+252", "索马里"), CountryCode("+253", "吉布提"),
+    CountryCode("+254", "肯尼亚"), CountryCode("+255", "坦桑尼亚"),
+    CountryCode("+256", "乌干达"), CountryCode("+257", "布隆迪"),
+    CountryCode("+258", "莫桑比克"), CountryCode("+260", "赞比亚"),
+    CountryCode("+261", "马达加斯加"), CountryCode("+262", "留尼汪"),
+    CountryCode("+263", "津巴布韦"), CountryCode("+264", "纳米比亚"),
+    CountryCode("+265", "马拉维"), CountryCode("+266", "莱索托"),
+    CountryCode("+267", "博茨瓦纳"), CountryCode("+268", "斯威士兰"),
+    CountryCode("+269", "科摩罗"), CountryCode("+290", "圣赫勒拿"),
+    CountryCode("+290-8", "特里斯坦-达库尼亚"), CountryCode("+291", "厄立特里亚"),
+    CountryCode("+297", "阿鲁巴"), CountryCode("+298", "法罗群岛"),
+    CountryCode("+299", "格陵兰"), CountryCode("+350", "直布罗陀"),
+    CountryCode("+351", "葡萄牙"), CountryCode("+352", "卢森堡"),
+    CountryCode("+353", "爱尔兰"), CountryCode("+354", "冰岛"),
+    CountryCode("+355", "阿尔巴尼亚"), CountryCode("+356", "马耳他"),
+    CountryCode("+357", "塞浦路斯"), CountryCode("+358", "芬兰"),
+    CountryCode("+358-18", "奥兰"), CountryCode("+359", "保加利亚"),
+    CountryCode("+370", "立陶宛"), CountryCode("+371", "拉脱维亚"),
+    CountryCode("+372", "爱沙尼亚"), CountryCode("+373", "摩尔多瓦"),
+    CountryCode("+374", "亚美尼亚"), CountryCode("+375", "白俄罗斯"),
+    CountryCode("+376", "安道尔"), CountryCode("+377", "摩纳哥"),
+    CountryCode("+378", "圣马力诺"), CountryCode("+380", "乌克兰"),
+    CountryCode("+381", "塞尔维亚"), CountryCode("+382", "黑山"),
+    CountryCode("+383", "科索沃"), CountryCode("+385", "克罗地亚"),
+    CountryCode("+386", "斯洛文尼亚"), CountryCode("+387", "波黑"),
+    CountryCode("+389", "北马其顿"), CountryCode("+420", "捷克"),
+    CountryCode("+421", "斯洛伐克"), CountryCode("+423", "列支敦士登"),
+    CountryCode("+500", "福克兰群岛"), CountryCode("+501", "伯利兹"),
+    CountryCode("+502", "危地马拉"), CountryCode("+503", "萨尔瓦多"),
+    CountryCode("+504", "洪都拉斯"), CountryCode("+505", "尼加拉瓜"),
+    CountryCode("+506", "哥斯达黎加"), CountryCode("+507", "巴拿马"),
+    CountryCode("+508", "圣皮埃尔和密克隆"), CountryCode("+509", "海地"),
+    CountryCode("+590", "瓜德罗普"), CountryCode("+591", "玻利维亚"),
+    CountryCode("+592", "圭亚那"), CountryCode("+593", "厄瓜多尔"),
+    CountryCode("+594", "法属圭亚那"), CountryCode("+595", "巴拉圭"),
+    CountryCode("+596", "马提尼克"), CountryCode("+597", "苏里南"),
+    CountryCode("+598", "乌拉圭"), CountryCode("+670", "东帝汶"),
+    CountryCode("+672", "澳大利亚海外领地"), CountryCode("+673", "文莱"),
+    CountryCode("+674", "瑙鲁"), CountryCode("+675", "巴布亚新几内亚"),
+    CountryCode("+676", "汤加"), CountryCode("+677", "所罗门群岛"),
+    CountryCode("+678", "瓦努阿图"), CountryCode("+679", "斐济"),
+    CountryCode("+680", "帕劳"), CountryCode("+681", "瓦利斯和富图纳"),
+    CountryCode("+682", "库克群岛"), CountryCode("+683", "纽埃"),
+    CountryCode("+685", "萨摩亚"), CountryCode("+686", "基里巴斯"),
+    CountryCode("+687", "新喀里多尼亚"), CountryCode("+688", "图瓦卢"),
+    CountryCode("+689", "法属波利尼西亚"), CountryCode("+690", "托克劳"),
+    CountryCode("+691", "密克罗尼西亚联邦"), CountryCode("+692", "马绍尔群岛"),
+    CountryCode("+850", "朝鲜"), CountryCode("+852", "香港"),
+    CountryCode("+853", "澳门"), CountryCode("+855", "柬埔寨"),
+    CountryCode("+856", "老挝"), CountryCode("+880", "孟加拉国"),
+    CountryCode("+886", "台湾"), CountryCode("+960", "马尔代夫"),
+    CountryCode("+961", "黎巴嫩"), CountryCode("+962", "约旦"),
+    CountryCode("+963", "叙利亚"), CountryCode("+964", "伊拉克"),
+    CountryCode("+965", "科威特"), CountryCode("+966", "沙特阿拉伯"),
+    CountryCode("+967", "也门"), CountryCode("+968", "阿曼"),
+    CountryCode("+970", "巴勒斯坦"), CountryCode("+971", "阿联酋"),
+    CountryCode("+972", "以色列"), CountryCode("+973", "巴林"),
+    CountryCode("+974", "卡塔尔"), CountryCode("+975", "不丹"),
+    CountryCode("+976", "蒙古国"), CountryCode("+977", "尼泊尔"),
+    CountryCode("+992", "塔吉克斯坦"), CountryCode("+993", "土库曼斯坦"),
+    CountryCode("+994", "阿塞拜疆"), CountryCode("+995", "格鲁吉亚"),
+    CountryCode("+996", "吉尔吉斯斯坦"), CountryCode("+998", "乌兹别克斯坦")
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingScreen(onBack: () -> Unit = {}) {
     val scrollState = rememberScrollState()
 
     // 联系人信息
-    var whatsappCountryCode by remember { mutableStateOf("60") }
+    var whatsappCountryCode by remember { mutableStateOf("+60") }
+    var whatsappCountryName by remember { mutableStateOf("马来西亚") }
+    var countryCodeExpanded by remember { mutableStateOf(false) }
+    var countrySearch by remember { mutableStateOf("") }
     var whatsappPhone by remember { mutableStateOf("") }
     var wechatId by remember { mutableStateOf("") }
 
@@ -155,13 +267,44 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                 Text("📱 WhatsApp", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedTextField(
-                        value = whatsappCountryCode,
-                        onValueChange = { if (it.length <= 4) whatsappCountryCode = it },
-                        label = { Text(t("booking_country_code")) },
-                        modifier = Modifier.width(90.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
-                    )
+                    // 可搜索区号选择器
+                    ExposedDropdownMenuBox(
+                        expanded = countryCodeExpanded,
+                        onExpandedChange = {
+                            countryCodeExpanded = it
+                            if (it) countrySearch = ""
+                        }
+                    ) {
+                        OutlinedTextField(
+                            value = if (countryCodeExpanded) countrySearch else "$whatsappCountryCode $whatsappCountryName",
+                            onValueChange = { countrySearch = it },
+                            label = { Text(t("booking_country_code")) },
+                            modifier = Modifier.width(160.dp).menuAnchor(),
+                            singleLine = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = countryCodeExpanded) }
+                        )
+                        val filtered = if (countrySearch.isBlank()) countryCodes
+                            else countryCodes.filter {
+                                it.name.contains(countrySearch, ignoreCase = true) ||
+                                it.code.contains(countrySearch)
+                            }
+                        ExposedDropdownMenu(
+                            expanded = countryCodeExpanded,
+                            onDismissRequest = { countryCodeExpanded = false }
+                        ) {
+                            filtered.take(50).forEach { country ->
+                                DropdownMenuItem(
+                                    text = { Text("${country.code}  ${country.name}") },
+                                    onClick = {
+                                        whatsappCountryCode = country.code
+                                        whatsappCountryName = country.name
+                                        countryCodeExpanded = false
+                                        countrySearch = ""
+                                    }
+                                )
+                            }
+                        }
+                    }
                     Spacer(Modifier.width(8.dp))
                     OutlinedTextField(
                         value = whatsappPhone,
