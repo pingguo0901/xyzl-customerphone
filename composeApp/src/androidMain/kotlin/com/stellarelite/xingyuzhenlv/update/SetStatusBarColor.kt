@@ -7,9 +7,8 @@ import androidx.compose.ui.graphics.toArgb
 
 @Composable
 actual fun SetStatusBarColor(color: Color) {
-    val context = AppContextHolder.context ?: return
-    val window = (context as? android.app.Activity)?.window ?: return
+    val activity = AppContextHolder.activity ?: return
     SideEffect {
-        window.statusBarColor = color.toArgb()
+        activity.window.statusBarColor = color.toArgb()
     }
 }
