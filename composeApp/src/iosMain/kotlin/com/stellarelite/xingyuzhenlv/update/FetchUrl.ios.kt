@@ -14,3 +14,9 @@ actual fun downloadApk(url: String) {
         UIApplication.sharedApplication.openURL(it)
     }
 }
+
+actual fun openUrl(url: String) {
+    NSURL(string = url)?.let {
+        UIApplication.sharedApplication.openURL(it)
+    }
+}

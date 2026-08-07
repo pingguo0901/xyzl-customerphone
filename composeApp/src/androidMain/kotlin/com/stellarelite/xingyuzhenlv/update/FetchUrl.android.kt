@@ -34,7 +34,6 @@ actual fun downloadApk(url: String) {
         val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = dm.enqueue(request)
 
-        // 下载完成后自动打开安装
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(ctx: Context, intent: Intent) {
                 val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
@@ -46,7 +45,6 @@ actual fun downloadApk(url: String) {
         }
         context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     } catch (e: Exception) {
-        // 降级方案：用浏览器打开下载
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
@@ -69,7 +67,12 @@ private fun installApk(context: Context, file: File) {
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
         }
         context.startActivity(intent)
-    } catch (_: Exception) {
-        // fallback: 无法安装，用户自行从文件管理器打开
-    }
+    } catch (_: Exception) {}
+}
+
+actual fun openUrl(url: String) {
+    val context = AppContextHolder.context ?: return
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(intent)
 }

@@ -38,8 +38,8 @@ fun CrossBorderScreen(onBack: () -> Unit = {}) {
             flag = "🇸🇬",
             countryName = "新加坡",
             items = listOf(
-                CrossBorderItem("入境卡", "SG Arrival Card", "https://eservices.ica.gov.sg/sgarrivalcard/"),
-                CrossBorderItem("入境申报", "Customs Declaration", "https://www.customs.gov.sg/"),
+                CrossBorderItem("入境卡", "SG Arrival Card", "https://eservices.ica.gov.sg/sgarrivalcard/fvipa"),
+                CrossBorderItem("入境申报", "Customs Declaration", "https://m.customs.gov.sg/CustomsTravellerPortal/Personal-Information"),
                 CrossBorderItem("跨境手册", "Cross-border Guide", "#")
             )
         )
@@ -49,8 +49,8 @@ fun CrossBorderScreen(onBack: () -> Unit = {}) {
             flag = "🇲🇾",
             countryName = "马来西亚",
             items = listOf(
-                CrossBorderItem("入境卡", "MDAC", "https://imigresen-online.imi.gov.my/mdac/main"),
-                CrossBorderItem("入境申报", "Customs Declaration", "https://www.customs.gov.my/"),
+                CrossBorderItem("入境卡", "MDAC", "https://imigresen-online.imi.gov.my/mdac/main?registerMain"),
+                CrossBorderItem("入境申报", "Customs Declaration", "https://www.customs.gov.my"),
                 CrossBorderItem("跨境手册", "Cross-border Guide", "#")
             )
         )

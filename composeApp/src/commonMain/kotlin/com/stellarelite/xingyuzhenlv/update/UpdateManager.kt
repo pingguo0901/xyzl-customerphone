@@ -17,7 +17,7 @@ data class ServerVersion(
 )
 
 object UpdateManager {
-    const val CURRENT_VERSION_CODE = 15  // 跟着 build.gradle.kts 同步更新
+    const val CURRENT_VERSION_CODE = 16  // 跟着 build.gradle.kts 同步更新
     private const val VERSION_URL = "https://raw.githubusercontent.com/pingguo0901/xyzl-customerphone/main/version.json"
 
     var updateAvailable by mutableStateOf(false)
@@ -50,6 +50,7 @@ object UpdateManager {
 
 expect suspend fun fetchUrl(url: String): String
 expect fun downloadApk(url: String)
+expect fun openUrl(url: String)
 
 @Composable
 expect fun SetStatusBarColor(color: androidx.compose.ui.graphics.Color)
