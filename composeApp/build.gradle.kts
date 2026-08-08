@@ -59,6 +59,15 @@ android {
     namespace = "com.stellarelite.xingyuzhenlv"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("xyzl-customer.keystore")
+            storePassword = "xyzl123456"
+            keyAlias = "xyzl"
+            keyPassword = "xyzl123456"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.stellarelite.xingyuzhenlv"
         minSdk = 24
@@ -76,9 +85,11 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
