@@ -3,6 +3,7 @@ package com.stellarelite.xingyuzhenlv.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.stellarelite.xingyuzhenlv.update.openUrl
 
 @Composable fun AboutScreen(onBack: () -> Unit = {}) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -124,33 +126,47 @@ import androidx.compose.ui.unit.sp
 
             Spacer(Modifier.height(32.dp))
 
-            // Bottom: official website link
+            // Bottom: official website links
             HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
             Spacer(Modifier.height(16.dp))
+
             Text(
                 "国际官网对应页面：",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.outline
             )
-            Text(
-                "www.stellarelite-xingyuzhenlv.com/#legal/about",
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium
-            )
+            Spacer(Modifier.height(6.dp))
+            OutlinedButton(
+                onClick = { openUrl("https://www.stellarelite-xingyuzhenlv.com/#legal/about") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    "打开国际官网 →",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(14.dp))
+
             Text(
                 "中国官网对应页面：",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.outline
             )
-            Text(
-                "cn.stellarelite-xingyuzhenlv.com/#legal/about",
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium
-            )
+            Spacer(Modifier.height(6.dp))
+            OutlinedButton(
+                onClick = { openUrl("https://cn.stellarelite-xingyuzhenlv.com/#legal/about") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    "打开中国官网 →",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
             Spacer(Modifier.height(32.dp))
         }

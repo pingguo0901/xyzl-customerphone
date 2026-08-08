@@ -1,8 +1,8 @@
 {
-  "versionCode": 40,
-  "versionName": "1.0.39",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.39/composeApp-debug.apk",
-  "changelog": "- 🔔 APP启动自动检测版本更新，旧版本弹窗提示升级",
+  "versionCode": 41,
+  "versionName": "1.0.40",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.40/composeApp-debug.apk",
+  "changelog": "- 🔗 法律页面底部官网链接改为可点击跳转按钮（国际+中国）",
   "buildDate": "2026-08-08",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",
