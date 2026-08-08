@@ -1,7 +1,7 @@
 {
   "versionCode": 40,
   "versionName": "1.0.39",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.39/xyzl-customer.apk",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.39/composeApp-debug.apk",
   "changelog": "- 🔔 APP启动自动检测版本更新，旧版本弹窗提示升级",
   "buildDate": "2026-08-08",
   "minSdkVersion": "Android 7.0 (SDK 24)",
