@@ -1,20 +1,29 @@
 package com.stellarelite.xingyuzhenlv.ui.navigation
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.ui.screens.*
+import com.stellarelite.xingyuzhenlv.update.UpdateManager
 
 enum class AuthScreen { Entry, Login, Register, ForgotPassword }
 
 @Composable
 fun MainScreen() {
     var currentScreen by remember { mutableStateOf(Screen.Home) }
+
+    // ========== 自动版本检测 ==========
+    LaunchedEffect(Unit) {
+        UpdateManager.checkForUpdate()
+    }
+
     var showBooking by remember { mutableStateOf(false) }
     var showCrossBorder by remember { mutableStateOf(false) }
     var showSingaporeGuide by remember { mutableStateOf(false) }
@@ -146,6 +155,47 @@ fun MainScreen() {
     if (showWallet) {
         WalletScreen(onBack = { showWallet = false })
         return
+    }
+
+    // ========== 版本更新弹窗 ==========
+    if (UpdateManager.updateAvailable) {
+        AlertDialog(
+            onDismissRequest = { UpdateManager.updateAvailable = false },
+            shape = RoundedCornerShape(20.dp),
+            title = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Text("🔔 发现新版本", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text("v${UpdateManager.serverVersion.versionName}", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                }
+            },
+            text = {
+                Column {
+                    Text("更新内容：", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        UpdateManager.serverVersion.changelog.replace("\\n", "\n"),
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        lineHeight = 20.sp
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { UpdateManager.startDownload() },
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("立即更新", fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { UpdateManager.updateAvailable = false }) {
+                    Text("稍后提醒", fontSize = 14.sp)
+                }
+            }
+        )
     }
 
     Scaffold(
