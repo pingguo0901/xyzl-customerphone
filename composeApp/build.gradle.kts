@@ -63,8 +63,8 @@ android {
         applicationId = "com.stellarelite.xingyuzhenlv"
         minSdk = 24
         targetSdk = 35
-        versionCode = 35
-        versionName = "1.0.34"
+        versionCode = 39
+        versionName = "1.0.38"
     }
 
     packaging {

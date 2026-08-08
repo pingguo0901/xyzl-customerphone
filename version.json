@@ -1,9 +1,9 @@
 {
-  "versionCode": 35,
-  "versionName": "1.0.34",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.34/xyzl-customer.apk",
-  "changelog": "- 🌐 WhatsApp区号弹出式搜索选择器（全球180+国家/地区）\n- 🔐 系统权限索取",
-  "buildDate": "2026-08-07",
+  "versionCode": 39,
+  "versionName": "1.0.38",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.38/xyzl-customer.apk",
+  "changelog": "- 🔗 法律政策页面底部新增中国官网对应链接",
+  "buildDate": "2026-08-08",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",
   "systemRequirements": {

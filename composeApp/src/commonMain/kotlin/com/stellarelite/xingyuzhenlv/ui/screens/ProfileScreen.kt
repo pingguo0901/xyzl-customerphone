@@ -35,7 +35,13 @@ fun ProfileScreen(
     onCurrencyClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     onThemeClick: () -> Unit = {},
-    onVersionClick: () -> Unit = {}
+    onVersionClick: () -> Unit = {},
+    onAboutClick: () -> Unit = {},
+    onPrivacyPolicyClick: () -> Unit = {},
+    onTermsOfServiceClick: () -> Unit = {},
+    onRefundPolicyClick: () -> Unit = {},
+    onPaymentFeeClick: () -> Unit = {},
+    onKYCClick: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     val currentVersion = "1.0.23"
@@ -98,7 +104,20 @@ fun ProfileScreen(
         // 版本
         ProfileMenuItem(Icons.Filled.Info, "版本", currentVersion, showArrow = true, onClick = onVersionClick)
         // 关于我们
-        ProfileMenuItem(Icons.Filled.Groups, "关于我们", "星域臻旅团队")
+        ProfileMenuItem(Icons.Filled.Groups, "关于我们", "星域臻旅团队", onClick = onAboutClick)
+
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+
+        // 隐私政策
+        ProfileMenuItem(Icons.Outlined.PrivacyTip, "隐私政策", "个人信息收集与使用说明", onClick = onPrivacyPolicyClick)
+        // 服务使用协议
+        ProfileMenuItem(Icons.Outlined.Description, "服务使用协议", "平台服务条款与规则", onClick = onTermsOfServiceClick)
+        // 预约、退款与取消政策
+        ProfileMenuItem(Icons.Outlined.ReceiptLong, "预约、退款与取消政策", "行程预订与退改规则", onClick = onRefundPolicyClick)
+        // 支付通道服务费说明
+        ProfileMenuItem(Icons.Outlined.Payment, "支付通道服务费说明", "各支付方式费用明细", onClick = onPaymentFeeClick)
+        // KYC实名认证
+        ProfileMenuItem(Icons.Outlined.VerifiedUser, "KYC实名认证", "身份验证与账户安全", onClick = onKYCClick)
     }
 }
 

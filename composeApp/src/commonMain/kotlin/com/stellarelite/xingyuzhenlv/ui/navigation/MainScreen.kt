@@ -28,6 +28,12 @@ fun MainScreen() {
     var showWallet by remember { mutableStateOf(false) }
     var showPersonalInfo by remember { mutableStateOf(false) }
     var showPrivacy by remember { mutableStateOf(false) }
+    var showAbout by remember { mutableStateOf(false) }
+    var showPrivacyPolicy by remember { mutableStateOf(false) }
+    var showTermsOfService by remember { mutableStateOf(false) }
+    var showRefundPolicy by remember { mutableStateOf(false) }
+    var showPaymentFee by remember { mutableStateOf(false) }
+    var showKYC by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -107,6 +113,36 @@ fun MainScreen() {
         return
     }
 
+    if (showAbout) {
+        AboutScreen(onBack = { showAbout = false })
+        return
+    }
+
+    if (showPrivacyPolicy) {
+        PrivacyPolicyScreen(onBack = { showPrivacyPolicy = false })
+        return
+    }
+
+    if (showTermsOfService) {
+        TermsOfServiceScreen(onBack = { showTermsOfService = false })
+        return
+    }
+
+    if (showRefundPolicy) {
+        RefundPolicyScreen(onBack = { showRefundPolicy = false })
+        return
+    }
+
+    if (showPaymentFee) {
+        PaymentFeeScreen(onBack = { showPaymentFee = false })
+        return
+    }
+
+    if (showKYC) {
+        KYCScreen(onBack = { showKYC = false })
+        return
+    }
+
     if (showWallet) {
         WalletScreen(onBack = { showWallet = false })
         return
@@ -134,7 +170,13 @@ fun MainScreen() {
                     onCurrencyClick = { showCurrency = true },
                     onLanguageClick = { showLanguage = true },
                     onThemeClick = { showTheme = true },
-                    onVersionClick = { showVersion = true }
+                    onVersionClick = { showVersion = true },
+                    onAboutClick = { showAbout = true },
+                    onPrivacyPolicyClick = { showPrivacyPolicy = true },
+                    onTermsOfServiceClick = { showTermsOfService = true },
+                    onRefundPolicyClick = { showRefundPolicy = true },
+                    onPaymentFeeClick = { showPaymentFee = true },
+                    onKYCClick = { showKYC = true }
                 )
             }
         }

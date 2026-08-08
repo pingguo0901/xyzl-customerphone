@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -93,10 +94,10 @@ private fun AdBanner() {
 @Composable
 private fun QuickActionsRow(onBookTrip: () -> Unit, onCrossBorder: () -> Unit, onNotification: () -> Unit, onContactSupport: () -> Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-        QuickActionButton(Icons.Filled.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary, onClick = onBookTrip)
-        QuickActionButton(Icons.Filled.SupportAgent, t("home_contact_support"), Color(0xFF4CAF50), onClick = onContactSupport)
-        QuickActionButton(Icons.Filled.Public, t("home_cross_border"), Color(0xFFFF9800), onClick = onCrossBorder)
-        QuickActionButton(Icons.Filled.Notifications, "通知", Color(0xFF9C27B0), onClick = onNotification)
+        QuickActionButton(Icons.Outlined.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary, onClick = onBookTrip)
+        QuickActionButton(Icons.Outlined.SupportAgent, t("home_contact_support"), Color(0xFF4CAF50), onClick = onContactSupport)
+        QuickActionButton(Icons.Outlined.Language, t("home_cross_border"), Color(0xFFFF9800), onClick = onCrossBorder)
+        QuickActionButton(Icons.Outlined.Notifications, "通知", Color(0xFF9C27B0), onClick = onNotification)
     }
 }
 
