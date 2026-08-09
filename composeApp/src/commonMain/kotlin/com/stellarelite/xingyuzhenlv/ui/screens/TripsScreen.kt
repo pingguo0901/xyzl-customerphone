@@ -40,13 +40,13 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
 
     val trips = remember {
         listOf(
-            TripRecord("T001", "司机已出发", Color(0xFF4CAF50), "2026-08-08", "14:30", "吉隆坡双威酒店", "KLIA 吉隆坡国际机场", "", 168.0, TripTab.BOOKED),
-            TripRecord("T002", "已确认", Color(0xFF2196F3), "2026-08-10", "09:00", "新山关卡", "新加坡乌节路", "", 250.0, TripTab.BOOKED),
-            TripRecord("T003", "已完成", Color(0xFF9E9E9E), "2026-08-01", "11:00", "槟城机场", "乔治市酒店", "", 80.0, TripTab.HISTORY),
-            TripRecord("T004", "已完成", Color(0xFF9E9E9E), "2026-07-28", "16:30", "KL Sentral", "云顶高原", "", 200.0, TripTab.HISTORY),
-            TripRecord("T005", "已完成", Color(0xFF9E9E9E), "2026-07-20", "08:00", "马六甲市中心", "KLIA2", "", 150.0, TripTab.HISTORY),
-            TripRecord("T006", "已取消", Color(0xFFF44336), "2026-07-15", "12:00", "新山 KSL", "新加坡樟宜机场", "", 220.0, TripTab.CANCELLED),
-            TripRecord("T007", "已取消", Color(0xFFF44336), "2026-07-10", "06:00", "吉隆坡市中心", "槟城", "", 350.0, TripTab.CANCELLED),
+            TripRecord("T001", t("trip_status_driver_otw"), Color(0xFF4CAF50), "2026-08-08", "14:30", "吉隆坡双威酒店", "KLIA 吉隆坡国际机场", "", 168.0, TripTab.BOOKED),
+            TripRecord("T002", t("trip_status_confirmed"), Color(0xFF2196F3), "2026-08-10", "09:00", "新山关卡", "新加坡乌节路", "", 250.0, TripTab.BOOKED),
+            TripRecord("T003", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-08-01", "11:00", "槟城机场", "乔治市酒店", "", 80.0, TripTab.HISTORY),
+            TripRecord("T004", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-07-28", "16:30", "KL Sentral", "云顶高原", "", 200.0, TripTab.HISTORY),
+            TripRecord("T005", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-07-20", "08:00", "马六甲市中心", "KLIA2", "", 150.0, TripTab.HISTORY),
+            TripRecord("T006", t("trip_status_cancelled"), Color(0xFFF44336), "2026-07-15", "12:00", "新山 KSL", "新加坡樟宜机场", "", 220.0, TripTab.CANCELLED),
+            TripRecord("T007", t("trip_status_cancelled"), Color(0xFFF44336), "2026-07-10", "06:00", "吉隆坡市中心", "槟城", "", 350.0, TripTab.CANCELLED),
         )
     }
 
@@ -68,7 +68,7 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
             containerColor = MaterialTheme.colorScheme.background,
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
-            listOf("全部", "已预约", "历史行程", "已取消").forEachIndexed { index, title ->
+            listOf(t("tab_all"), t("tab_booked"), t("tab_history"), t("tab_cancelled")).forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTab.ordinal == index,
                     onClick = { selectedTab = TripTab.entries[index] },
@@ -87,7 +87,7 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(Icons.Filled.AirportShuttle, null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(48.dp))
                     Spacer(Modifier.height(8.dp))
-                    Text("暂无行程", color = MaterialTheme.colorScheme.outline)
+                    Text(t("no_trips_found"), color = MaterialTheme.colorScheme.outline)
                 }
             }
         }
@@ -156,7 +156,7 @@ private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
                 ) {
-                    Text("查看详情", fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                    Text(t("view_details"), fontSize = 13.sp, fontWeight = FontWeight.Medium)
                 }
             }
         }

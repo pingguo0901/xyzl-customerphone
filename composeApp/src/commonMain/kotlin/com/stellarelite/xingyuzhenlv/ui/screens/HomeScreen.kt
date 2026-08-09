@@ -97,7 +97,7 @@ private fun QuickActionsRow(onBookTrip: () -> Unit, onCrossBorder: () -> Unit, o
         QuickActionButton(Icons.Outlined.CalendarMonth, t("home_book_trip"), MaterialTheme.colorScheme.primary, onClick = onBookTrip)
         QuickActionButton(Icons.Outlined.SupportAgent, t("home_contact_support"), Color(0xFF4CAF50), onClick = onContactSupport)
         QuickActionButton(Icons.Outlined.Language, t("home_cross_border"), Color(0xFFFF9800), onClick = onCrossBorder)
-        QuickActionButton(Icons.Outlined.Notifications, "通知", Color(0xFF9C27B0), onClick = onNotification)
+        QuickActionButton(Icons.Outlined.Notifications, t("notifications"), Color(0xFF9C27B0), onClick = onNotification)
     }
 }
 

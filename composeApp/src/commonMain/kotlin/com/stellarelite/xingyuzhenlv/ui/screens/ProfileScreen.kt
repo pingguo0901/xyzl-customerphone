@@ -70,54 +70,54 @@ fun ProfileScreen(
             }
             Spacer(Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text("登录 / 注册", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-                Text("点击登录享受更多服务", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+                Text(t("login_register"), fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                Text(t("login_hint"), fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
             }
             Icon(Icons.Filled.ChevronRight, null, tint = MaterialTheme.colorScheme.outline)
         }
 
         // 我的钱包
-        ProfileMenuItem(Icons.Filled.Wallet, "我的钱包", "查看余额与交易", onClick = onWalletClick)
+        ProfileMenuItem(Icons.Filled.Wallet, t("my_wallet"), t("wallet_subtitle"), onClick = onWalletClick)
         // 我的会员
-        ProfileMenuItem(Icons.Filled.CardMembership, "我的会员", "会员等级与权益")
+        ProfileMenuItem(Icons.Filled.CardMembership, t("my_membership"), t("membership_subtitle"))
         // 个人信息
-        ProfileMenuItem(Icons.Filled.ManageAccounts, "个人信息", "编辑个人资料", onClick = onPersonalInfoClick)
+        ProfileMenuItem(Icons.Filled.ManageAccounts, t("personal_info"), t("personal_info_subtitle"), onClick = onPersonalInfoClick)
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
         // 隐私与安全
-        ProfileMenuItem(Icons.Filled.Security, "隐私与安全", "密码、账号保护", onClick = onPrivacyClick)
+        ProfileMenuItem(Icons.Filled.Security, t("privacy_security"), t("privacy_security_subtitle"), onClick = onPrivacyClick)
         // 通知设置
-        ProfileMenuItem(Icons.Filled.NotificationsActive, "通知设置", "消息与推送管理")
+        ProfileMenuItem(Icons.Filled.NotificationsActive, t("notification_settings"), t("notification_subtitle"))
 
         // 货币
-        ProfileMenuItem(Icons.Filled.CurrencyExchange, "货币", "切换默认显示货币", onClick = onCurrencyClick)
+        ProfileMenuItem(Icons.Filled.CurrencyExchange, t("currency_label"), t("currency_subtitle"), onClick = onCurrencyClick)
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
         // 语言
-        ProfileMenuItem(Icons.Filled.Translate, "语言", "切换应用语言", onClick = onLanguageClick)
+        ProfileMenuItem(Icons.Filled.Translate, t("language_settings"), t("language_settings_subtitle"), onClick = onLanguageClick)
 
         // 主题
-        ProfileMenuItem(Icons.Filled.Palette, "主题", "切换外观主题", onClick = onThemeClick)
+        ProfileMenuItem(Icons.Filled.Palette, t("theme_settings"), t("theme_settings_subtitle"), onClick = onThemeClick)
 
         // 版本
-        ProfileMenuItem(Icons.Filled.Info, "版本", currentVersion, showArrow = true, onClick = onVersionClick)
+        ProfileMenuItem(Icons.Filled.Info, t("version"), currentVersion, showArrow = true, onClick = onVersionClick)
         // 关于我们
-        ProfileMenuItem(Icons.Filled.Groups, "关于我们", "星域臻旅团队", onClick = onAboutClick)
+        ProfileMenuItem(Icons.Filled.Groups, t("about_us"), t("about_us_subtitle"), onClick = onAboutClick)
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
 
         // 隐私政策
-        ProfileMenuItem(Icons.Outlined.PrivacyTip, "隐私政策", "个人信息收集与使用说明", onClick = onPrivacyPolicyClick)
+        ProfileMenuItem(Icons.Outlined.PrivacyTip, t("privacy_policy_menu"), t("privacy_policy_menu_subtitle"), onClick = onPrivacyPolicyClick)
         // 服务使用协议
-        ProfileMenuItem(Icons.Outlined.Description, "服务使用协议", "平台服务条款与规则", onClick = onTermsOfServiceClick)
+        ProfileMenuItem(Icons.Outlined.Description, t("terms_of_service_menu"), t("terms_of_service_menu_subtitle"), onClick = onTermsOfServiceClick)
         // 预约、退款与取消政策
-        ProfileMenuItem(Icons.Outlined.ReceiptLong, "预约、退款与取消政策", "行程预订与退改规则", onClick = onRefundPolicyClick)
+        ProfileMenuItem(Icons.Outlined.ReceiptLong, t("refund_policy_menu"), t("refund_policy_menu_subtitle"), onClick = onRefundPolicyClick)
         // 支付通道服务费说明
-        ProfileMenuItem(Icons.Outlined.Payment, "支付通道服务费说明", "各支付方式费用明细", onClick = onPaymentFeeClick)
+        ProfileMenuItem(Icons.Outlined.Payment, t("payment_fee_menu"), t("payment_fee_menu_subtitle"), onClick = onPaymentFeeClick)
         // KYC实名认证
-        ProfileMenuItem(Icons.Outlined.VerifiedUser, "KYC实名认证", "身份验证与账户安全", onClick = onKYCClick)
+        ProfileMenuItem(Icons.Outlined.VerifiedUser, t("kyc_menu"), t("kyc_menu_subtitle"), onClick = onKYCClick)
     }
 }
 
