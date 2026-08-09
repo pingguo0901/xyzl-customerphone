@@ -22,6 +22,7 @@ import com.stellarelite.xingyuzhenlv.update.openLegalUrl
 @Composable fun KYCScreen(onBack: () -> Unit = {}) {
     var showConsentDialog by remember { mutableStateOf(false) }
     var consentChecked by remember { mutableStateOf(false) }
+    var showLegalDialog by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -173,7 +174,7 @@ import com.stellarelite.xingyuzhenlv.update.openLegalUrl
                         lineHeight = 22.sp
                     )
                     TextButton(
-                        onClick = { openLegalUrl("privacy") },
+                        onClick = { showLegalDialog = "privacy" },
                         contentPadding = PaddingValues(0.dp)
                     ) {
                         Text("《隐私政策》", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
@@ -211,6 +212,11 @@ import com.stellarelite.xingyuzhenlv.update.openLegalUrl
                 }
             }
         )
+    }
+
+    // 法律协议内容弹窗
+    showLegalDialog?.let { section ->
+        LegalContentDialog(section = section, onDismiss = { showLegalDialog = null })
     }
 }
 

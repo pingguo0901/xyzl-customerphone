@@ -243,6 +243,7 @@ fun BookingScreen(onBack: () -> Unit = {}) {
     var agreePrivacy by remember { mutableStateOf(false) }
     var agreeRefund by remember { mutableStateOf(false) }
     var agreePaymentFee by remember { mutableStateOf(false) }
+    var showLegalDialog by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -953,28 +954,28 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                             onCheckedChange = { agreeTerms = it },
                             label = "我已阅读并同意",
                             linkText = "《服务使用协议》",
-                            onLinkClick = { openLegalUrl("terms") }
+                            onLinkClick = { showLegalDialog = "terms" }
                         )
                         ConsentCheckRow(
                             checked = agreePrivacy,
                             onCheckedChange = { agreePrivacy = it },
                             label = "我已阅读并同意",
                             linkText = "《隐私政策》",
-                            onLinkClick = { openLegalUrl("privacy") }
+                            onLinkClick = { showLegalDialog = "privacy" }
                         )
                         ConsentCheckRow(
                             checked = agreeRefund,
                             onCheckedChange = { agreeRefund = it },
                             label = "我已阅读并同意",
                             linkText = "《预订退款及取消政策》",
-                            onLinkClick = { openLegalUrl("refund") }
+                            onLinkClick = { showLegalDialog = "refund" }
                         )
                         ConsentCheckRow(
                             checked = agreePaymentFee,
                             onCheckedChange = { agreePaymentFee = it },
                             label = "我已阅读并同意",
                             linkText = "《支付通道服务费说明》",
-                            onLinkClick = { openLegalUrl("payment") }
+                            onLinkClick = { showLegalDialog = "payment" }
                         )
                         Spacer(Modifier.height(4.dp))
                         Text(
@@ -1008,6 +1009,11 @@ fun BookingScreen(onBack: () -> Unit = {}) {
         }
 
         Spacer(Modifier.height(100.dp))
+    }
+
+    // 法律协议内容弹窗
+    showLegalDialog?.let { section ->
+        LegalContentDialog(section = section, onDismiss = { showLegalDialog = null })
     }
 }
 

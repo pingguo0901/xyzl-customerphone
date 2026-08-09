@@ -91,6 +91,7 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
     var showPassword by remember { mutableStateOf(false) }
     var referralCode by remember { mutableStateOf("") }
     var agreeTerms by remember { mutableStateOf(false) }
+    var showLegalDialog by remember { mutableStateOf<String?>(null) }
     val pwValid = password.isNotEmpty() && validatePassword(password) && password == confirmPassword
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -127,7 +128,7 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = agreeTerms, onCheckedChange = { agreeTerms = it })
             Text("我已阅读并同意", fontSize = 13.sp)
-            TextButton(onClick = { com.stellarelite.xingyuzhenlv.update.openLegalUrl("terms") }, contentPadding = PaddingValues(4.dp)) { Text("《服务使用协议》", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary) }
+            TextButton(onClick = { showLegalDialog = "terms" }, contentPadding = PaddingValues(4.dp)) { Text("《服务使用协议》", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary) }
         }
 
         Spacer(Modifier.height(16.dp))
@@ -141,6 +142,11 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
             Text("已有账号？", fontSize = 14.sp, color = MaterialTheme.colorScheme.outline)
             TextButton(onClick = onBack) { Text("立即登录", fontSize = 14.sp, fontWeight = FontWeight.Medium) }
         }
+    }
+
+    // 法律协议内容弹窗
+    showLegalDialog?.let { section ->
+        LegalContentDialog(section = section, onDismiss = { showLegalDialog = null })
     }
 }
 
