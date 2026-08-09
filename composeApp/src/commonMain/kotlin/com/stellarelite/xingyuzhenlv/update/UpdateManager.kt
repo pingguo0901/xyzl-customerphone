@@ -17,7 +17,7 @@ data class ServerVersion(
 )
 
 object UpdateManager {
-    const val CURRENT_VERSION_CODE = 43  // 跟着 build.gradle.kts 同步更新
+    const val CURRENT_VERSION_CODE = 44  // 跟着 build.gradle.kts 同步更新
     internal const val VERSION_URL = "https://raw.githubusercontent.com/pingguo0901/xyzl-customerphone/main/version.json"
 
     var updateAvailable by mutableStateOf(false)
@@ -51,6 +51,14 @@ object UpdateManager {
 expect suspend fun fetchUrl(url: String): String
 expect fun downloadApk(url: String)
 expect fun openUrl(url: String)
+
+/** 根据系统语言智能跳转国际/中国官网法律页面 */
+fun openLegalUrl(section: String) {
+    val isChinese = com.stellarelite.xingyuzhenlv.i18n.LanguageManager.resolvedLang.value == com.stellarelite.xingyuzhenlv.i18n.Language.CHINESE
+    val url = if (isChinese) "https://cn.stellarelite-xingyuzhenlv.com/#legal/$section"
+              else "https://www.stellarelite-xingyuzhenlv.com/#legal/$section"
+    openUrl(url)
+}
 
 @Composable
 expect fun SetStatusBarColor(color: androidx.compose.ui.graphics.Color)

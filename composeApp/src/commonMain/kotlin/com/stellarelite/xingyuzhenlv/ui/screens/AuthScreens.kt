@@ -127,7 +127,7 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = agreeTerms, onCheckedChange = { agreeTerms = it })
             Text("我已阅读并同意", fontSize = 13.sp)
-            TextButton(onClick = { }, contentPadding = PaddingValues(4.dp)) { Text("服务条款", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary) }
+            TextButton(onClick = { com.stellarelite.xingyuzhenlv.update.openLegalUrl("terms") }, contentPadding = PaddingValues(4.dp)) { Text("《服务使用协议》", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary) }
         }
 
         Spacer(Modifier.height(16.dp))

@@ -8,14 +8,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.stellarelite.xingyuzhenlv.update.openUrl
+import com.stellarelite.xingyuzhenlv.update.openLegalUrl
 
 @Composable fun KYCScreen(onBack: () -> Unit = {}) {
+    var showConsentDialog by remember { mutableStateOf(false) }
+    var consentChecked by remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
@@ -138,28 +145,72 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
 
             Text("国际官网对应页面：", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
             Spacer(Modifier.height(6.dp))
-            OutlinedButton(
-                onClick = { openUrl("https://www.stellarelite-xingyuzhenlv.com/#legal/kyc") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text("打开国际官网 →", fontSize = 13.sp, fontWeight = FontWeight.Medium)
-            }
-
-            Spacer(Modifier.height(14.dp))
-
-            Text("中国官网对应页面：", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
-            Spacer(Modifier.height(6.dp))
-            OutlinedButton(
-                onClick = { openUrl("https://cn.stellarelite-xingyuzhenlv.com/#legal/kyc") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text("打开中国官网 →", fontSize = 13.sp, fontWeight = FontWeight.Medium)
-            }
-
             Spacer(Modifier.height(32.dp))
+
+            // 开始拍照核验按钮
+            Button(
+                onClick = { showConsentDialog = true },
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                Text("开始拍照核验", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            }
+
+            Spacer(Modifier.height(80.dp))
         }
+    }
+
+    // KYC 同意弹窗
+    if (showConsentDialog) {
+        AlertDialog(
+            onDismissRequest = { showConsentDialog = false; consentChecked = false },
+            title = { Text("KYC 实名认证同意", fontWeight = FontWeight.Bold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(
+                        "我已明确同意平台收集我的护照信息以及人脸生物识别数据，用于身份核验、反诈以及跨境包车业务；同时我知悉APP会申请位置、相机、相册、麦克风、通讯录、通知设备权限用于出行接驾沟通，我已经完整阅读",
+                        fontSize = 14.sp,
+                        lineHeight = 22.sp
+                    )
+                    TextButton(
+                        onClick = { openLegalUrl("privacy") },
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text("《隐私政策》", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                    }
+                    Text(
+                        "，知晓全部个人数据处理规则。",
+                        fontSize = 14.sp,
+                        lineHeight = 22.sp
+                    )
+                    HorizontalDivider()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Checkbox(checked = consentChecked, onCheckedChange = { consentChecked = it })
+                        Text("我已完整阅读并同意以上全部条款", fontSize = 13.sp)
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showConsentDialog = false
+                        consentChecked = false
+                        // TODO: 进入拍照核验流程
+                    },
+                    enabled = consentChecked
+                ) {
+                    Text("确认并开始核验")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showConsentDialog = false; consentChecked = false }) {
+                    Text("取消")
+                }
+            }
+        )
     }
 }
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
+import com.stellarelite.xingyuzhenlv.update.openLegalUrl
 import org.jetbrains.compose.resources.painterResource
 import xingyuzhenlv.composeapp.generated.resources.Res
 import xingyuzhenlv.composeapp.generated.resources.splash_logo
@@ -235,6 +236,13 @@ fun BookingScreen(onBack: () -> Unit = {}) {
 
     // 预估价格
     var showPrice by remember { mutableStateOf(false) }
+
+    // 下单确认弹窗
+    var showConfirmDialog by remember { mutableStateOf(false) }
+    var agreeTerms by remember { mutableStateOf(false) }
+    var agreePrivacy by remember { mutableStateOf(false) }
+    var agreeRefund by remember { mutableStateOf(false) }
+    var agreePaymentFee by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -913,7 +921,7 @@ fun BookingScreen(onBack: () -> Unit = {}) {
         Button(
             onClick = {
                 showPrice = true
-                // TODO: 提交行程请求
+                showConfirmDialog = true
             },
             modifier = Modifier.fillMaxWidth().height(56.dp),
             shape = RoundedCornerShape(16.dp),
@@ -925,6 +933,77 @@ fun BookingScreen(onBack: () -> Unit = {}) {
                 t("booking_confirm_trip"),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
+            )
+        }
+
+        // 下单确认弹窗
+        if (showConfirmDialog) {
+            val allAgreed = agreeTerms && agreePrivacy && agreeRefund && agreePaymentFee
+            AlertDialog(
+                onDismissRequest = {
+                    showConfirmDialog = false
+                    agreeTerms = false; agreePrivacy = false
+                    agreeRefund = false; agreePaymentFee = false
+                },
+                title = { Text("确认下单", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        ConsentCheckRow(
+                            checked = agreeTerms,
+                            onCheckedChange = { agreeTerms = it },
+                            label = "我已阅读并同意",
+                            linkText = "《服务使用协议》",
+                            onLinkClick = { openLegalUrl("terms") }
+                        )
+                        ConsentCheckRow(
+                            checked = agreePrivacy,
+                            onCheckedChange = { agreePrivacy = it },
+                            label = "我已阅读并同意",
+                            linkText = "《隐私政策》",
+                            onLinkClick = { openLegalUrl("privacy") }
+                        )
+                        ConsentCheckRow(
+                            checked = agreeRefund,
+                            onCheckedChange = { agreeRefund = it },
+                            label = "我已阅读并同意",
+                            linkText = "《预订退款及取消政策》",
+                            onLinkClick = { openLegalUrl("refund") }
+                        )
+                        ConsentCheckRow(
+                            checked = agreePaymentFee,
+                            onCheckedChange = { agreePaymentFee = it },
+                            label = "我已阅读并同意",
+                            linkText = "《支付通道服务费说明》",
+                            onLinkClick = { openLegalUrl("payment") }
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "已知悉订单将收取6%综合支付通道服务费。",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showConfirmDialog = false
+                            // TODO: 提交订单
+                        },
+                        enabled = allAgreed
+                    ) {
+                        Text("确认下单")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showConfirmDialog = false
+                        agreeTerms = false; agreePrivacy = false
+                        agreeRefund = false; agreePaymentFee = false
+                    }) {
+                        Text("取消")
+                    }
+                }
             )
         }
 
@@ -956,6 +1035,26 @@ fun CounterColumn(
             IconButton(onClick = onPlus, modifier = Modifier.size(32.dp)) {
                 Icon(Icons.Filled.Add, null, modifier = Modifier.size(18.dp))
             }
+        }
+    }
+}
+
+@Composable
+private fun ConsentCheckRow(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    label: String,
+    linkText: String,
+    onLinkClick: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Checkbox(checked = checked, onCheckedChange = onCheckedChange)
+        Text(label, fontSize = 13.sp)
+        TextButton(onClick = onLinkClick, contentPadding = PaddingValues(4.dp)) {
+            Text(linkText, fontSize = 13.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
         }
     }
 }
