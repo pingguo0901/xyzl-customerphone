@@ -37,7 +37,7 @@ fun passwordHint(pw: String): String {
         "最少1数字" to pw.any { it.isDigit() },
         "最少1符号" to pw.any { "!@#$%^&*()_+-=[]{}|;:',.<>?/`~".contains(it) }
     )
-    return "条件：" + checks.joinToString("  ") { "${if (it.second) "✅" else "❌"}${it.first}" }
+    return "条件：" + checks.joinToString("  ") { "${if (it.second) "√" else "×"}${it.first}" }
 }
 
 @Composable
