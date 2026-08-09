@@ -43,6 +43,7 @@ fun MainScreen() {
     var showRefundPolicy by remember { mutableStateOf(false) }
     var showPaymentFee by remember { mutableStateOf(false) }
     var showKYC by remember { mutableStateOf(false) }
+    var showKYCFlow by remember { mutableStateOf(false) }
     var authScreen by remember { mutableStateOf<AuthScreen?>(null) }
 
     // 认证页面
@@ -118,7 +119,10 @@ fun MainScreen() {
     }
 
     if (showPrivacy) {
-        PrivacySecurityScreen(onBack = { showPrivacy = false })
+        PrivacySecurityScreen(
+            onBack = { showPrivacy = false },
+            onKYC = { showPrivacy = false; showKYCFlow = true }
+        )
         return
     }
 
@@ -149,6 +153,11 @@ fun MainScreen() {
 
     if (showKYC) {
         KYCScreen(onBack = { showKYC = false })
+        return
+    }
+
+    if (showKYCFlow) {
+        KYCFlowScreen(onBack = { showKYCFlow = false })
         return
     }
 

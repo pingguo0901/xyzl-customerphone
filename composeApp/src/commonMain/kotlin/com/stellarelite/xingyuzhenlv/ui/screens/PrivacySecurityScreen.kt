@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
+fun PrivacySecurityScreen(onBack: () -> Unit = {}, onKYC: () -> Unit = {}) {
     val scrollState = rememberScrollState()
     var facePhotoSelected by remember { mutableStateOf(false) }
     var fullName by remember { mutableStateOf("") }
@@ -114,6 +114,21 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}) {
                     ) {
                         Text("确认更改", fontSize = 15.sp, fontWeight = FontWeight.Medium)
                     }
+                }
+            }
+        }
+
+        // KYC 实名认证入口
+        Card(onClick = onKYC, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))) {
+            Column(Modifier.padding(16.dp)) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Filled.VerifiedUser, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("KYC 实名认证", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                        Text("上传证件完成身份核验，解锁全部服务", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+                    }
+                    Icon(Icons.Filled.ChevronRight, null, tint = MaterialTheme.colorScheme.outline)
                 }
             }
         }
