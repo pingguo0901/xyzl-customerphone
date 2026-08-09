@@ -161,7 +161,9 @@ fun KYCFlowScreen(onBack: () -> Unit = {}) {
                     birthDate, showBirthDatePicker,
                     { showBirthDatePicker = true }, { showBirthDatePicker = false },
                     birthCountry, birthCountryExpanded, { birthCountryExpanded = it },
+                    { birthCountry = it },
                     nationality, nationalityExpanded, { nationalityExpanded = it },
+                    { nationality = it },
                     docNumber, { docNumber = it }, isPassport,
                     docExpiry, showDocExpiryPicker,
                     { showDocExpiryPicker = true }, { showDocExpiryPicker = false },
@@ -352,18 +354,18 @@ private fun Page1DocumentUpload(
         Spacer(Modifier.height(10.dp))
         Text("上传证件照片", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.outline)
         Spacer(Modifier.height(8.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             UploadBox(
-                label = if (isPassport) "护照正面\n（人头像页）" else "证件正面",
+                label = if (isPassport) "护照正面（人头像页）" else "证件正面",
                 selected = frontSelected,
                 onClick = onFrontClick,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             )
             UploadBox(
-                label = if (isPassport) "护照外面\n（护照国家页面）" else "证件背面",
+                label = if (isPassport) "护照外面（护照国家页面）" else "证件背面",
                 selected = backSelected,
                 onClick = onBackClick,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -403,12 +405,12 @@ private fun PhotoPickerDialog(title: String, onDone: () -> Unit) {
         title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
             Column {
-                TextButton(onClick = { /* TODO: 拍照 */; onDone() }) {
+                TextButton(onClick = onDone) {
                     Icon(Icons.Filled.CameraAlt, null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(10.dp))
                     Text("拍照")
                 }
-                TextButton(onClick = { /* TODO: 相册 */; onDone() }) {
+                TextButton(onClick = onDone) {
                     Icon(Icons.Filled.PhotoLibrary, null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(10.dp))
                     Text("从相册选择")
@@ -431,7 +433,9 @@ private fun Page2PersonalInfo(
     birthDate: String, showBirthDatePicker: Boolean,
     onOpenBirthPicker: () -> Unit, onCloseBirthPicker: () -> Unit,
     birthCountry: String, birthCountryExpanded: Boolean, onBirthCountryExpanded: (Boolean) -> Unit,
+    onBirthCountrySelect: (String) -> Unit,
     nationality: String, nationalityExpanded: Boolean, onNationalityExpanded: (Boolean) -> Unit,
+    onNationalitySelect: (String) -> Unit,
     docNumber: String, onDocNumberChange: (String) -> Unit, showPassportFields: Boolean,
     docExpiry: String, showDocExpiryPicker: Boolean,
     onOpenExpiryPicker: () -> Unit, onCloseExpiryPicker: () -> Unit,
@@ -488,7 +492,7 @@ private fun Page2PersonalInfo(
         value = birthCountry, expanded = birthCountryExpanded,
         onExpandedChange = onBirthCountryExpanded,
         label = "出生国家/地", options = countryList,
-        onSelect = { onBirthCountryExpanded(false) }
+        onSelect = onBirthCountrySelect
     )
 
     // Nationality
@@ -496,7 +500,7 @@ private fun Page2PersonalInfo(
         value = nationality, expanded = nationalityExpanded,
         onExpandedChange = onNationalityExpanded,
         label = "国籍/公民", options = countryList,
-        onSelect = { onNationalityExpanded(false) }
+        onSelect = onNationalitySelect
     )
 
     // Document number
