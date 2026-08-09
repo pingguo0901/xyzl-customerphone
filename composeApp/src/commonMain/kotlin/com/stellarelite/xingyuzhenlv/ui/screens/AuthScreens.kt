@@ -89,6 +89,7 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
+    var referralCode by remember { mutableStateOf("") }
     var agreeTerms by remember { mutableStateOf(false) }
     val pwValid = password.isNotEmpty() && validatePassword(password) && password == confirmPassword
 
@@ -116,6 +117,10 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
         Spacer(Modifier.height(12.dp))
 
         OutlinedTextField(value = confirmPassword, onValueChange = { confirmPassword = it }, label = { Text("确认密码") }, modifier = Modifier.fillMaxWidth(), visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), leadingIcon = { Icon(Icons.Filled.Lock, null) }, isError = confirmPassword.isNotEmpty() && password != confirmPassword)
+
+        Spacer(Modifier.height(12.dp))
+
+        OutlinedTextField(value = referralCode, onValueChange = { referralCode = it }, label = { Text("推荐码（选填）") }, modifier = Modifier.fillMaxWidth(), leadingIcon = { Icon(Icons.Filled.CardGiftcard, null) })
 
         Spacer(Modifier.height(12.dp))
 
