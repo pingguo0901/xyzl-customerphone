@@ -20,12 +20,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PrivacySecurityScreen(onBack: () -> Unit = {}, onKYC: () -> Unit = {}) {
     val scrollState = rememberScrollState()
-    var facePhotoSelected by remember { mutableStateOf(false) }
-    var fullName by remember { mutableStateOf("") }
-    var birthDate by remember { mutableStateOf("") }
-    var birthCountry by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
-    var passportPhotoSelected by remember { mutableStateOf(false) }
+    // KYC 状态: "pending"=未认证, "reviewing"=审核中, "done"=已完成
+    var kycStatus by remember { mutableStateOf("pending") }
     var oldPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -42,21 +38,16 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}, onKYC: () -> Unit = {}) {
             Text("隐私与安全", fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
 
-        // 身份验证资料
+        // 身份信息卡片
         Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("身份验证资料", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Text("身份信息", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
 
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    PhotoPickerButton("人脸照", Icons.Filled.Face, facePhotoSelected, Modifier.weight(1f))
-                    PhotoPickerButton("护照照片", Icons.Filled.Book, passportPhotoSelected, Modifier.weight(1f))
+                when (kycStatus) {
+                    "done" -> KYCDoneCard()
+                    "reviewing" -> KYCStatusBanner("KYC 实名认证审核中，24小时内完成验证。", Color(0xFFFF9800))
+                    else -> KYCStatusBanner("KYC 实名认证未认证，请到下方进行验证。", Color(0xFFFF5722))
                 }
-                OutlinedTextField(value = fullName, onValueChange = { fullName = it }, label = { Text("姓名") }, modifier = Modifier.fillMaxWidth())
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedTextField(value = birthDate, onValueChange = { birthDate = it }, label = { Text("出生日期") }, modifier = Modifier.weight(1f), leadingIcon = { Icon(Icons.Filled.CalendarMonth, null) })
-                    OutlinedTextField(value = birthCountry, onValueChange = { birthCountry = it }, label = { Text("出生国家") }, modifier = Modifier.weight(1f))
-                }
-                OutlinedTextField(value = address, onValueChange = { address = it }, label = { Text("住址") }, modifier = Modifier.fillMaxWidth())
             }
         }
 
@@ -143,54 +134,30 @@ fun PrivacySecurityScreen(onBack: () -> Unit = {}, onKYC: () -> Unit = {}) {
 }
 
 @Composable
-private fun PhotoPickerButton(label: String, icon: androidx.compose.ui.graphics.vector.ImageVector, selected: Boolean, modifier: Modifier = Modifier) {
-    var showOptions by remember { mutableStateOf(false) }
-
-    OutlinedButton(
-        onClick = { showOptions = true },
-        modifier = modifier.height(56.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = if (selected) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline
-        )
+private fun KYCStatusBanner(message: String, color: Color) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        color = color.copy(alpha = 0.1f)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                if (selected) Icons.Filled.CheckCircle else icon,
-                null,
-                tint = if (selected) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(Modifier.height(2.dp))
-            Text(
-                if (selected) "已选择" else label,
-                fontSize = 11.sp
-            )
+        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Filled.Info, null, tint = color, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(message, fontSize = 13.sp, color = color, fontWeight = FontWeight.Medium)
         }
     }
+}
 
-    if (showOptions) {
-        AlertDialog(
-            onDismissRequest = { showOptions = false },
-            title = { Text(label, fontWeight = FontWeight.Bold) },
-            text = {
-                Column {
-                    TextButton(onClick = { /* TODO: 打开相机拍照 */; showOptions = false }) {
-                        Icon(Icons.Filled.CameraAlt, null, modifier = Modifier.size(20.dp))
-                        Spacer(Modifier.width(10.dp))
-                        Text("拍照", fontSize = 15.sp)
-                    }
-                    TextButton(onClick = { /* TODO: 从相册选择 */; showOptions = false }) {
-                        Icon(Icons.Filled.PhotoLibrary, null, modifier = Modifier.size(20.dp))
-                        Spacer(Modifier.width(10.dp))
-                        Text("从相册选择", fontSize = 15.sp)
-                    }
-                }
-            },
-            confirmButton = {},
-            dismissButton = {
-                TextButton(onClick = { showOptions = false }) { Text("取消") }
+@Composable
+private fun KYCDoneCard() {
+    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f))) {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Filled.CheckCircle, null, tint = Color(0xFF4CAF50), modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(6.dp))
+                Text("KYC 已验证通过", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF4CAF50))
             }
-        )
+            Text("护照信息已绑定，可使用全部服务", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+        }
     }
 }

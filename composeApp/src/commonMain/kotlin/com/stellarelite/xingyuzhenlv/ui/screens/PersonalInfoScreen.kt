@@ -27,8 +27,6 @@ fun PersonalInfoScreen(onBack: () -> Unit = {}) {
     var whatsapp by remember { mutableStateOf("") }
     var wechat by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var telegram by remember { mutableStateOf("") }
-    var douyin by remember { mutableStateOf("") }
     var hobbies by remember { mutableStateOf("") }
 
     Column(
@@ -63,8 +61,6 @@ fun PersonalInfoScreen(onBack: () -> Unit = {}) {
                 OutlinedTextField(value = whatsapp, onValueChange = { whatsapp = it }, label = { Text("WhatsApp") }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(value = wechat, onValueChange = { wechat = it }, label = { Text("微信") }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("邮箱") }, modifier = Modifier.fillMaxWidth(), keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Email))
-                OutlinedTextField(value = telegram, onValueChange = { telegram = it }, label = { Text("Telegram") }, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(value = douyin, onValueChange = { douyin = it }, label = { Text("抖音") }, modifier = Modifier.fillMaxWidth())
             }
         }
 

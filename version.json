@@ -1,8 +1,8 @@
 {
-  "versionCode": 47,
-  "versionName": "1.0.46",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.46/composeApp-debug.apk",
-  "changelog": "- 修复KYC上传证件框改为上下排列\n- 修复拍照/相册弹窗流程\n- 修复出生国家/国籍选择器显示\n- 修复日期选择器",
+  "versionCode": 48,
+  "versionName": "1.0.47",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.47/composeApp-debug.apk",
+  "changelog": "- 隐私与安全：身份验证资料→身份信息+KYC状态卡片\n- 个人信息页：移除Telegram/抖音输入框\n- 修复版本按钮/版本页面显示错误（v1.0.23/v1.0.40→v1.0.47）",
   "buildDate": "2026-08-09",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",
