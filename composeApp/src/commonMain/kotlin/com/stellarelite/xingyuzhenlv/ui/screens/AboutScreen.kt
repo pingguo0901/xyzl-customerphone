@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.stellarelite.xingyuzhenlv.i18n.t
 import com.stellarelite.xingyuzhenlv.update.openUrl
 
 @Composable fun AboutScreen(onBack: () -> Unit = {}) {
@@ -24,7 +25,7 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = "返回") }
             Spacer(Modifier.width(8.dp))
-            Text("关于我们", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(t("about_title"), fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
@@ -53,7 +54,7 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
 
             // Brand intro
             Text(
-                "本应用由马来西亚本地个人经营者运营，品牌名称：星域臻旅。",
+                t("about_intro"),
                 fontSize = 15.sp,
                 lineHeight = 24.sp,
                 color = MaterialTheme.colorScheme.onSurface
@@ -73,15 +74,8 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
             Spacer(Modifier.height(20.dp))
 
             // APP服务范围
-            SectionTitle("APP 提供服务范围")
-            BulletList(listOf(
-                "包车查询",
-                "行程预订",
-                "KYC 身份实名认证",
-                "订单管理",
-                "出行通知",
-                "客服沟通"
-            ))
+            SectionTitle(t("about_services"))
+            val services = t("about_services_list").split("/")
 
             Spacer(Modifier.height(20.dp))
 
@@ -119,10 +113,10 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
             Spacer(Modifier.height(20.dp))
 
             // 联系方式
-            SectionTitle("联系方式")
+            SectionTitle(t("about_contact"))
             Text("WhatsApp：+65 8194 5601", fontSize = 14.sp, lineHeight = 22.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f))
             Text("电子邮箱：stellarelitexingyuzhenlv@gmail.com", fontSize = 14.sp, lineHeight = 22.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f))
-            Text("运营地点：马来西亚柔佛州新山", fontSize = 14.sp, lineHeight = 22.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f))
+            Text(t("about_location"), fontSize = 14.sp, lineHeight = 22.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f))
 
             Spacer(Modifier.height(32.dp))
 
@@ -131,7 +125,7 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
             Spacer(Modifier.height(16.dp))
 
             Text(
-                "国际官网对应页面：",
+                t("about_intl_site"),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.outline
             )
@@ -151,7 +145,7 @@ import com.stellarelite.xingyuzhenlv.update.openUrl
             Spacer(Modifier.height(14.dp))
 
             Text(
-                "中国官网对应页面：",
+                t("about_cn_site"),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.outline
             )

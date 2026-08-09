@@ -16,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import com.stellarelite.xingyuzhenlv.i18n.t
+
 data class WalletTransaction(
     val id: String,
     val type: String,
@@ -48,7 +50,7 @@ fun WalletScreen(onBack: () -> Unit = {}) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, "返回") }
             Spacer(Modifier.width(8.dp))
-            Text("我的钱包", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(t("wallet_title"), fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
 
         Spacer(Modifier.height(20.dp))
@@ -60,12 +62,12 @@ fun WalletScreen(onBack: () -> Unit = {}) {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("当前余额", fontSize = 13.sp, color = Color.White.copy(alpha = 0.7f))
+                Text(t("wallet_balance"), fontSize = 13.sp, color = Color.White.copy(alpha = 0.7f))
                 Spacer(Modifier.height(8.dp))
                 Text(showBalance, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 Spacer(Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text("MYR · 星域臻旅钱包", fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
+                    Text(t("wallet_myr"), fontSize = 12.sp, color = Color.White.copy(alpha = 0.6f))
                 }
             }
         }
@@ -81,13 +83,13 @@ fun WalletScreen(onBack: () -> Unit = {}) {
         ) {
             Icon(Icons.Filled.AddCircle, null, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(8.dp))
-            Text("充值", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            Text(t("wallet_topup"), fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(Modifier.height(24.dp))
 
         // 明细记录
-        Text("明细记录", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(t("wallet_transactions"), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(12.dp))
 
         transactions.forEach { tx ->
@@ -102,30 +104,30 @@ fun WalletScreen(onBack: () -> Unit = {}) {
     if (showTopUp) {
         AlertDialog(
             onDismissRequest = { showTopUp = false },
-            title = { Text("充值", fontWeight = FontWeight.Bold) },
+            title = { Text(t("wallet_topup_title"), fontWeight = FontWeight.Bold) },
             text = {
                 Column {
-                    Text("请输入充值金额", fontSize = 14.sp, color = MaterialTheme.colorScheme.outline)
+                    Text(t("wallet_topup_hint"), fontSize = 14.sp, color = MaterialTheme.colorScheme.outline)
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
                         value = topUpAmount,
                         onValueChange = { topUpAmount = it },
-                        label = { Text("金额 (MYR)") },
+                        label = { Text(t("wallet_topup_amount")) },
                         modifier = Modifier.fillMaxWidth(),
                         prefix = { Text("RM ") }
                     )
                     Spacer(Modifier.height(12.dp))
-                    Text("充值后将自动存入钱包余额", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+                    Text(t("wallet_topup_notice"), fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
                 }
             },
             confirmButton = {
                 TextButton(onClick = {
                     showTopUp = false
                     topUpAmount = ""
-                }) { Text("确认充值") }
+                }) { Text(t("wallet_topup_confirm")) }
             },
             dismissButton = {
-                TextButton(onClick = { showTopUp = false }) { Text("取消") }
+                TextButton(onClick = { showTopUp = false }) { Text(t("wallet_cancel")) }
             }
         )
     }

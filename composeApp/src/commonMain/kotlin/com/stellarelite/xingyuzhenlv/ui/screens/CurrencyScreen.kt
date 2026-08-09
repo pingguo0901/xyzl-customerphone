@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import com.stellarelite.xingyuzhenlv.i18n.t
+
 enum class Currency(val code: String, val symbol: String, val displayName: String) {
     MYR("MYR", "RM", "马来西亚林吉特"),
     SGD("SGD", "S$", "新加坡元"),
@@ -49,11 +51,11 @@ fun CurrencyScreen(onBack: () -> Unit = {}) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, "返回") }
             Spacer(Modifier.width(8.dp))
-            Text("货币", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(t("currency_title"), fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
 
         Spacer(Modifier.height(8.dp))
-        Text("选择默认显示货币", fontSize = 14.sp, color = MaterialTheme.colorScheme.outline)
+        Text(t("currency_hint"), fontSize = 14.sp, color = MaterialTheme.colorScheme.outline)
 
         Spacer(Modifier.height(20.dp))
 
