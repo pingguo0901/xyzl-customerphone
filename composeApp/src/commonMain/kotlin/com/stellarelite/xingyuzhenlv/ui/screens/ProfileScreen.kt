@@ -44,7 +44,7 @@ fun ProfileScreen(
     onKYCClick: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
-    val currentVersion = "1.0.47"
+    val currentVersion = "1.0.49"
 
     // 语言和主题
     val currentLang = LanguageManager.currentLang.value

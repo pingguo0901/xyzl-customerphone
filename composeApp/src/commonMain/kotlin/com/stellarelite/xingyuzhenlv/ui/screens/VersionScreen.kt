@@ -27,7 +27,7 @@ fun VersionScreen(onBack: () -> Unit = {}) {
     var showResult by remember { mutableStateOf(false) }
     var isUpToDate by remember { mutableStateOf(false) }
 
-    val currentVersion = "1.0.47"
+    val currentVersion = "1.0.49"
     val currentVersionCode = UpdateManager.CURRENT_VERSION_CODE
 
     fun checkUpdate() {
