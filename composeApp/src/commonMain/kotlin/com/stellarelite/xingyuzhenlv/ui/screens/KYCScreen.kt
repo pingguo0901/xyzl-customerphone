@@ -126,6 +126,23 @@ import com.stellarelite.xingyuzhenlv.update.openLegalUrl
 
             Spacer(Modifier.height(24.dp))
 
+            // 身份核验授权
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+            Spacer(Modifier.height(16.dp))
+            SectionTitle("身份核验授权（本授权独立于服务协议）")
+            Spacer(Modifier.height(4.dp))
+
+            KYCNumberedList(listOf(
+                "为完成账号实名认证、身份核验、防范账号欺诈，我同意平台收集我的身份证件照片、人脸扫描生物信息（人脸特征）。",
+                "我知悉：上述证件图片、人脸数据，会加密传输给到第三方身份核验服务商 ID‑Analyzer，用于执行：证件质量检测、证件类型校验、OCR信息提取、动作活体检测、人脸1:1比对身份核验，服务商仅为本核验目的处理我的数据。",
+                "我理解：本授权为完成KYC实名认证的必要条件，若拒绝授权，将无法完成实名认证，部分平台功能不可使用。",
+                "平台不会将我的证件原图、人脸生物特征用于其他无关商业用途。平台优先仅存储核验结构化结果（文本信息、核验分数）；如业务需要留存证件原图，图片将设置自动过期删除周期，不会永久保存。",
+                "根据马来西亚《个人数据保护法 PDPA》，我拥有查阅、更正、申请删除本人个人与生物识别数据的权利，也可以随时撤回本授权；撤回授权后，实名认证状态失效，可以通过平台客服提交申请。",
+                "服务商ID‑Analyzer具备ISO27001信息安全认证，将按照合规标准保护我的身份与生物识别数据。"
+            ))
+
+            Spacer(Modifier.height(24.dp))
+
             // 6. 联系我们
             SectionTitle("6. 联系我们")
             Text(
@@ -210,6 +227,24 @@ private fun BulletList(items: List<String>) {
                     fontSize = 14.sp,
                     lineHeight = 22.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun KYCNumberedList(items: List<String>) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        items.forEachIndexed { index, item ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text("${index + 1}.  ", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                Text(
+                    item,
+                    fontSize = 13.sp,
+                    lineHeight = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                    modifier = Modifier.weight(1f)
                 )
             }
         }

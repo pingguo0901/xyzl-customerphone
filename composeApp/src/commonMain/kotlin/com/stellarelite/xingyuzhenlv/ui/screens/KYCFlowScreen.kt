@@ -101,6 +101,15 @@ fun KYCFlowScreen(onBack: () -> Unit = {}) {
     var faceScanComplete by remember { mutableStateOf(false) }
     var faceScanning by remember { mutableStateOf(false) }
 
+    // 人脸识别自动完成
+    LaunchedEffect(faceScanning) {
+        if (faceScanning) {
+            kotlinx.coroutines.delay(2500)
+            faceScanning = false
+            faceScanComplete = true
+        }
+    }
+
     // Page 5
     var consentChecked by remember { mutableStateOf(false) }
     var showSubmitDialog by remember { mutableStateOf(false) }
@@ -400,25 +409,42 @@ private fun UploadBox(label: String, selected: Boolean, onClick: () -> Unit, mod
 
 @Composable
 private fun PhotoPickerDialog(title: String, onDone: () -> Unit) {
+    var processing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(processing) {
+        if (processing) {
+            kotlinx.coroutines.delay(1200)
+            onDone()
+        }
+    }
+
     AlertDialog(
-        onDismissRequest = onDone,
+        onDismissRequest = if (!processing) onDone else {{ }},
         title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
             Column {
-                TextButton(onClick = onDone) {
-                    Icon(Icons.Filled.CameraAlt, null, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(10.dp))
-                    Text("拍照")
-                }
-                TextButton(onClick = onDone) {
-                    Icon(Icons.Filled.PhotoLibrary, null, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(10.dp))
-                    Text("从相册选择")
+                if (processing) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                        Spacer(Modifier.width(12.dp))
+                        Text("正在处理...", fontSize = 14.sp)
+                    }
+                } else {
+                    TextButton(onClick = { processing = true }) {
+                        Icon(Icons.Filled.CameraAlt, null, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text("拍照")
+                    }
+                    TextButton(onClick = { processing = true }) {
+                        Icon(Icons.Filled.PhotoLibrary, null, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text("从相册选择")
+                    }
                 }
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDone) { Text("取消") } }
+        dismissButton = { if (!processing) TextButton(onClick = onDone) { Text("取消") } }
     )
 }
 
@@ -708,23 +734,25 @@ private fun Page5Confirm(
         modifier = Modifier.fillMaxWidth()
     ) {
         Checkbox(checked = consentChecked, onCheckedChange = onConsentChange)
-        Column(modifier = Modifier.weight(1f)) {
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                "我已明确同意平台收集我的护照信息以及人脸生物识别数据，用于身份核验、反诈以及跨境包车业务；同时我知悉APP会申请位置、相机、相册、麦克风、通讯录、通知设备权限用于出行接驾沟通，我已经完整阅读",
+                "我已阅读并明确同意以下身份核验授权（本授权独立于服务协议）",
                 fontSize = 12.sp,
-                lineHeight = 18.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { onShowLegal("privacy") }, contentPadding = PaddingValues(2.dp)) {
-                    Text("《隐私政策》", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
-                }
-                Text(" ", fontSize = 12.sp)
-                TextButton(onClick = { /* KYC page nav */ onShowLegal(null) }, contentPadding = PaddingValues(2.dp)) {
-                    Text("《KYC实名认证》", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
-                }
-                Text("，知晓全部个人数据处理规则。", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f))
-            }
+            Text("1. 为完成账号实名认证、身份核验、防范账号欺诈，我同意平台收集我的身份证件照片、人脸扫描生物信息（人脸特征）。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+            Text("2. 我知悉：上述证件图片、人脸数据，会加密传输给到第三方身份核验服务商 ID‑Analyzer，用于执行：证件质量检测、证件类型校验、OCR信息提取、动作活体检测、人脸1:1比对身份核验，服务商仅为本核验目的处理我的数据。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+            Text("3. 我理解：本授权为完成KYC实名认证的必要条件，若拒绝授权，将无法完成实名认证，部分平台功能不可使用。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+            Text("4. 平台不会将我的证件原图、人脸生物特征用于其他无关商业用途。平台优先仅存储核验结构化结果（文本信息、核验分数）；如业务需要留存证件原图，图片将设置自动过期删除周期，不会永久保存。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+            Text("5. 根据马来西亚《个人数据保护法 PDPA》，我拥有查阅、更正、申请删除本人个人与生物识别数据的权利，也可以随时撤回本授权；撤回授权后，实名认证状态失效，可以通过平台客服提交申请。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
+            Text("6. 服务商ID‑Analyzer具备ISO27001信息安全认证，将按照合规标准保护我的身份与生物识别数据。",
+                fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f))
         }
     }
 }
