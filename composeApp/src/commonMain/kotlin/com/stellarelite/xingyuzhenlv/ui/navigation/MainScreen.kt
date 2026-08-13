@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.ui.screens.*
 import com.stellarelite.xingyuzhenlv.update.UpdateManager
+import com.stellarelite.xingyuzhenlv.i18n.t
 
 enum class AuthScreen { Entry, Login, Register, ForgotPassword }
 
@@ -25,6 +26,9 @@ fun MainScreen() {
     }
 
     var showBooking by remember { mutableStateOf(false) }
+    var showTripTypeSelector by remember { mutableStateOf(false) }
+    var showOneWayTransfer by remember { mutableStateOf(false) }
+    var showMultiDayCharter by remember { mutableStateOf(false) }
     var showCrossBorder by remember { mutableStateOf(false) }
     var showSingaporeGuide by remember { mutableStateOf(false) }
     var showMalaysiaGuide by remember { mutableStateOf(false) }
@@ -53,6 +57,31 @@ fun MainScreen() {
         AuthScreen.Register -> { RegisterScreen(onBack = { authScreen = AuthScreen.Entry }, onRegisterSuccess = { authScreen = null }); return }
         AuthScreen.ForgotPassword -> { ForgotPasswordScreen(onBack = { authScreen = AuthScreen.Login }, onResetSuccess = { authScreen = AuthScreen.Login }); return }
         null -> {}
+    }
+
+    if (showTripTypeSelector) {
+        TripTypeSelectorDialog(
+            onSelectOneWay = {
+                showTripTypeSelector = false
+                showOneWayTransfer = true
+            },
+            onSelectMultiDay = {
+                showTripTypeSelector = false
+                showMultiDayCharter = true
+            },
+            onDismiss = { showTripTypeSelector = false }
+        )
+        return
+    }
+
+    if (showOneWayTransfer) {
+        OneWayTransferScreen(onBack = { showOneWayTransfer = false })
+        return
+    }
+
+    if (showMultiDayCharter) {
+        MultiDayCharterScreen(onBack = { showMultiDayCharter = false })
+        return
     }
 
     if (showBooking) {
@@ -219,7 +248,7 @@ fun MainScreen() {
             when (currentScreen) {
                 Screen.Chat -> ChatScreen(onNotification = { showNotification = true })
                 Screen.Explore -> ExploreScreen()
-                Screen.Home -> HomeScreen(onBookTrip = { showBooking = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true }, onContactSupport = { currentScreen = Screen.Chat })
+                Screen.Home -> HomeScreen(onBookTrip = { showTripTypeSelector = true }, onCrossBorder = { showCrossBorder = true }, onNotification = { showNotification = true }, onContactSupport = { currentScreen = Screen.Chat })
                 Screen.Trips -> TripsScreen(onViewDetail = { showTripDetail = it })
                 Screen.Profile -> ProfileScreen(
                     onLoginClick = { authScreen = AuthScreen.Entry },
@@ -240,6 +269,62 @@ fun MainScreen() {
             }
         }
     }
+}
+
+@Composable
+fun TripTypeSelectorDialog(
+    onSelectOneWay: () -> Unit,
+    onSelectMultiDay: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(20.dp),
+        title = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Text("🚗 ${t("trip_type_selector_title")}", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(4.dp))
+                Text(t("trip_type_selector_subtitle"), fontSize = 13.sp, color = MaterialTheme.colorScheme.outline)
+            }
+        },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // 单程接送
+                Button(
+                    onClick = onSelectOneWay,
+                    modifier = Modifier.fillMaxWidth().height(64.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("🚕 ${t("trip_type_one_way")}", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text(t("trip_type_one_way_desc"), fontSize = 12.sp, color = Color.White.copy(alpha = 0.8f))
+                    }
+                }
+                // 多日包车
+                Button(
+                    onClick = onSelectMultiDay,
+                    modifier = Modifier.fillMaxWidth().height(64.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("🚌 ${t("trip_type_multi_day")}", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text(t("trip_type_multi_day_desc"), fontSize = 12.sp, color = Color.White.copy(alpha = 0.8f))
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                Text(t("booking_cancel"), fontSize = 15.sp)
+            }
+        }
+    )
 }
 
 @Composable

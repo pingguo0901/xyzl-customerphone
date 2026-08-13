@@ -80,6 +80,18 @@ object Strings {
         "booking_confirm_trip" to "确认行程",
         "booking_submitted_title" to "行程已提交",
         "booking_submitted_msg" to "您的定制请求将即时推送至星域臻旅专属管家与司机终端，管家与司机将在 5 分钟内完成调度并与您联系。",
+        // 单程接送
+        "one_way_transfer_title" to "单程接送",
+        // 多日包车
+        "multi_day_charter_title" to "多日包车",
+        "multi_day_charter_settings" to "包车设置",
+        // 行程类型选择
+        "trip_type_selector_title" to "选择行程类型",
+        "trip_type_selector_subtitle" to "请选择您需要的出行服务",
+        "trip_type_one_way" to "单程接送",
+        "trip_type_one_way_desc" to "点对点接送，一口价一口行",
+        "trip_type_multi_day" to "多日包车",
+        "trip_type_multi_day_desc" to "按日包车，适合多天出行",
         // 首页
         "notifications" to "通知",
         // 行程页
@@ -250,6 +262,18 @@ object Strings {
         "booking_confirm_trip" to "Confirm Booking",
         "booking_submitted_title" to "Booking Submitted",
         "booking_submitted_msg" to "Your request has been sent to our concierge and driver team. They will arrange within 5 minutes and contact you shortly.",
+        // One-Way Transfer
+        "one_way_transfer_title" to "One-Way Transfer",
+        // Multi-Day Charter
+        "multi_day_charter_title" to "Multi-Day Charter",
+        "multi_day_charter_settings" to "Charter Settings",
+        // Trip Type Selector
+        "trip_type_selector_title" to "Select Trip Type",
+        "trip_type_selector_subtitle" to "Choose your travel service",
+        "trip_type_one_way" to "One-Way Transfer",
+        "trip_type_one_way_desc" to "Point-to-point transfer, fixed fare",
+        "trip_type_multi_day" to "Multi-Day Charter",
+        "trip_type_multi_day_desc" to "Daily charter for multi-day trips",
         // Home
         "notifications" to "Alerts",
         // Trips
@@ -381,6 +405,58 @@ object Strings {
         "update_new_version" to "Versi Terkini",
         "update_later" to "Kemudian",
         "update_now" to "Kemas Kini",
+        // Booking
+        "booking_title" to "Tempah Perjalanan",
+        "booking_country_code" to "Kod Negara",
+        "booking_phone" to "Telefon",
+        "booking_use_saved_phone" to "Guna Nombor Tersimpan",
+        "booking_wechat_id" to "WeChat ID",
+        "booking_passengers_luggage" to "Penumpang & Bagasi",
+        "booking_adults" to "Dewasa",
+        "booking_children" to "Kanak-kanak",
+        "booking_luggage" to "Bagasi",
+        "booking_schedule" to "Jadual",
+        "booking_date" to "Tarikh",
+        "booking_time" to "Masa",
+        "booking_select_time" to "Pilih Masa",
+        "booking_confirm" to "Sahkan",
+        "booking_cancel" to "Batal",
+        "booking_trip_details" to "Butiran Perjalanan",
+        "booking_pickup" to "Ambil",
+        "booking_dropoff" to "Hantar",
+        "booking_select_state" to "Pilih Negeri",
+        "booking_pickup_address" to "Alamat Ambil",
+        "booking_dropoff_address" to "Alamat Hantar",
+        "booking_add_address" to "Tambah Alamat",
+        "booking_vehicle_type" to "Jenis Kenderaan",
+        "booking_vehicle_count" to "Bilangan Kenderaan",
+        "booking_vehicles" to "kenderaan",
+        "booking_trip_type" to "Jenis Perjalanan",
+        "booking_one_way" to "Satu Hala",
+        "booking_charter" to "Sewa (Setiap Jam)",
+        "booking_hours" to "Jam",
+        "booking_multi_day" to "Berbilang Hari",
+        "booking_start_date" to "Tarikh Mula",
+        "booking_end_date" to "Tarikh Tamat",
+        "booking_special_notes" to "Nota Khas",
+        "booking_estimated_price" to "Harga Anggaran",
+        "booking_price_note" to "Harga untuk rujukan sahaja",
+        "booking_duration_based" to "Berdasarkan tempoh/berbilang hari",
+        "booking_confirm_trip" to "Sahkan Tempahan",
+        "booking_submitted_title" to "Tempahan Dihantar",
+        "booking_submitted_msg" to "Permintaan anda telah dihantar kepada concierge dan pemandu. Mereka akan uruskan dalam 5 minit.",
+        // Pindahan Satu Hala
+        "one_way_transfer_title" to "Pindahan Satu Hala",
+        // Sewa Berbilang Hari
+        "multi_day_charter_title" to "Sewa Berbilang Hari",
+        "multi_day_charter_settings" to "Tetapan Sewa",
+        // Pemilih Jenis
+        "trip_type_selector_title" to "Pilih Jenis Perjalanan",
+        "trip_type_selector_subtitle" to "Pilih perkhidmatan perjalanan anda",
+        "trip_type_one_way" to "Pindahan Satu Hala",
+        "trip_type_one_way_desc" to "Pindahan titik ke titik, tambang tetap",
+        "trip_type_multi_day" to "Sewa Berbilang Hari",
+        "trip_type_multi_day_desc" to "Sewa harian untuk perjalanan berbilang hari",
         // Home
         "notifications" to "Notis",
         // Trips
@@ -548,6 +624,18 @@ object Strings {
         "booking_confirm_trip" to "予約確定",
         "booking_submitted_title" to "予約送信済み",
         "booking_submitted_msg" to "リクエストがコンシェルジュとドライバーに送信されました。5分以内に手配しご連絡します。",
+        // One-Way Transfer
+        "one_way_transfer_title" to "片道送迎",
+        // Multi-Day Charter
+        "multi_day_charter_title" to "複数日チャーター",
+        "multi_day_charter_settings" to "チャーター設定",
+        // Trip Type Selector
+        "trip_type_selector_title" to "旅程タイプを選択",
+        "trip_type_selector_subtitle" to "ご利用サービスをお選びください",
+        "trip_type_one_way" to "片道送迎",
+        "trip_type_one_way_desc" to "地点間の送迎、固定料金",
+        "trip_type_multi_day" to "複数日チャーター",
+        "trip_type_multi_day_desc" to "日単位のチャーター、複数日旅行に最適",
         "notifications" to "通知",
         "tab_all" to "全て",
         "tab_booked" to "予約済",
@@ -712,6 +800,18 @@ object Strings {
         "booking_confirm_trip" to "예약 확정",
         "booking_submitted_title" to "예약 제출 완료",
         "booking_submitted_msg" to "귀하의 요청이 컨시어지와 드라이버 팀에 전송되었습니다. 5분 이내에 연락 드리겠습니다.",
+        // One-Way Transfer
+        "one_way_transfer_title" to "편도 픽업",
+        // Multi-Day Charter
+        "multi_day_charter_title" to "여러 날 전세",
+        "multi_day_charter_settings" to "전세 설정",
+        // Trip Type Selector
+        "trip_type_selector_title" to "여정 유형 선택",
+        "trip_type_selector_subtitle" to "이용하실 서비스를 선택하세요",
+        "trip_type_one_way" to "편도 픽업",
+        "trip_type_one_way_desc" to "지점 간 이동, 고정 요금",
+        "trip_type_multi_day" to "여러 날 전세",
+        "trip_type_multi_day_desc" to "일 단위 전세, 여러 날 여행에 적합",
         "notifications" to "알림",
         "tab_all" to "전체",
         "tab_booked" to "예약됨",
