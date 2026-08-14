@@ -1,8 +1,8 @@
 {
-  "versionCode": 53,
-  "versionName": "1.0.53",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.53/composeApp-debug.apk",
-  "changelog": "- 更新检测源改为 CDN，修复被墙导致无法弹出升级提示\n- 预定行程拆分为单程接送/多日包车两个独立页面",
+  "versionCode": 54,
+  "versionName": "1.0.54",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.54/composeApp-debug.apk",
+  "changelog": "- 多日包车：预约时间改为开始/结束日期时间，自动计算包车时长",
   "buildDate": "2026-08-14",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",

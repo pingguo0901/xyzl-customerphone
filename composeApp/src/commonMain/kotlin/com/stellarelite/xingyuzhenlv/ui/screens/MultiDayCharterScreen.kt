@@ -45,13 +45,15 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
     var children by remember { mutableIntStateOf(0) }
     var luggage by remember { mutableIntStateOf(0) }
 
-    // 预约行程
-    var showDatePicker by remember { mutableStateOf(false) }
-    var showTimePicker by remember { mutableStateOf(false) }
-    var dateSelection by remember { mutableStateOf(DateSelection()) }
-    var timeSelection by remember { mutableStateOf(TimeSelection()) }
-    var dateText by remember { mutableStateOf("") }
-    var timeText by remember { mutableStateOf("") }
+    // 预约行程（开始/结束日期时间）
+    var showStartDatePicker by remember { mutableStateOf(false) }
+    var showStartTimePicker by remember { mutableStateOf(false) }
+    var showEndDatePicker by remember { mutableStateOf(false) }
+    var showEndTimePicker by remember { mutableStateOf(false) }
+    var startDateText by remember { mutableStateOf("") }
+    var startTimeText by remember { mutableStateOf("") }
+    var endDateText by remember { mutableStateOf("") }
+    var endTimeText by remember { mutableStateOf("") }
 
     // 上车地址
     var pickupStatesExpanded by remember { mutableStateOf(false) }
@@ -70,12 +72,6 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
     var selectedVehicle by remember { mutableStateOf("") }
 
     // 多日包车
-    var charterHours by remember { mutableIntStateOf(1) }
-    var charterMultiDay by remember { mutableStateOf(true) }
-    var charterStartDate by remember { mutableStateOf("") }
-    var charterEndDate by remember { mutableStateOf("") }
-    var showCharterStartDatePicker by remember { mutableStateOf(false) }
-    var showCharterEndDatePicker by remember { mutableStateOf(false) }
     var specialNotes by remember { mutableStateOf("") }
 
     // 预估价格
@@ -88,6 +84,9 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
     var agreeRefund by remember { mutableStateOf(false) }
     var agreePaymentFee by remember { mutableStateOf(false) }
     var showLegalDialog by remember { mutableStateOf<String?>(null) }
+
+    // 自动计算包车时长（开始日期时间 → 结束日期时间）
+    val charterDuration = calcCharterDuration(startDateText, startTimeText, endDateText, endTimeText)
 
     Column(
         modifier = Modifier
@@ -244,15 +243,16 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("📅 ${t("booking_schedule")}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(12.dp))
+                // 开始日期 | 开始时间
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showDatePicker = true }) {
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showStartDatePicker = true }) {
                         OutlinedTextField(
-                            value = dateText,
+                            value = startDateText,
                             onValueChange = {},
-                            label = { Text(t("booking_date")) },
+                            label = { Text(t("booking_start_date")) },
                             readOnly = true,
                             enabled = false,
                             modifier = Modifier.fillMaxWidth(),
@@ -264,11 +264,11 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
                             )
                         )
                     }
-                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showTimePicker = true }) {
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showStartTimePicker = true }) {
                         OutlinedTextField(
-                            value = timeText,
+                            value = startTimeText,
                             onValueChange = {},
-                            label = { Text(t("booking_time")) },
+                            label = { Text(t("booking_start_time")) },
                             readOnly = true,
                             enabled = false,
                             modifier = Modifier.fillMaxWidth(),
@@ -281,100 +281,146 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
                         )
                     }
                 }
+                Spacer(Modifier.height(12.dp))
+                // 结束日期 | 结束时间
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showEndDatePicker = true }) {
+                        OutlinedTextField(
+                            value = endDateText,
+                            onValueChange = {},
+                            label = { Text(t("booking_end_date")) },
+                            readOnly = true,
+                            enabled = false,
+                            modifier = Modifier.fillMaxWidth(),
+                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                            )
+                        )
+                    }
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showEndTimePicker = true }) {
+                        OutlinedTextField(
+                            value = endTimeText,
+                            onValueChange = {},
+                            label = { Text(t("booking_end_time")) },
+                            readOnly = true,
+                            enabled = false,
+                            modifier = Modifier.fillMaxWidth(),
+                            trailingIcon = { Icon(Icons.Outlined.Schedule, null, tint = MaterialTheme.colorScheme.primary) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                disabledLabelColor = MaterialTheme.colorScheme.outline
+                            )
+                        )
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
+                // 自动计算包车时长
+                Text(
+                    "⏱️ ${t("booking_charter")}: ${charterDuration.days} ${t("booking_days")} | ${charterDuration.hours} ${t("booking_hours")}",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
 
-        // 日期选择器
-        if (showDatePicker) {
+        // 开始日期选择器
+        if (showStartDatePicker) {
             val datePickerState = rememberDatePickerState()
             DatePickerDialog(
-                onDismissRequest = { showDatePicker = false },
+                onDismissRequest = { showStartDatePicker = false },
                 confirmButton = {
                     TextButton(onClick = {
                         datePickerState.selectedDateMillis?.let { millis ->
-                            val calendar = java.util.Calendar.getInstance().apply { timeInMillis = millis }
-                            dateSelection = DateSelection(
-                                calendar.get(java.util.Calendar.DAY_OF_MONTH),
-                                calendar.get(java.util.Calendar.MONTH) + 1,
-                                calendar.get(java.util.Calendar.YEAR)
-                            )
-                            dateText = "${dateSelection.year}-${dateSelection.month.toString().padStart(2, '0')}-${dateSelection.day.toString().padStart(2, '0')}"
+                            startDateText = formatDate(millis)
                         }
-                        showDatePicker = false
+                        showStartDatePicker = false
                     }) { Text(t("booking_confirm")) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDatePicker = false }) { Text(t("booking_cancel")) }
+                    TextButton(onClick = { showStartDatePicker = false }) { Text(t("booking_cancel")) }
                 }
             ) {
                 DatePicker(state = datePickerState)
             }
         }
 
-        // 时间选择器
-        if (showTimePicker) {
+        // 开始时间选择器
+        if (showStartTimePicker) {
             val timePickerState = rememberTimePickerState(
-                initialHour = timeSelection.hour,
-                initialMinute = timeSelection.minute,
+                initialHour = 12,
+                initialMinute = 0,
                 is24Hour = true
             )
             AlertDialog(
-                onDismissRequest = { showTimePicker = false },
+                onDismissRequest = { showStartTimePicker = false },
                 title = { Text(t("booking_select_time")) },
                 text = {
                     TimePicker(state = timePickerState)
                 },
                 confirmButton = {
                     TextButton(onClick = {
-                        timeSelection = TimeSelection(timePickerState.hour, timePickerState.minute)
-                        timeText = "${timeSelection.hour.toString().padStart(2, '0')}:${timeSelection.minute.toString().padStart(2, '0')}"
-                        showTimePicker = false
+                        startTimeText = "${timePickerState.hour.toString().padStart(2, '0')}:${timePickerState.minute.toString().padStart(2, '0')}"
+                        showStartTimePicker = false
                     }) { Text(t("booking_confirm")) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showTimePicker = false }) { Text(t("booking_cancel")) }
+                    TextButton(onClick = { showStartTimePicker = false }) { Text(t("booking_cancel")) }
                 }
             )
         }
 
-        // 包车开始日期选择器
-        if (showCharterStartDatePicker) {
+        // 结束日期选择器
+        if (showEndDatePicker) {
             val datePickerState = rememberDatePickerState()
             DatePickerDialog(
-                onDismissRequest = { showCharterStartDatePicker = false },
+                onDismissRequest = { showEndDatePicker = false },
                 confirmButton = {
                     TextButton(onClick = {
                         datePickerState.selectedDateMillis?.let { millis ->
-                            val cal = java.util.Calendar.getInstance().apply { timeInMillis = millis }
-                            charterStartDate = "${cal.get(java.util.Calendar.YEAR)}-${(cal.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')}-${cal.get(java.util.Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}"
+                            endDateText = formatDate(millis)
                         }
-                        showCharterStartDatePicker = false
+                        showEndDatePicker = false
                     }) { Text(t("booking_confirm")) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showCharterStartDatePicker = false }) { Text(t("booking_cancel")) }
+                    TextButton(onClick = { showEndDatePicker = false }) { Text(t("booking_cancel")) }
                 }
-            ) { DatePicker(state = datePickerState) }
+            ) {
+                DatePicker(state = datePickerState)
+            }
         }
 
-        // 包车结束日期选择器
-        if (showCharterEndDatePicker) {
-            val datePickerState = rememberDatePickerState()
-            DatePickerDialog(
-                onDismissRequest = { showCharterEndDatePicker = false },
+        // 结束时间选择器
+        if (showEndTimePicker) {
+            val timePickerState = rememberTimePickerState(
+                initialHour = 12,
+                initialMinute = 0,
+                is24Hour = true
+            )
+            AlertDialog(
+                onDismissRequest = { showEndTimePicker = false },
+                title = { Text(t("booking_select_time")) },
+                text = {
+                    TimePicker(state = timePickerState)
+                },
                 confirmButton = {
                     TextButton(onClick = {
-                        datePickerState.selectedDateMillis?.let { millis ->
-                            val cal = java.util.Calendar.getInstance().apply { timeInMillis = millis }
-                            charterEndDate = "${cal.get(java.util.Calendar.YEAR)}-${(cal.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')}-${cal.get(java.util.Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}"
-                        }
-                        showCharterEndDatePicker = false
+                        endTimeText = "${timePickerState.hour.toString().padStart(2, '0')}:${timePickerState.minute.toString().padStart(2, '0')}"
+                        showEndTimePicker = false
                     }) { Text(t("booking_confirm")) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showCharterEndDatePicker = false }) { Text(t("booking_cancel")) }
+                    TextButton(onClick = { showEndTimePicker = false }) { Text(t("booking_cancel")) }
                 }
-            ) { DatePicker(state = datePickerState) }
+            )
         }
 
         // ========== 行程详情卡片 ==========
@@ -603,63 +649,6 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
                 Text("🛣️ ${t("multi_day_charter_settings")}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(12.dp))
 
-                // 每日时长
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(t("booking_hours"), modifier = Modifier.width(80.dp))
-                    IconButton(onClick = { if (charterHours > 1) charterHours-- }) {
-                        Icon(Icons.Filled.Remove, null)
-                    }
-                    Text("$charterHours", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    IconButton(onClick = { if (charterHours < 24) charterHours++ }) {
-                        Icon(Icons.Filled.Add, null)
-                    }
-                }
-                Spacer(Modifier.height(8.dp))
-
-                // 多日日期范围
-                Text(t("booking_multi_day"), fontWeight = FontWeight.Medium, fontSize = 14.sp)
-                Spacer(Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showCharterStartDatePicker = true }) {
-                        OutlinedTextField(
-                            value = charterStartDate,
-                            onValueChange = {},
-                            label = { Text(t("booking_start_date")) },
-                            readOnly = true,
-                            enabled = false,
-                            modifier = Modifier.fillMaxWidth(),
-                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                                disabledBorderColor = MaterialTheme.colorScheme.outline,
-                                disabledLabelColor = MaterialTheme.colorScheme.outline
-                            )
-                        )
-                    }
-                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).clickable { showCharterEndDatePicker = true }) {
-                        OutlinedTextField(
-                            value = charterEndDate,
-                            onValueChange = {},
-                            label = { Text(t("booking_end_date")) },
-                            readOnly = true,
-                            enabled = false,
-                            modifier = Modifier.fillMaxWidth(),
-                            trailingIcon = { Icon(Icons.Outlined.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary) },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                                disabledBorderColor = MaterialTheme.colorScheme.outline,
-                                disabledLabelColor = MaterialTheme.colorScheme.outline
-                            )
-                        )
-                    }
-                }
-
-                Spacer(Modifier.height(12.dp))
-
                 // 特别需求
                 OutlinedTextField(
                     value = specialNotes,
@@ -805,6 +794,33 @@ fun MultiDayCharterScreen(onBack: () -> Unit = {}) {
     // 法律协议内容弹窗
     showLegalDialog?.let { section ->
         LegalContentDialog(section = section, onDismiss = { showLegalDialog = null })
+    }
+}
+
+data class CharterDuration(val days: Int, val hours: Int)
+
+private fun formatDate(millis: Long): String {
+    val cal = java.util.Calendar.getInstance().apply { timeInMillis = millis }
+    return "${cal.get(java.util.Calendar.YEAR)}-${(cal.get(java.util.Calendar.MONTH) + 1).toString().padStart(2, '0')}-${cal.get(java.util.Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}"
+}
+
+private fun calcCharterDuration(startDate: String, startTime: String, endDate: String, endTime: String): CharterDuration {
+    if (startDate.isBlank() || startTime.isBlank() || endDate.isBlank() || endTime.isBlank()) return CharterDuration(0, 0)
+    return try {
+        val s = startDate.split("-")
+        val st = startTime.split(":")
+        val e = endDate.split("-")
+        val et = endTime.split(":")
+        val startCal = java.util.Calendar.getInstance().apply {
+            set(s[0].toInt(), s[1].toInt() - 1, s[2].toInt(), st[0].toInt(), st[1].toInt(), 0)
+        }
+        val endCal = java.util.Calendar.getInstance().apply {
+            set(e[0].toInt(), e[1].toInt() - 1, e[2].toInt(), et[0].toInt(), et[1].toInt(), 0)
+        }
+        val diffHours = ((endCal.timeInMillis - startCal.timeInMillis) / (1000 * 60 * 60)).toInt()
+        if (diffHours < 0) CharterDuration(0, 0) else CharterDuration(diffHours / 24, diffHours % 24)
+    } catch (_: Exception) {
+        CharterDuration(0, 0)
     }
 }
 
