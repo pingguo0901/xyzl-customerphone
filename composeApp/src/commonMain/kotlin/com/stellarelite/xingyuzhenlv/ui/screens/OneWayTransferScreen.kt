@@ -22,7 +22,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
+import com.stellarelite.xingyuzhenlv.network.OrderTrip
+import com.stellarelite.xingyuzhenlv.network.SupabaseClient
+import com.stellarelite.xingyuzhenlv.network.UserSession
 import com.stellarelite.xingyuzhenlv.update.openLegalUrl
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import xingyuzhenlv.composeapp.generated.resources.Res
 import xingyuzhenlv.composeapp.generated.resources.splash_logo
@@ -31,6 +35,7 @@ import xingyuzhenlv.composeapp.generated.resources.splash_logo
 @Composable
 fun OneWayTransferScreen(onBack: () -> Unit = {}) {
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
 
     // 联系人信息
     var whatsappCountryCode by remember { mutableStateOf("+60") }
@@ -77,6 +82,9 @@ fun OneWayTransferScreen(onBack: () -> Unit = {}) {
 
     // 下单确认弹窗
     var showConfirmDialog by remember { mutableStateOf(false) }
+    var submitting by remember { mutableStateOf(false) }
+    var submitError by remember { mutableStateOf<String?>(null) }
+    var submitSuccess by remember { mutableStateOf(false) }
     var agreeTerms by remember { mutableStateOf(false) }
     var agreePrivacy by remember { mutableStateOf(false) }
     var agreeRefund by remember { mutableStateOf(false) }
@@ -677,11 +685,56 @@ fun OneWayTransferScreen(onBack: () -> Unit = {}) {
                     Button(
                         onClick = {
                             showConfirmDialog = false
-                            // TODO: 提交订单
+                            scope.launch {
+                                submitting = true
+                                submitError = null
+                                val userId = UserSession.userId ?: UserSession.generateGuestId()
+                                val order = OrderTrip(
+                                    user_id = userId,
+                                    whatsapp = whatsappCountryCode + whatsappPhone,
+                                    wechat = wechatId,
+                                    adult = adults,
+                                    child = children,
+                                    luggage = luggage,
+                                    trips_date = buildTimestamp(dateText, timeText),
+                                    vehicle_count = vehicleCount,
+                                    vehicle_type = selectedVehicle,
+                                    departure_state = pickupState,
+                                    departure_address = pickupAddresses.getOrNull(0)?.detailAddress ?: "",
+                                    destination_state = dropoffState,
+                                    destination_address = dropoffAddresses.getOrNull(0)?.detailAddress,
+                                    notes = specialNotes.ifBlank { null },
+                                    departure_address_2 = pickupAddresses.getOrNull(1)?.detailAddress,
+                                    departure_address_3 = pickupAddresses.getOrNull(2)?.detailAddress,
+                                    departure_address_4 = pickupAddresses.getOrNull(3)?.detailAddress,
+                                    departure_address_5 = pickupAddresses.getOrNull(4)?.detailAddress,
+                                    departure_address_6 = pickupAddresses.getOrNull(5)?.detailAddress,
+                                    departure_address_7 = pickupAddresses.getOrNull(6)?.detailAddress,
+                                    departure_address_8 = pickupAddresses.getOrNull(7)?.detailAddress,
+                                    departure_address_9 = pickupAddresses.getOrNull(8)?.detailAddress,
+                                    departure_address_10 = pickupAddresses.getOrNull(9)?.detailAddress,
+                                    destination_address_2 = dropoffAddresses.getOrNull(1)?.detailAddress,
+                                    destination_address_3 = dropoffAddresses.getOrNull(2)?.detailAddress,
+                                    destination_address_4 = dropoffAddresses.getOrNull(3)?.detailAddress,
+                                    destination_address_5 = dropoffAddresses.getOrNull(4)?.detailAddress,
+                                    destination_address_6 = dropoffAddresses.getOrNull(5)?.detailAddress,
+                                    destination_address_7 = dropoffAddresses.getOrNull(6)?.detailAddress,
+                                    destination_address_8 = dropoffAddresses.getOrNull(7)?.detailAddress,
+                                    destination_address_9 = dropoffAddresses.getOrNull(8)?.detailAddress,
+                                    destination_address_10 = dropoffAddresses.getOrNull(9)?.detailAddress
+                                )
+                                val result = SupabaseClient.createOrderTrip(order)
+                                submitting = false
+                                if (result != null) {
+                                    submitSuccess = true
+                                } else {
+                                    submitError = "下单失败，请检查网络后重试"
+                                }
+                            }
                         },
-                        enabled = allAgreed
+                        enabled = allAgreed && !submitting
                     ) {
-                        Text("确认下单")
+                        Text(if (submitting) "提交中..." else "确认下单")
                     }
                 },
                 dismissButton = {
@@ -703,6 +756,36 @@ fun OneWayTransferScreen(onBack: () -> Unit = {}) {
     showLegalDialog?.let { section ->
         LegalContentDialog(section = section, onDismiss = { showLegalDialog = null })
     }
+
+    // 下单成功弹窗
+    if (submitSuccess) {
+        AlertDialog(
+            onDismissRequest = { submitSuccess = false },
+            title = { Text("下单成功", fontWeight = FontWeight.Bold) },
+            text = { Text("订单已提交，我们会尽快与您联系。") },
+            confirmButton = {
+                Button(onClick = { submitSuccess = false; onBack() }) { Text("好的") }
+            }
+        )
+    }
+
+    // 下单失败弹窗
+    submitError?.let { msg ->
+        AlertDialog(
+            onDismissRequest = { submitError = null },
+            title = { Text("下单失败", fontWeight = FontWeight.Bold) },
+            text = { Text(msg) },
+            confirmButton = {
+                TextButton(onClick = { submitError = null }) { Text("重试") }
+            }
+        )
+    }
+}
+
+private fun buildTimestamp(date: String, time: String): String {
+    if (date.isBlank()) return ""
+    val t = if (time.isBlank()) "00:00" else time
+    return "${date}T${t}:00+08:00"
 }
 
 

@@ -19,6 +19,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
+import com.stellarelite.xingyuzhenlv.network.SupabaseClient
+import com.stellarelite.xingyuzhenlv.network.UserProfile
+import com.stellarelite.xingyuzhenlv.network.UserSession
+import kotlinx.coroutines.launch
 
 // 密码规则：8-15位，至少1大写、1小写、1数字、1特殊符号
 fun validatePassword(pw: String): Boolean {
@@ -92,6 +96,9 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
     var referralCode by remember { mutableStateOf("") }
     var agreeTerms by remember { mutableStateOf(false) }
     var showLegalDialog by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+    var registering by remember { mutableStateOf(false) }
+    var registerError by remember { mutableStateOf<String?>(null) }
     val pwValid = password.isNotEmpty() && validatePassword(password) && password == confirmPassword
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -133,8 +140,37 @@ fun RegisterScreen(onBack: () -> Unit = {}, onRegisterSuccess: () -> Unit = {}) 
 
         Spacer(Modifier.height(16.dp))
 
-        Button(onClick = { onRegisterSuccess() }, modifier = Modifier.fillMaxWidth().height(52.dp), shape = RoundedCornerShape(14.dp), enabled = name.isNotBlank() && email.isNotBlank() && pwValid && agreeTerms) {
-            Text("注册", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+        registerError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
+            Spacer(Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = {
+                scope.launch {
+                    registering = true
+                    registerError = null
+                    val profile = SupabaseClient.registerUser(
+                        UserProfile(
+                            username = name.trim(),
+                            email = email.trim(),
+                            referred_by = referralCode.trim().ifBlank { null }
+                        )
+                    )
+                    registering = false
+                    if (profile != null) {
+                        UserSession.setUser(profile)
+                        onRegisterSuccess()
+                    } else {
+                        registerError = "注册失败，请检查网络后重试"
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(14.dp),
+            enabled = name.isNotBlank() && email.isNotBlank() && pwValid && agreeTerms && !registering
+        ) {
+            Text(if (registering) "注册中..." else "注册", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(Modifier.height(12.dp))
@@ -161,6 +197,9 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
     var rememberMe by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
+    var loggingIn by remember { mutableStateOf(false) }
+    var loginError by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -183,8 +222,31 @@ fun LoginScreen(
         }
 
         Spacer(Modifier.height(24.dp))
-        Button(onClick = { onLoginSuccess() }, modifier = Modifier.fillMaxWidth().height(52.dp), shape = RoundedCornerShape(14.dp), enabled = email.isNotBlank() && password.isNotBlank()) {
-            Text("登录", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+        loginError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
+            Spacer(Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = {
+                scope.launch {
+                    loggingIn = true
+                    loginError = null
+                    val profile = SupabaseClient.getUserProfileByEmail(email.trim())
+                    loggingIn = false
+                    if (profile != null) {
+                        UserSession.setUser(profile)
+                        onLoginSuccess()
+                    } else {
+                        loginError = "账号不存在，请先注册"
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(14.dp),
+            enabled = email.isNotBlank() && password.isNotBlank() && !loggingIn
+        ) {
+            Text(if (loggingIn) "登录中..." else "登录", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(Modifier.height(12.dp))
