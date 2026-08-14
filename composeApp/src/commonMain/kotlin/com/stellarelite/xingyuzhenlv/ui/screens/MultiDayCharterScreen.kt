@@ -805,12 +805,12 @@ private fun formatDate(millis: Long): String {
 }
 
 private fun calcCharterDuration(startDate: String, startTime: String, endDate: String, endTime: String): CharterDuration {
-    if (startDate.isBlank() || startTime.isBlank() || endDate.isBlank() || endTime.isBlank()) return CharterDuration(0, 0)
+    if (startDate.isBlank() || endDate.isBlank()) return CharterDuration(0, 0)
+    val st = (if (startTime.isBlank()) "00:00" else startTime).split(":")
+    val et = (if (endTime.isBlank()) "00:00" else endTime).split(":")
     return try {
         val s = startDate.split("-")
-        val st = startTime.split(":")
         val e = endDate.split("-")
-        val et = endTime.split(":")
         val startCal = java.util.Calendar.getInstance().apply {
             set(s[0].toInt(), s[1].toInt() - 1, s[2].toInt(), st[0].toInt(), st[1].toInt(), 0)
         }
