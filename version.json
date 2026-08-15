@@ -1,8 +1,8 @@
 {
-  "versionCode": 56,
-  "versionName": "1.0.56",
-  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.56/composeApp-debug.apk",
-  "changelog": "- 接通 Supabase 后端：注册/登录/单程接送/多日包车下单已连数据库",
+  "versionCode": 57,
+  "versionName": "1.0.57",
+  "apkUrl": "https://github.com/pingguo0901/xyzl-customerphone/releases/download/v1.0.57/composeApp-debug.apk",
+  "changelog": "- 行程页面接入订单数据：全部/已预约/历史行程/已取消分类 + 订单详情",
   "buildDate": "2026-08-15",
   "minSdkVersion": "Android 7.0 (SDK 24)",
   "apkSize": "16 MB",

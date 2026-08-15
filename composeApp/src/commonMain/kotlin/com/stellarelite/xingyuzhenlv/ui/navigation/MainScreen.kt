@@ -112,11 +112,7 @@ fun MainScreen() {
     if (showTripDetail != null) {
         val t = showTripDetail!!
         TripDetailScreen(
-            trip = TripDetail(
-                id = t.id, status = t.status, statusColor = t.statusColor,
-                date = t.date, time = t.time, origin = t.origin, destination = t.destination,
-                myrAmount = t.myrAmount
-            ),
+            trip = t,
             onBack = { showTripDetail = null }
         )
         return

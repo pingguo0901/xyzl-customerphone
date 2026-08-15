@@ -22,6 +22,8 @@ data class UserProfile(
 @Serializable
 data class OrderTrip(
     val user_id: String = "",
+    val order_no: String? = null,
+    val status: String? = null,
     val whatsapp: String = "",
     val wechat: String = "",
     val adult: Int = 0,
@@ -35,6 +37,7 @@ data class OrderTrip(
     val destination_state: String = "",
     val destination_address: String? = null,
     val notes: String? = null,
+    val created_at: String? = null,
     val departure_address_2: String? = null,
     val departure_address_3: String? = null,
     val departure_address_4: String? = null,
@@ -58,6 +61,8 @@ data class OrderTrip(
 @Serializable
 data class OrderDailyTrip(
     val user_id: String? = null,
+    val order_no: String? = null,
+    val status: String? = null,
     val whatsapp: String? = null,
     val wechat: String? = null,
     val adult: Int = 0,
@@ -72,6 +77,7 @@ data class OrderDailyTrip(
     val destination_state: String? = null,
     val destination_address: String? = null,
     val notes: String? = null,
+    val created_at: String? = null,
     val departure_address_2: String? = null,
     val departure_address_3: String? = null,
     val departure_address_4: String? = null,
@@ -90,6 +96,19 @@ data class OrderDailyTrip(
     val destination_address_8: String? = null,
     val destination_address_9: String? = null,
     val destination_address_10: String? = null
+)
+
+@Serializable
+data class OrderAmount(
+    val user_id: String? = null,
+    val order_no: String? = null,
+    val base_price: Double? = null,
+    val car_upgrade_fee: Double? = null,
+    val car_reduce_fee: Double? = null,
+    val discount: Double? = null,
+    val final_amount: Double? = null,
+    val status: String? = null,
+    val created_at: String? = null
 )
 
 // ===================== 客户端 =====================
@@ -144,5 +163,29 @@ object SupabaseClient {
         return if (resp.status in 200..299) {
             runCatching { json.decodeFromString<List<OrderDailyTrip>>(resp.body).firstOrNull() }.getOrNull()
         } else null
+    }
+
+    // 查询用户单程接送订单
+    suspend fun getOrderTrips(userId: String): List<OrderTrip> {
+        val resp = httpRequest("$BASE/rest/v1/order_trips?user_id=eq.$userId&order=created_at.desc", "GET", headers())
+        return if (resp.status in 200..299) {
+            runCatching { json.decodeFromString<List<OrderTrip>>(resp.body) }.getOrElse { emptyList() }
+        } else emptyList()
+    }
+
+    // 查询用户多日包车订单
+    suspend fun getOrderDailyTrips(userId: String): List<OrderDailyTrip> {
+        val resp = httpRequest("$BASE/rest/v1/order_daily_trips?user_id=eq.$userId&order=created_at.desc", "GET", headers())
+        return if (resp.status in 200..299) {
+            runCatching { json.decodeFromString<List<OrderDailyTrip>>(resp.body) }.getOrElse { emptyList() }
+        } else emptyList()
+    }
+
+    // 查询用户订单金额
+    suspend fun getOrderAmounts(userId: String): List<OrderAmount> {
+        val resp = httpRequest("$BASE/rest/v1/order_amounts?user_id=eq.$userId", "GET", headers())
+        return if (resp.status in 200..299) {
+            runCatching { json.decodeFromString<List<OrderAmount>>(resp.body) }.getOrElse { emptyList() }
+        } else emptyList()
     }
 }

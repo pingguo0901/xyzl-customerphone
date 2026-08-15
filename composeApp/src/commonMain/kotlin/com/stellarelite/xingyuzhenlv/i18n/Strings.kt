@@ -185,6 +185,16 @@ object Strings {
         "about_cn_site" to "中国官网对应页面：",
         "goto_intl_site" to "打开国际官网 →",
         "goto_cn_site" to "打开中国官网 →",
+        "order_no" to "订单号",
+        "departure_state" to "出发地",
+        "destination_state" to "目的地",
+        "status" to "状态",
+        "final_amount" to "最终金额",
+        "base_price" to "基础价",
+        "car_upgrade_fee" to "升配费",
+        "car_reduce_fee" to "降配费",
+        "discount" to "折扣",
+        "trip_status_pickup" to "已上车",
     )
 
     private val en = mapOf(
@@ -370,6 +380,16 @@ object Strings {
         "about_cn_site" to "China Site:",
         "goto_intl_site" to "Open International Site →",
         "goto_cn_site" to "Open China Site →",
+        "order_no" to "Order No.",
+        "departure_state" to "Departure",
+        "destination_state" to "Destination",
+        "status" to "Status",
+        "final_amount" to "Final Amount",
+        "base_price" to "Base Price",
+        "car_upgrade_fee" to "Upgrade Fee",
+        "car_reduce_fee" to "Reduce Fee",
+        "discount" to "Discount",
+        "trip_status_pickup" to "On Board",
     )
 
     private val ms = mapOf(
@@ -553,6 +573,16 @@ object Strings {
         "about_cn_site" to "Laman China:",
         "goto_intl_site" to "Buka Laman Antarabangsa →",
         "goto_cn_site" to "Buka Laman China →",
+        "order_no" to "No. Pesanan",
+        "departure_state" to "Tempat Bertolak",
+        "destination_state" to "Destinasi",
+        "status" to "Status",
+        "final_amount" to "Jumlah Akhir",
+        "base_price" to "Harga Asas",
+        "car_upgrade_fee" to "Bayaran Naik Taraf",
+        "car_reduce_fee" to "Bayaran Turun Taraf",
+        "discount" to "Diskaun",
+        "trip_status_pickup" to "Dalam Perjalanan",
     )
 
     private val ja = mapOf(
@@ -732,6 +762,16 @@ object Strings {
         "about_cn_site" to "中国サイト：",
         "goto_intl_site" to "国際サイトを開く →",
         "goto_cn_site" to "中国サイトを開く →",
+        "order_no" to "注文番号",
+        "departure_state" to "出発地",
+        "destination_state" to "目的地",
+        "status" to "状態",
+        "final_amount" to "最終金額",
+        "base_price" to "基本料金",
+        "car_upgrade_fee" to "アップグレード料金",
+        "car_reduce_fee" to "ダウングレード料金",
+        "discount" to "割引",
+        "trip_status_pickup" to "乗車済み",
     )
 
     private val ko = mapOf(
@@ -911,6 +951,16 @@ object Strings {
         "about_cn_site" to "중국 사이트:",
         "goto_intl_site" to "국제 사이트 열기 →",
         "goto_cn_site" to "중국 사이트 열기 →",
+        "order_no" to "주문번호",
+        "departure_state" to "출발지",
+        "destination_state" to "목적지",
+        "status" to "상태",
+        "final_amount" to "최종 금액",
+        "base_price" to "기본 요금",
+        "car_upgrade_fee" to "업그레이드 비용",
+        "car_reduce_fee" to "다운그레이드 비용",
+        "discount" to "할인",
+        "trip_status_pickup" to "탑승 완료",
     )
 
     fun get(key: String, lang: Language): String {

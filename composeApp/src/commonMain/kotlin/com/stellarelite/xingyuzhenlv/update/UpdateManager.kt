@@ -17,7 +17,7 @@ data class ServerVersion(
 )
 
 object UpdateManager {
-    const val CURRENT_VERSION_CODE = 56  // 跟着 build.gradle.kts 同步更新
+    const val CURRENT_VERSION_CODE = 57  // 跟着 build.gradle.kts 同步更新
     internal const val VERSION_URL = "https://cdn.jsdelivr.net/gh/pingguo0901/xyzl-customerphone@main/version.json"
 
     var updateAvailable by mutableStateOf(false)

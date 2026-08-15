@@ -17,37 +17,76 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stellarelite.xingyuzhenlv.i18n.t
+import com.stellarelite.xingyuzhenlv.network.OrderAmount
+import com.stellarelite.xingyuzhenlv.network.OrderDailyTrip
+import com.stellarelite.xingyuzhenlv.network.OrderTrip
+import com.stellarelite.xingyuzhenlv.network.SupabaseClient
+import com.stellarelite.xingyuzhenlv.network.UserSession
+import kotlinx.coroutines.launch
 
 enum class TripTab { ALL, BOOKED, HISTORY, CANCELLED }
 
 data class TripRecord(
-    val id: String,
+    val orderNo: String,
     val status: String,
+    val statusText: String,
     val statusColor: Color,
-    val date: String,
-    val time: String,
-    val origin: String,
-    val destination: String,
-    val price: String,
-    val myrAmount: Double = 0.0,
-    val tab: TripTab
+    val tab: TripTab,
+    val dateDisplay: String,
+    val departureState: String,
+    val destinationState: String,
+    val finalAmount: Double,
+    val oneWay: OrderTrip? = null,
+    val daily: OrderDailyTrip? = null,
+    val amount: OrderAmount? = null
 )
+
+fun statusInfo(status: String?): Pair<String, Color> = when (status) {
+    "Pick-up" -> t("trip_status_pickup") to Color(0xFF4CAF50)
+    "Complete" -> t("trip_status_completed") to Color(0xFF9E9E9E)
+    "Cancel" -> t("trip_status_cancelled") to Color(0xFFF44336)
+    "Confirm" -> t("trip_status_confirmed") to Color(0xFF2196F3)
+    else -> (status ?: "-") to Color(0xFF9E9E9E)
+}
+
+fun tabForStatus(status: String?): TripTab = when (status) {
+    "Complete" -> TripTab.HISTORY
+    "Cancel" -> TripTab.CANCELLED
+    else -> TripTab.BOOKED // Confirm / Pick-up 视为已预约
+}
+
+fun formatIsoDateTime(iso: String?): String {
+    if (iso.isNullOrBlank()) return ""
+    val date = iso.substringBefore('T')
+    val time = iso.substringAfter('T', "").take(5)
+    return if (date.isNotBlank() && time.isNotBlank()) "$date $time" else date
+}
 
 @Composable
 fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
     var selectedTab by remember { mutableStateOf(TripTab.ALL) }
-    val scrollState = rememberScrollState()
+    var trips by remember { mutableStateOf<List<TripRecord>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
 
-    val trips = remember {
-        listOf(
-            TripRecord("T001", t("trip_status_driver_otw"), Color(0xFF4CAF50), "2026-08-08", "14:30", "吉隆坡双威酒店", "KLIA 吉隆坡国际机场", "", 168.0, TripTab.BOOKED),
-            TripRecord("T002", t("trip_status_confirmed"), Color(0xFF2196F3), "2026-08-10", "09:00", "新山关卡", "新加坡乌节路", "", 250.0, TripTab.BOOKED),
-            TripRecord("T003", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-08-01", "11:00", "槟城机场", "乔治市酒店", "", 80.0, TripTab.HISTORY),
-            TripRecord("T004", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-07-28", "16:30", "KL Sentral", "云顶高原", "", 200.0, TripTab.HISTORY),
-            TripRecord("T005", t("trip_status_completed"), Color(0xFF9E9E9E), "2026-07-20", "08:00", "马六甲市中心", "KLIA2", "", 150.0, TripTab.HISTORY),
-            TripRecord("T006", t("trip_status_cancelled"), Color(0xFFF44336), "2026-07-15", "12:00", "新山 KSL", "新加坡樟宜机场", "", 220.0, TripTab.CANCELLED),
-            TripRecord("T007", t("trip_status_cancelled"), Color(0xFFF44336), "2026-07-10", "06:00", "吉隆坡市中心", "槟城", "", 350.0, TripTab.CANCELLED),
-        )
+    LaunchedEffect(Unit) {
+        loading = true
+        val userId = UserSession.userId
+        val result = if (userId != null) {
+            val oneWay = SupabaseClient.getOrderTrips(userId)
+            val daily = SupabaseClient.getOrderDailyTrips(userId)
+            val amounts = SupabaseClient.getOrderAmounts(userId).associateBy { it.order_no }
+            buildList {
+                oneWay.forEach { o ->
+                    add(buildTripRecord(o, null, amounts[o.order_no]))
+                }
+                daily.forEach { d ->
+                    add(buildTripRecord(null, d, amounts[d.order_no]))
+                }
+            }.sortedByDescending { it.dateDisplay }
+        } else emptyList()
+        trips = result
+        loading = false
     }
 
     val filtered = when (selectedTab) {
@@ -62,7 +101,6 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
 
         Spacer(Modifier.height(8.dp))
 
-        // 标签切换
         TabRow(
             selectedTabIndex = selectedTab.ordinal,
             containerColor = MaterialTheme.colorScheme.background,
@@ -82,21 +120,50 @@ fun TripsScreen(onViewDetail: (TripRecord) -> Unit = {}) {
 
         Spacer(Modifier.height(8.dp))
 
-        if (filtered.isEmpty()) {
-            Box(modifier = Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
+        when {
+            loading -> Box(modifier = Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+            filtered.isEmpty() -> Box(modifier = Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(Icons.Filled.AirportShuttle, null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(48.dp))
                     Spacer(Modifier.height(8.dp))
                     Text(t("no_trips_found"), color = MaterialTheme.colorScheme.outline)
                 }
             }
-        }
-
-        Column(modifier = Modifier.verticalScroll(scrollState).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            filtered.forEach { trip -> TripCard(trip, onViewDetail = { onViewDetail(trip) }) }
-            Spacer(Modifier.height(80.dp))
+            else -> Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                filtered.forEach { trip -> TripCard(trip, onViewDetail = { onViewDetail(trip) }) }
+                Spacer(Modifier.height(80.dp))
+            }
         }
     }
+}
+
+private fun buildTripRecord(oneWay: OrderTrip?, daily: OrderDailyTrip?, amount: OrderAmount?): TripRecord {
+    val orderNo = oneWay?.order_no ?: daily?.order_no ?: ""
+    val status = oneWay?.status ?: daily?.status
+    val (statusText, statusColor) = statusInfo(status)
+    val dateDisplay = if (oneWay != null) {
+        formatIsoDateTime(oneWay.trips_date)
+    } else {
+        val s = formatIsoDateTime(daily?.trip_start_date)
+        val e = formatIsoDateTime(daily?.trip_end_date)
+        if (s.isNotBlank() && e.isNotBlank()) "$s ~ $e" else (if (s.isNotBlank()) s else e)
+    }
+    return TripRecord(
+        orderNo = orderNo,
+        status = status ?: "",
+        statusText = statusText,
+        statusColor = statusColor,
+        tab = tabForStatus(status),
+        dateDisplay = dateDisplay,
+        departureState = oneWay?.departure_state ?: daily?.departure_state ?: "",
+        destinationState = oneWay?.destination_state ?: daily?.destination_state ?: "",
+        finalAmount = amount?.final_amount ?: 0.0,
+        oneWay = oneWay,
+        daily = daily,
+        amount = amount
+    )
 }
 
 @Composable
@@ -108,28 +175,32 @@ private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
-            // 状态 + 日期时间
+            // 订单号 + 状态
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.Schedule, null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text(trip.date, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface)
-                    Spacer(Modifier.width(6.dp))
-                    Text(trip.time, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
-                }
+                Text("${t("order_no")}: ${trip.orderNo}", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface)
                 Surface(shape = RoundedCornerShape(12.dp), color = trip.statusColor.copy(alpha = 0.12f)) {
-                    Text(trip.status, Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
+                    Text(trip.statusText, Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
                         fontSize = 12.sp, color = trip.statusColor, fontWeight = FontWeight.Medium)
                 }
             }
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(8.dp))
 
-            // 起点
+            // 日期
+            if (trip.dateDisplay.isNotBlank()) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Filled.Schedule, null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(trip.dateDisplay, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface)
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
+            // 出发地
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(8.dp).background(Color(0xFF4CAF50), CircleShape))
                 Spacer(Modifier.width(8.dp))
-                Text(trip.origin, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
+                Text("${t("departure_state")}: ${trip.departureState}", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
             }
 
             Spacer(Modifier.height(4.dp))
@@ -139,7 +210,7 @@ private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(8.dp).background(Color(0xFFF44336), CircleShape))
                 Spacer(Modifier.width(8.dp))
-                Text(trip.destination, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
+                Text("${t("destination_state")}: ${trip.destinationState}", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
             }
 
             Spacer(Modifier.height(10.dp))
@@ -148,9 +219,12 @@ private fun TripCard(trip: TripRecord, onViewDetail: () -> Unit = {}) {
 
             Spacer(Modifier.height(8.dp))
 
-            // 价格 + 查看详情
+            // 最终金额 + 查看详情
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(CurrencyManager.formatPrice(trip.myrAmount), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Column {
+                    Text(t("final_amount"), fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
+                    Text(CurrencyManager.formatPrice(trip.finalAmount), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                }
                 OutlinedButton(
                     onClick = onViewDetail,
                     shape = RoundedCornerShape(10.dp),
