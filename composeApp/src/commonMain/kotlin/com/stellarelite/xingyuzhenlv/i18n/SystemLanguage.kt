@@ -1,6 +1,0 @@
-package com.stellarelite.xingyuzhenlv.i18n
-
-import androidx.compose.runtime.Composable
-
-@Composable
-expect fun detectSystemLanguage(): String
